@@ -1,0 +1,118 @@
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Testing
+/coverage
+
+# Production
+/build
+/dist
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs
+*.log
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history
+
+# IDE - IntelliJ/WebStorm
+.idea/
+*.iml
+*.iws
+.idea_modules/
+
+# IDE - Eclipse
+.project
+.classpath
+.settings/
+
+# System Files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# Misc
+.cache/
+.temp/
+.tmp/
+tmp/
+temp/
+
+# Client specific
+/client/build/
+/client/node_modules/
+/client/.env
+/client/.env.local
+/client/.env.development.local
+/client/.env.test.local
+/client/.env.production.local
+/client/coverage/
+/client/.eslintcache
+
+# Server specific
+/server/node_modules/
+/server/.env
+/server/dist/
+/server/coverage/
+/server/logs/
+/server/uploads/*
+!/server/uploads/.gitkeep
+
+# AWS
+.aws/
+aws.json
+
+# Database
+*.sqlite
+*.sqlite3
+*.db
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Next.js
+.next/
+out/
+
+# Cypress
+cypress/videos/
+cypress/screenshots/

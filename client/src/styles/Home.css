@@ -1,0 +1,35 @@
+.home {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.section {
+  margin-bottom: 3rem;
+  padding: 2rem;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+}
+
+.section h2 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.section p {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.section-link {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: #333;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.section-link:hover {
+  background-color: #444;
+} 
