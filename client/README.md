@@ -33,12 +33,14 @@ This is the client-side application for my personal website, built with React.
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/yourusername/DevLifeHub-client.git
    cd DevLifeHub-client
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    # or
@@ -46,6 +48,7 @@ This is the client-side application for my personal website, built with React.
    ```
 
 3. Start the development server:
+
    ```bash
    npm start
    # or
@@ -57,6 +60,7 @@ This is the client-side application for my personal website, built with React.
 ### Environment Variables
 
 Create a `.env` file in the root directory and add any necessary environment variables. For example:
+
 ```bash
 REACT_APP_API_URL=https://api.example.com
 ```
@@ -64,6 +68,7 @@ REACT_APP_API_URL=https://api.example.com
 ### Running Tests
 
 To run tests using Cypress:
+
 ```bash
 npm test
 # or
@@ -73,6 +78,7 @@ yarn test
 ### Building for Production
 
 To build the app for production:
+
 ```bash
 npm run build
 # or

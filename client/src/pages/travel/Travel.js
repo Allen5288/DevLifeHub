@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/Travel.css';
+import './Travel.css';
 
 function Travel() {
   const [destinations] = useState([
@@ -48,7 +48,6 @@ function Travel() {
   ]);
 
   const [selectedCategory, setSelectedCategory] = useState('All');
-
   const categories = ['All', 'Asia', 'Europe', 'Americas', 'Africa', 'Oceania'];
 
   const filteredDestinations = selectedCategory === 'All'

@@ -3,4 +3,49 @@
   display: flex;
   flex-direction: column;
   font-family: Arial, sans-serif;
+}
+
+main {
+  flex: 1;
+  padding: 2rem 0;
+}
+
+.page-transition {
+  animation: fadeIn 0.5s ease;
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.error-boundary {
+  text-align: center;
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 600px;
+}
+
+.error-boundary h2 {
+  color: #dc3545;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary-color);
 } 

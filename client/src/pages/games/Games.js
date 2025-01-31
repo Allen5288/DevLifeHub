@@ -1,6 +1,6 @@
 import React from 'react';
-import TicTacToe from './games/components/TicTacToe';
-import RockPaperScissors from './games/components/RockPaperScissors';
+import TicTacToe from './components/TicTacToe';
+import RockPaperScissors from './components/RockPaperScissors';
 import './Games.css';
 
 function Games() {

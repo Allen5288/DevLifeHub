@@ -1,20 +1,20 @@
-.food-page {
+.travel-page {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
 }
 
-.food-header {
+.travel-header {
   text-align: center;
   margin-bottom: 3rem;
 }
 
-.food-header h1 {
+.travel-header h1 {
   color: #333;
   margin-bottom: 1rem;
 }
 
-.food-header p {
+.travel-header p {
   color: #666;
   max-width: 800px;
   margin: 0 auto;
@@ -44,36 +44,41 @@
   color: white;
 }
 
-.recipes-grid {
+.destinations-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 2rem;
   margin-bottom: 4rem;
 }
 
-.recipe-card {
+.destination-card {
   background-color: white;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
 }
 
-.recipe-image {
+.destination-card:hover {
+  transform: translateY(-5px);
+}
+
+.destination-image {
   position: relative;
   height: 200px;
   overflow: hidden;
 }
 
-.recipe-image img {
+.destination-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.category-tag {
+.location-tag {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  bottom: 1rem;
+  left: 1rem;
   background-color: rgba(0, 0, 0, 0.7);
   color: white;
   padding: 0.5rem 1rem;
@@ -81,73 +86,47 @@
   font-size: 0.9rem;
 }
 
-.recipe-content {
+.destination-content {
   padding: 1.5rem;
 }
 
-.recipe-content h2 {
+.destination-content h2 {
   color: #333;
   margin-bottom: 1rem;
 }
 
-.recipe-info {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-}
-
-.recipe-info span {
-  background-color: #f5f5f5;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  color: #666;
-}
-
-.description {
+.destination-content p {
   color: #666;
   margin-bottom: 1.5rem;
   line-height: 1.6;
 }
 
-.ingredients h3, .steps h3 {
+.highlights h3 {
   color: #333;
   margin-bottom: 0.8rem;
 }
 
-.ingredients ul {
+.highlights ul {
   list-style: none;
   padding: 0;
   margin: 0 0 1.5rem 0;
 }
 
-.ingredients li {
+.highlights li {
   color: #666;
   padding: 0.3rem 0;
   position: relative;
   padding-left: 1.5rem;
 }
 
-.ingredients li:before {
-  content: "•";
+.highlights li:before {
+  content: "✓";
   position: absolute;
-  left: 0.5rem;
-  color: #333;
+  left: 0;
+  color: #4CAF50;
 }
 
-.steps ol {
-  padding-left: 1.5rem;
-  margin: 0 0 1.5rem 0;
-}
-
-.steps li {
-  color: #666;
-  padding: 0.3rem 0;
-  line-height: 1.4;
-}
-
-.view-recipe-btn {
+.read-more-btn {
   width: 100%;
   padding: 0.8rem;
   background-color: #333;
@@ -158,17 +137,17 @@
   transition: background-color 0.2s ease;
 }
 
-.view-recipe-btn:hover {
+.read-more-btn:hover {
   background-color: #444;
 }
 
-.cooking-tips {
+.travel-tips-section {
   margin-top: 4rem;
   padding-top: 3rem;
   border-top: 2px solid #eee;
 }
 
-.cooking-tips h2 {
+.travel-tips-section h2 {
   text-align: center;
   color: #333;
   margin-bottom: 2rem;
@@ -198,7 +177,7 @@
 }
 
 @media (max-width: 768px) {
-  .food-page {
+  .travel-page {
     padding: 1rem;
   }
   
@@ -207,11 +186,7 @@
     align-items: stretch;
   }
   
-  .recipes-grid {
+  .destinations-grid {
     grid-template-columns: 1fr;
-  }
-  
-  .recipe-info {
-    justify-content: center;
   }
 } 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/Menu.css';
+import './Menu.css';
 
 function Menu() {
   const [cocktails] = useState([

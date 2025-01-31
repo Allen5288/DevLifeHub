@@ -8,12 +8,10 @@ mkdir personal-website
 cd personal-website
 mkdir client server
 
-
 2. Initialize root project:
 bash
 In root directory (personal-website/)
 npm init -y
-
 
 3. Update root package.json:
 json

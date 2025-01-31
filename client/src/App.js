@@ -9,7 +9,8 @@ import {
   Menu,
   Travel,
   Food,
-  Contact
+  Contact,
+  Tools
 } from './pages';
 import {
   Login,
@@ -18,6 +19,7 @@ import {
   ResetPassword
 } from './components/auth';
 import './styles/App.css';
+import './styles/global.css';
 
 function App() {
   return (
@@ -38,6 +40,7 @@ function App() {
             <Route path="/menu/*" element={<Menu />} />
             <Route path="/travel/*" element={<Travel />} />
             <Route path="/food/*" element={<Food />} />
+            <Route path="/tools/*" element={<Tools />} />
           </Routes>
         </div>
       </AuthProvider>

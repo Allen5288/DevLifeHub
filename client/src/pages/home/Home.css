@@ -92,4 +92,65 @@
   .profile-image {
     height: 200px;
   }
+}
+
+.mongodb-test {
+  padding: 2rem;
+  background: #f5f5f5;
+  border-radius: 8px;
+  margin: 2rem auto;
+  max-width: 800px;
+}
+
+.test-form {
+  margin: 1rem 0;
+}
+
+.form-group {
+  display: flex;
+  gap: 1rem;
+}
+
+.form-group input {
+  flex: 1;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.form-group button {
+  padding: 0.8rem 1.5rem;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-group button:disabled {
+  background: #999;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: #dc3545;
+  margin-top: 0.5rem;
+}
+
+.test-data ul {
+  list-style: none;
+  padding: 0;
+}
+
+.test-data li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.test-data small {
+  color: #666;
 } 
