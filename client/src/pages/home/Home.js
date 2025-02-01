@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FaCode, FaGamepad, FaUtensils, FaPlane, FaTools } from 'react-icons/fa';
+import { BiLogoReact, BiLogoNodejs, BiLogoMongodb } from 'react-icons/bi';
+import { SiExpress, SiRedux, SiTypescript } from 'react-icons/si';
 import './Home.css';
 
 function Home() {
@@ -65,58 +68,171 @@ function Home() {
     navigate(path);
   };
 
+  const sections = [
+    {
+      id: 'fullstack',
+      title: 'Full Stack Development',
+      description: 'Modern web applications built with React, Node.js, and MongoDB.',
+      icon: <FaCode className="section-icon" />,
+      path: '/fullstack',
+      technologies: [
+        { icon: <BiLogoReact />, name: 'React' },
+        { icon: <BiLogoNodejs />, name: 'Node.js' },
+        { icon: <BiLogoMongodb />, name: 'MongoDB' },
+        { icon: <SiExpress />, name: 'Express' },
+        { icon: <SiRedux />, name: 'Redux' },
+        { icon: <SiTypescript />, name: 'TypeScript' }
+      ],
+      quickLinks: [
+        { title: 'Projects', path: '/fullstack/projects' },
+        { title: 'Blog Posts', path: '/fullstack/blog' },
+        { title: 'Resources', path: '/fullstack/resources' }
+      ]
+    },
+    {
+      id: 'games',
+      title: 'Game Development',
+      description: 'Interactive web games and gaming projects.',
+      icon: <FaGamepad className="section-icon" />,
+      path: '/games',
+      technologies: [
+        { icon: '🎮', name: 'Unity' },
+        { icon: '🕹️', name: 'Phaser' },
+        { icon: '🎲', name: 'Three.js' }
+      ],
+      quickLinks: [
+        { title: 'Play Games', path: '/games/play' },
+        { title: 'Tutorials', path: '/games/tutorials' },
+        { title: 'Showcase', path: '/games/showcase' }
+      ]
+    },
+    {
+      id: 'travel',
+      title: 'Travel Adventures',
+      description: 'Exploring the world and sharing travel experiences.',
+      icon: <FaPlane className="section-icon" />,
+      path: '/travel',
+      features: [
+        { icon: '🗺️', name: 'Destinations' },
+        { icon: '📸', name: 'Photos' },
+        { icon: '✈️', name: 'Tips' }
+      ],
+      quickLinks: [
+        { title: 'Destinations', path: '/travel/destinations' },
+        { title: 'Photo Gallery', path: '/travel/gallery' },
+        { title: 'Travel Tips', path: '/travel/tips' }
+      ]
+    },
+    {
+      id: 'food',
+      title: 'Food & Cuisine',
+      description: 'Culinary adventures and restaurant reviews.',
+      icon: <FaUtensils className="section-icon" />,
+      path: '/food',
+      features: [
+        { icon: '🍳', name: 'Recipes' },
+        { icon: '🍽️', name: 'Reviews' },
+        { icon: '📝', name: 'Tips' }
+      ],
+      quickLinks: [
+        { title: 'Recipes', path: '/food/recipes' },
+        { title: 'Reviews', path: '/food/reviews' },
+        { title: 'Cooking Tips', path: '/food/tips' }
+      ]
+    },
+    {
+      id: 'tools',
+      title: 'Developer Tools',
+      description: 'Useful tools for developers: JSON formatter, encoders, and more.',
+      icon: <FaTools className="section-icon" />,
+      path: '/tools',
+      tools: [
+        { icon: '🔧', name: 'JSON Tools' },
+        { icon: '🔐', name: 'Encoders' },
+        { icon: '⚙️', name: 'Generators' }
+      ],
+      quickLinks: [
+        { title: 'JSON Formatter', path: '/tools?tool=json' },
+        { title: 'Base64 Converter', path: '/tools?tool=base64' },
+        { title: 'Key Generator', path: '/tools?tool=session-key' }
+      ]
+    }
+  ];
+
   return (
-    <div className="home">
-      <section className="hero">
-        <div className="hero-content">
-          <h1>Welcome to My Personal Website</h1>
-          <p>Full Stack Developer | Game Creator | Food & Travel Enthusiast</p>
-        </div>
-      </section>
+    <div className="home-page">
+      <header className="hero-section">
+        <h1>Welcome to DevLifeHub</h1>
+        <p>Exploring the intersection of technology, travel, and lifestyle</p>
+      </header>
 
-      <section className="featured-sections">
-        <h2>Explore My World</h2>
-        <div className="sections-grid">
-          <div className="section-card" onClick={() => handleSectionClick('/fullstack')}>
-            <h3>Full Stack Projects</h3>
-            <p>Explore my web development projects and technical solutions.</p>
-          </div>
-          <div className="section-card" onClick={() => handleSectionClick('/games')}>
-            <h3>Games</h3>
-            <p>Check out the games I've created and play them online.</p>
-          </div>
-          <div className="section-card" onClick={() => handleSectionClick('/menu')}>
-            <h3>Menu</h3>
-            <p>Discover my favorite recipes and cooking adventures.</p>
-          </div>
-          <div className="section-card" onClick={() => handleSectionClick('/travel')}>
-            <h3>Travel</h3>
-            <p>Join me on my journey exploring different places and cultures.</p>
-          </div>
-          <div className="section-card" onClick={() => handleSectionClick('/food')}>
-            <h3>Food</h3>
-            <p>Experience culinary delights and restaurant reviews.</p>
-          </div>
-          <div className="section-card" onClick={() => handleSectionClick('/tools')}>
-            <h3>Developer Tools</h3>
-            <p>Useful tools for developers: JSON formatter, Base64 converter, and more.</p>
-          </div>
-        </div>
-      </section>
+      <main className="sections-container">
+        {sections.map((section) => (
+          <section key={section.id} className="content-section">
+            <div className="section-header">
+              {section.icon}
+              <h2>{section.title}</h2>
+            </div>
 
-      <section className="about">
-        <h2>About Me</h2>
-        <div className="about-content">
-          <div className="profile-image">
-            {/* Add your profile image here */}
-          </div>
-          <div className="bio">
-            <p>I'm a passionate developer who loves creating web applications and games. 
-               When I'm not coding, you can find me exploring new places, trying different cuisines, 
-               or experimenting with recipes in my kitchen.</p>
-          </div>
-        </div>
-      </section>
+            <div className="section-content">
+              <div className="section-info">
+                <p className="section-description">{section.description}</p>
+                <button 
+                  className="explore-button"
+                  onClick={() => handleSectionClick(section.path)}
+                >
+                  Explore {section.title}
+                </button>
+              </div>
+
+              <div className="section-features">
+                {section.technologies && (
+                  <div className="tech-stack">
+                    <h3>Technologies</h3>
+                    <div className="tech-icons">
+                      {section.technologies.map((tech, index) => (
+                        <div key={index} className="tech-item">
+                          <span className="tech-icon">{tech.icon}</span>
+                          <span className="tech-name">{tech.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {(section.features || section.tools) && (
+                  <div className="feature-list">
+                    <h3>Features</h3>
+                    <div className="feature-icons">
+                      {(section.features || section.tools).map((feature, index) => (
+                        <div key={index} className="feature-item">
+                          <span className="feature-icon">{feature.icon}</span>
+                          <span className="feature-name">{feature.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="quick-links">
+                <h3>Quick Links</h3>
+                <div className="links-grid">
+                  {section.quickLinks.map((link, index) => (
+                    <button
+                      key={index}
+                      className="quick-link-button"
+                      onClick={() => handleSectionClick(link.path)}
+                    >
+                      {link.title}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+        ))}
+      </main>
 
       {/* MongoDB Test Section */}
       <section className="mongodb-test">

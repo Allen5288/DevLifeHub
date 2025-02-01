@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const { logger } = require('../middleware/logger');
 const crypto = require('crypto');
 const { sendPasswordResetEmail } = require('../utils/emailService');
+const bcrypt = require('bcryptjs');
 
 const authController = {
   // Register new user
@@ -12,8 +13,8 @@ const authController = {
       const { name, email, password } = req.body;
 
       // Check if user already exists
-      const existingUser = await User.findOne({ email });
-      if (existingUser) {
+      let user = await User.findOne({ email });
+      if (user) {
         return res.status(400).json({
           success: false,
           message: 'User already exists'
@@ -21,35 +22,53 @@ const authController = {
       }
 
       // Create new user
-      const user = new User({
+      user = new User({
         name,
         email,
-        password
+        password,
+        role: 'user'
       });
 
+      // Save user to database
       await user.save();
 
-      // Create token
+      // Generate JWT token
       const token = jwt.sign(
-        { id: user._id },
+        { userId: user._id },
         process.env.JWT_SECRET,
         { expiresIn: process.env.JWT_EXPIRES_IN }
       );
 
+      // Set cookies
+      res.cookie('jwt', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 24 * 60 * 60 * 1000 // 24 hours
+      });
+
+      res.cookie('isAuthenticated', 'true', {
+        httpOnly: false,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 24 * 60 * 60 * 1000
+      });
+
+      // Send response
       res.status(201).json({
         success: true,
-        token,
         user: {
           id: user._id,
           name: user.name,
-          email: user.email
+          email: user.email,
+          role: user.role
         }
       });
     } catch (error) {
+      logger.error('Registration error:', error);
       res.status(500).json({
         success: false,
-        message: 'Error in registration',
-        error: error.message
+        message: 'Error registering user'
       });
     }
   },
@@ -58,56 +77,95 @@ const authController = {
   login: async (req, res) => {
     try {
       const { email, password } = req.body;
+      logger.info(`Login attempt for email: ${email}`);
 
-      // Check if user exists
+      // Validate input
+      if (!email || !password) {
+        logger.warn('Login attempt without email or password');
+        return res.status(400).json({
+          success: false,
+          message: 'Please provide email and password'
+        });
+      }
+
+      // Find user and explicitly select password field
       const user = await User.findOne({ email }).select('+password');
+      logger.info(`User found: ${user ? 'yes' : 'no'}`);
+
       if (!user) {
         return res.status(401).json({
           success: false,
-          message: 'Invalid credentials'
+          message: 'Invalid email or password'
         });
       }
 
-      // Check password
+      // Check password match
       const isMatch = await user.matchPassword(password);
+      logger.info(`Password match: ${isMatch ? 'yes' : 'no'}`);
+
       if (!isMatch) {
         return res.status(401).json({
           success: false,
-          message: 'Invalid credentials'
+          message: 'Invalid email or password'
         });
       }
 
-      // Create token
+      // Generate JWT token
       const token = jwt.sign(
-        { id: user._id },
+        { userId: user._id },
         process.env.JWT_SECRET,
         { expiresIn: process.env.JWT_EXPIRES_IN }
       );
 
-      res.status(200).json({
+      // Clear any existing cookies
+      res.clearCookie('jwt');
+      res.clearCookie('isAuthenticated');
+
+      // Set new cookies
+      res.cookie('jwt', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 24 * 60 * 60 * 1000 // 24 hours
+      });
+
+      res.cookie('isAuthenticated', 'true', {
+        httpOnly: false,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 24 * 60 * 60 * 1000
+      });
+
+      // Remove sensitive data before sending response
+      const userResponse = {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        avatar: user.avatar
+      };
+
+      logger.info(`Login successful for user: ${user._id}`);
+      res.json({
         success: true,
-        token,
-        user: {
-          id: user._id,
-          name: user.name,
-          email: user.email
-        }
+        user: userResponse
       });
     } catch (error) {
+      logger.error('Login error:', error);
       res.status(500).json({
         success: false,
-        message: 'Error in login',
-        error: error.message
+        message: 'An error occurred during login'
       });
     }
   },
 
   // Logout user
   logout: (req, res) => {
-    req.logout();
-    res.status(200).json({
+    res.clearCookie('jwt');
+    res.clearCookie('isAuthenticated');
+    res.json({
       success: true,
-      message: 'Successfully logged out'
+      message: 'Logged out successfully'
     });
   },
 

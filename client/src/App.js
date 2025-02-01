@@ -18,6 +18,7 @@ import {
   ForgotPassword,
   ResetPassword
 } from './components/auth';
+import Profile from './components/profile/Profile';
 import './styles/App.css';
 import './styles/global.css';
 
@@ -41,6 +42,7 @@ function App() {
             <Route path="/travel/*" element={<Travel />} />
             <Route path="/food/*" element={<Food />} />
             <Route path="/tools/*" element={<Tools />} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
         </div>
       </AuthProvider>

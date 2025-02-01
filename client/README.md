@@ -21,7 +21,6 @@ This is the client-side application for my personal website, built with React.
 - **Form Handling**: Formik
 - **HTTP Client**: Axios
 - **Notifications**: React Toastify
-- **Testing**: Cypress
 
 ## Getting Started
 
@@ -67,7 +66,6 @@ REACT_APP_API_URL=https://api.example.com
 
 ### Running Tests
 
-To run tests using Cypress:
 
 ```bash
 npm test

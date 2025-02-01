@@ -12,7 +12,6 @@
         "test": "concurrently \"cd server && npm test\" \"cd client && npm test\"",
         "lint": "concurrently \"cd server && npm run lint\" \"cd client && npm run lint\"",
         "format": "concurrently \"cd server && npm run format\" \"cd client && npm run format\"",
-        "cypress": "cd client && npm run cypress:open",
         "clean": "rm -rf node_modules && cd server && rm -rf node_modules && cd ../client && rm -rf node_modules"
     },
     "keywords": [

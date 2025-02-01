@@ -1,61 +1,72 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
+const { logger } = require('../middleware/logger');
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'Please add a name'],
-    trim: true,
-    maxlength: [50, 'Name cannot be more than 50 characters']
+    required: [true, 'Please provide a name'],
+    trim: true
   },
   email: {
     type: String,
-    required: [true, 'Please add an email'],
+    required: [true, 'Please provide an email'],
     unique: true,
-    match: [
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      'Please add a valid email'
-    ]
+    trim: true,
+    lowercase: true
   },
   password: {
     type: String,
-    required: [true, 'Please add a password'],
+    required: [true, 'Please provide a password'],
     minlength: 6,
     select: false
+  },
+  googleId: String,
+  avatar: {
+    type: String,
+    default: ''
   },
   role: {
     type: String,
     enum: ['user', 'admin'],
     default: 'user'
   },
-  googleId: {
-    type: String
+  isVerified: {
+    type: Boolean,
+    default: false
   },
-  avatar: String,
   resetPasswordToken: String,
-  resetPasswordExpire: Date,
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
+  resetPasswordExpires: Date
 }, {
   timestamps: true
 });
 
-// Encrypt password using bcrypt
+// Hash password before saving
 userSchema.pre('save', async function(next) {
   if (!this.isModified('password')) {
-    next();
+    return next();
   }
-
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
+  try {
+    this.password = await bcrypt.hash(this.password, 12);
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
-// Match user entered password to hashed password in database
+// Method to compare passwords
 userSchema.methods.matchPassword = async function(enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
+  try {
+    if (!this.password) {
+      throw new Error('Password not found for user');
+    }
+    const isMatch = await bcrypt.compare(enteredPassword, this.password);
+    return isMatch;
+  } catch (error) {
+    logger.error('Password comparison error:', error);
+    throw new Error('Error comparing passwords');
+  }
 };
 
 // Generate password reset token
@@ -65,7 +76,7 @@ userSchema.methods.createPasswordResetToken = function() {
     .createHash('sha256')
     .update(resetToken)
     .digest('hex');
-  this.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10 minutes
+  this.resetPasswordExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
   return resetToken;
 };
 

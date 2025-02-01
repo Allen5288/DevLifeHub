@@ -1,37 +1,48 @@
 const jwt = require('jsonwebtoken');
-const { logger } = require('./logger');
 const User = require('../models/User');
+const { logger } = require('./logger');
 
 const auth = async (req, res, next) => {
   try {
-    // Get token from header
-    const token = req.header('Authorization')?.replace('Bearer ', '');
+    // Get token from cookies
+    const token = req.cookies.jwt;
 
     if (!token) {
+      logger.warn('No token found in cookies');
       return res.status(401).json({
         success: false,
-        message: 'No token, authorization denied'
+        message: 'Authentication required'
       });
     }
 
-    // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    try {
+      // Verify token
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      
+      // Find user
+      const user = await User.findById(decoded.userId);
+      if (!user) {
+        logger.warn(`User not found for token userId: ${decoded.userId}`);
+        throw new Error('User not found');
+      }
 
-    // Find user
-    const user = await User.findById(decoded.id).select('-password');
-    if (!user) {
+      // Add user to request
+      req.user = user;
+      next();
+    } catch (error) {
+      logger.error('Token verification failed:', error);
+      res.clearCookie('jwt');
+      res.clearCookie('isAuthenticated');
       return res.status(401).json({
         success: false,
-        message: 'Token is not valid'
+        message: 'Invalid or expired token'
       });
     }
-
-    req.user = user;
-    next();
   } catch (error) {
-    res.status(401).json({
+    logger.error('Auth middleware error:', error);
+    return res.status(500).json({
       success: false,
-      message: 'Token is not valid'
+      message: 'Server error'
     });
   }
 };

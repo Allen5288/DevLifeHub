@@ -4,6 +4,7 @@ import Base64Converter from './components/Base64Converter';
 import SessionKeyGenerator from './components/SessionKeyGenerator';
 import JwtConfigGenerator from './components/JwtConfigGenerator';
 import GoogleOAuthGenerator from './components/GoogleOAuthGenerator';
+import ClassCalendar from './components/ClassCalendar';
 import './Tools.css';
 
 function Tools() {
@@ -14,7 +15,8 @@ function Tools() {
     { id: 'base64', name: 'Base64 Converter' },
     { id: 'session-key', name: 'Session Key Generator' },
     { id: 'jwt-config', name: 'JWT Config Generator' },
-    { id: 'google-oauth', name: 'Google OAuth Config' }
+    { id: 'google-oauth', name: 'Google OAuth Config' },
+    { id: 'class-calendar', name: 'Class Calendar' }
   ];
 
   return (
@@ -40,6 +42,7 @@ function Tools() {
         {activeTool === 'session-key' && <SessionKeyGenerator />}
         {activeTool === 'jwt-config' && <JwtConfigGenerator />}
         {activeTool === 'google-oauth' && <GoogleOAuthGenerator />}
+        {activeTool === 'class-calendar' && <ClassCalendar />}
       </div>
     </div>
   );

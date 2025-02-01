@@ -1,134 +1,182 @@
 .navbar {
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 1rem 2rem;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  backdrop-filter: blur(10px);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 2rem;
+    background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.nav-brand {
-  font-size: 1.5rem;
-  font-weight: bold;
+.navbar-brand {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    font-size: 1.5rem;
+    padding: 0.5rem 0;
+    position: relative;
+    overflow: hidden;
 }
 
-.nav-brand a {
-  color: #2c3e50;
-  text-decoration: none;
-  background: linear-gradient(120deg, #3498db, #2ecc71);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  transition: transform 0.3s ease;
+.navbar-brand::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #64b5f6;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
 }
 
-.nav-brand a:hover {
-  transform: scale(1.05);
+.navbar-brand:hover::after {
+    transform: scaleX(1);
 }
 
-.nav-links {
-  display: flex;
-  gap: 1.5rem;
-  align-items: center;
+.navbar-links {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
 }
 
-.nav-links a {
-  color: #2c3e50;
-  text-decoration: none;
-  font-weight: 500;
-  padding: 0.5rem 0.8rem;
-  border-radius: 4px;
-  transition: all 0.3s ease;
-  position: relative;
+.navbar-links .MuiButton-root {
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
 }
 
-.nav-links a::after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 2px;
-  bottom: 0;
-  left: 50%;
-  background: linear-gradient(120deg, #3498db, #2ecc71);
-  transition: all 0.3s ease;
-  transform: translateX(-50%);
+.navbar-links .MuiButton-root:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
 }
 
-.nav-links a:hover::after {
-  width: 100%;
+.navbar-auth {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
-.auth-button {
-  background: linear-gradient(120deg, #3498db, #2ecc71);
-  color: white;
-  border: none;
-  padding: 0.8rem 1.5rem;
-  border-radius: 25px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  text-decoration: none;
+.navbar-auth .MuiButton-root {
+    color: white;
+    border-radius: 20px;
+    padding: 6px 16px;
+    transition: all 0.3s ease;
 }
 
-.auth-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(46, 204, 113, 0.2);
+.navbar-auth .MuiButton-root:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
 }
 
-.hamburger {
-  display: none;
-  flex-direction: column;
-  gap: 6px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  z-index: 1001;
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transition: border-color 0.3s ease;
 }
 
-.hamburger span {
-  display: block;
-  width: 25px;
-  height: 2px;
-  background: #2c3e50;
-  transition: all 0.3s ease;
+.menu-button {
+    display: none !important;
+    margin-right: 1rem !important;
+    color: white !important;
+}
+
+.mobile-drawer {
+    width: 240px;
+}
+
+.mobile-drawer .MuiDrawer-paper {
+    width: 240px;
+    background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+    color: white;
+}
+
+.mobile-drawer .MuiListItem-root {
+    color: white;
+    margin: 4px 8px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.mobile-drawer .MuiListItem-root:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.mobile-drawer .MuiListItemText-primary {
+    font-weight: 500;
+}
+
+@media (max-width: 1024px) {
+    .navbar {
+        padding: 0 1rem;
+    }
+
+    .navbar-links {
+        gap: 0.25rem;
+    }
+
+    .navbar-links .MuiButton-root {
+        padding: 6px 12px;
+        min-width: auto;
+    }
 }
 
 @media (max-width: 768px) {
-  .hamburger {
-    display: flex;
-  }
+    .menu-button {
+        display: inline-flex !important;
+    }
 
-  .nav-links {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    height: 100vh;
-    width: 80%;
-    max-width: 300px;
-    background: white;
-    flex-direction: column;
-    padding: 5rem 2rem;
+    .navbar-links {
+        display: none;
+    }
+
+    .navbar-brand {
+        flex-grow: 1;
+        text-align: center;
+    }
+
+    .navbar-auth .MuiButton-root {
+        padding: 6px 12px;
+    }
+}
+
+/* Animation for active link */
+.navbar-links .MuiButton-root.active {
+    background-color: rgba(255, 255, 255, 0.15);
+    position: relative;
+}
+
+.navbar-links .MuiButton-root.active::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 2px;
+    background-color: #64b5f6;
+}
+
+/* Hover effect for auth button */
+.navbar-auth .MuiButton-root:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Style for user menu */
+.MuiMenu-paper {
+    background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%) !important;
+    color: white !important;
+    margin-top: 8px !important;
+    border-radius: 8px !important;
+}
+
+.MuiMenu-paper .MuiMenuItem-root {
+    color: white;
     transition: all 0.3s ease;
-    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
-  }
+}
 
-  .nav-links.active {
-    right: 0;
-  }
-
-  .hamburger.active span:nth-child(1) {
-    transform: rotate(45deg) translate(8px, 8px);
-  }
-
-  .hamburger.active span:nth-child(2) {
-    opacity: 0;
-  }
-
-  .hamburger.active span:nth-child(3) {
-    transform: rotate(-45deg) translate(7px, -7px);
-  }
-} 
+.MuiMenu-paper .MuiMenuItem-root:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
