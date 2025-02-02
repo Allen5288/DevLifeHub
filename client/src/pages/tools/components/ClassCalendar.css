@@ -1,18 +1,116 @@
 .class-calendar {
-  padding: 2rem;
+  padding: 24px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
 }
 
 .calendar-container {
-  margin-bottom: 2rem;
   background: white;
-  padding: 1rem;
+  padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 24px;
+}
+
+.rbc-calendar {
+  min-height: 600px !important;
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.rbc-month-view {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.rbc-date-cell {
+  padding: 4px;
+  text-align: center;
+}
+
+.rbc-today {
+  background-color: #e3f2fd !important;
+}
+
+.rbc-off-range-bg {
+  background-color: #f8f9fa;
+}
+
+.rbc-header {
+  padding: 8px;
+  font-weight: 500;
+  border-bottom: 1px solid #ddd;
+}
+
+.rbc-month-row {
+  min-height: 100px;
+}
+
+.rbc-event {
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 2px 5px;
+}
+
+.rbc-show-more {
+  color: #1976d2;
+  font-weight: 500;
+  background-color: transparent;
+}
+
+/* Week/Day View Styles */
+.rbc-time-view {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.rbc-timeslot-group {
+  min-height: 40px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.rbc-time-header {
+  background-color: #f8f9fa;
+}
+
+.rbc-time-content {
+  border-top: 2px solid #ddd;
+}
+
+/* Agenda View Styles */
+.rbc-agenda-view {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.rbc-agenda-empty {
+  padding: 20px;
+  text-align: center;
+  color: #666;
+  font-style: italic;
+}
+
+.rbc-agenda-date-cell,
+.rbc-agenda-time-cell {
+  padding: 8px;
+  font-weight: 500;
+}
+
+/* Selection Styles */
+.rbc-selected {
+  background-color: #1976d2 !important;
+}
+
+.rbc-day-slot .rbc-event {
+  border: none !important;
 }
 
 .analytics-dashboard {
   background: white;
-  padding: 2rem;
+  padding: 24px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
@@ -20,26 +118,117 @@
 .analytics-summary {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin: 1rem 0 2rem;
+  gap: 16px;
+  margin: 24px 0;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+}
+
+.analytics-summary .MuiTypography-root {
+  font-size: 1.1rem;
+  color: #1976d2;
+  font-weight: 500;
 }
 
 .charts-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-bottom: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
+  margin: 24px 0;
 }
 
 .chart {
-  background: #f8f9fa;
-  padding: 1rem;
+  background: white;
+  padding: 16px;
   border-radius: 8px;
-  min-height: 300px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  height: 300px;
 }
 
-.export-buttons {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
+.export-button {
+  margin-top: 16px;
+}
+
+/* Custom Toolbar Styles */
+.toolbar-wrapper {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.toolbar-wrapper .MuiButtonGroup-root {
+  box-shadow: none;
+}
+
+.toolbar-wrapper .MuiSelect-root {
+  min-width: 120px;
+  margin: 0 4px;
+  background-color: white;
+}
+
+.toolbar-wrapper .MuiButton-root {
+  text-transform: none;
+  padding: 4px 12px;
+}
+
+.toolbar-wrapper .MuiButton-root.Mui-selected {
+  background-color: #1976d2;
+  color: white;
+}
+
+.toolbar-wrapper .MuiIconButton-root {
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  margin: 0 4px;
+  padding: 4px;
+}
+
+.toolbar-wrapper .MuiIconButton-root:hover {
+  background-color: rgba(25, 118, 210, 0.04);
+}
+
+/* Event Styles */
+.event-wrapper {
+  transition: transform 0.2s ease;
+}
+
+.event-wrapper:hover {
+  transform: translateY(-2px);
+}
+
+.event-time {
+  color: #1976d2;
+  font-weight: 600;
+}
+
+.event-title {
+  color: #2c3e50;
+  margin: 8px 0;
+}
+
+.event-details {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 4px 0;
+}
+
+/* Dialog Styles */
+.MuiDialog-paper {
+  min-width: 400px;
+}
+
+.dialog-content {
+  padding: 24px;
+}
+
+.dialog-actions {
+  padding: 16px 24px;
+  background-color: #f8f9fa;
+}
+
+/* Alert Styles */
+.MuiAlert-root {
+  margin-bottom: 16px;
 } 
