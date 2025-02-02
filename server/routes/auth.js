@@ -23,60 +23,80 @@ const validateLogin = [
 // @route   POST /api/auth/login
 // @desc    Login user & get token
 // @access  Public
-router.post('/login', validateLogin, async (req, res) => {
+router.post('/login', async (req, res) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ success: false, errors: errors.array() });
+    const { email, password } = req.body;
+
+    // Validate input
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide email and password'
+      });
     }
 
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
-
+    // Find user and explicitly select password field
+    const user = await User.findOne({ email }).select('+password');
+    
+    // Check if user exists
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid email or password'
+        message: 'Invalid credentials'
       });
     }
 
-    const isMatch = await user.matchPassword(password);
+    // Check if password exists
+    if (!user.password) {
+      return res.status(401).json({
+        success: false,
+        message: 'Account exists but no password set (Google login user)'
+      });
+    }
+
+    // Compare passwords
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid email or password'
+        message: 'Invalid credentials'
       });
     }
 
-    // Create JWT token
+    // Create token
     const token = jwt.sign(
-      { userId: user._id },
+      { id: user._id },
       process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN }
+      { 
+        expiresIn: process.env.JWT_EXPIRE || '30d' // Provide a default if not set
+      }
     );
 
-    // Set JWT as HTTP-only cookie
+    // Remove password from response
+    user.password = undefined;
+
+    // Set cookie with proper expiration calculation
+    const cookieExpire = process.env.JWT_COOKIE_EXPIRE || 30; // days
     res.cookie('jwt', token, {
+      expires: new Date(
+        Date.now() + cookieExpire * 24 * 60 * 60 * 1000
+      ),
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 24 * 60 * 60 * 1000 // 1 day
+      sameSite: 'strict'
     });
 
-    res.json({
+    // Send response
+    res.status(200).json({
       success: true,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        avatar: user.avatar
-      }
+      token,
+      user
     });
   } catch (error) {
-    console.error('Login error:', error);
+    logger.error('Login error:', error);
     res.status(500).json({
       success: false,
-      message: 'An error occurred during login'
+      message: error.message || 'Internal server error'
     });
   }
 });
@@ -119,7 +139,9 @@ router.get('/google/callback',
         const token = jwt.sign(
           { userId: user._id },
           process.env.JWT_SECRET,
-          { expiresIn: process.env.JWT_EXPIRES_IN }
+          { 
+            expiresIn: process.env.JWT_EXPIRE || '30d'
+          }
         );
 
         // Set JWT cookie
@@ -127,7 +149,7 @@ router.get('/google/callback',
           httpOnly: true,
           secure: process.env.NODE_ENV === 'production',
           sameSite: 'lax',
-          maxAge: 24 * 60 * 60 * 1000 // 24 hours
+          maxAge: (process.env.JWT_COOKIE_EXPIRE || 30) * 24 * 60 * 60 * 1000 // Convert days to milliseconds
         });
 
         // Also set a non-httpOnly cookie for client-side auth state

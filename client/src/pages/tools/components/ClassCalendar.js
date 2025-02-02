@@ -42,6 +42,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import DownloadIcon from '@mui/icons-material/Download';
+import { useNavigate } from 'react-router-dom';
 
 ChartJS.register(
   CategoryScale,
@@ -159,6 +160,7 @@ function ClassCalendar() {
   const [saveError, setSaveError] = useState('');
   const [validationError, setValidationError] = useState('');
   const [editingEvent, setEditingEvent] = useState(null);
+  const navigate = useNavigate();
 
   const clearErrors = useCallback(() => {
     setFetchError('');
@@ -174,6 +176,13 @@ function ClassCalendar() {
       });
       
       if (!response.ok) {
+        if (response.status === 401) {
+          const data = await response.json();
+          if (data.message === 'No token provided' || data.message === 'Token expired') {
+            navigate('/login');
+            return;
+          }
+        }
         throw new Error('Failed to fetch classes');
       }
       
@@ -189,7 +198,7 @@ function ClassCalendar() {
       console.error('Error fetching classes:', error);
       setFetchError(error.message || 'Error fetching classes');
     }
-  }, [clearErrors]);
+  }, [clearErrors, navigate]);
 
   useEffect(() => {
     if (user) {
@@ -705,6 +714,8 @@ function ClassCalendar() {
                 case 'agenda':
                   date.setMonth(date.getMonth() - 1);
                   break;
+                default:
+                  break;
               }
             } else if (action === 'NEXT') {
               switch (view) {
@@ -719,6 +730,8 @@ function ClassCalendar() {
                   break;
                 case 'agenda':
                   date.setMonth(date.getMonth() + 1);
+                  break;
+                default:
                   break;
               }
             }

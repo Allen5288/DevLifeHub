@@ -14,15 +14,20 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Please provide an email'],
     unique: true,
     trim: true,
-    lowercase: true
+    lowercase: true,
+    match: [/^\S+@\S+\.\S+$/, 'Please provide a valid email']
   },
   password: {
     type: String,
     required: [true, 'Please provide a password'],
-    minlength: 6,
+    minlength: [6, 'Password must be at least 6 characters'],
     select: false
   },
-  googleId: String,
+  googleId: {
+    type: String,
+    unique: true,
+    sparse: true
+  },
   avatar: {
     type: String,
     default: ''
@@ -48,7 +53,8 @@ userSchema.pre('save', async function(next) {
     return next();
   }
   try {
-    this.password = await bcrypt.hash(this.password, 12);
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
     next();
   } catch (error) {
     next(error);
@@ -61,10 +67,8 @@ userSchema.methods.matchPassword = async function(enteredPassword) {
     if (!this.password) {
       throw new Error('Password not found for user');
     }
-    const isMatch = await bcrypt.compare(enteredPassword, this.password);
-    return isMatch;
+    return await bcrypt.compare(enteredPassword, this.password);
   } catch (error) {
-    logger.error('Password comparison error:', error);
     throw new Error('Error comparing passwords');
   }
 };

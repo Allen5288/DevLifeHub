@@ -33,13 +33,13 @@ const validationSchema = Yup.object({
 
 function Login() {
   const navigate = useNavigate();
-  const { setUser } = useAuth();
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      setError(''); // Clear any existing errors
+      setError('');
 
       const response = await fetch('/api/auth/login', {
         method: 'POST',
@@ -56,23 +56,14 @@ function Login() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
+        throw new Error(data.message || 'Failed to login');
       }
 
-      if (!data.success || !data.user) {
-        throw new Error('Invalid response from server');
-      }
-
-      // Update auth context
-      setUser(data.user);
-
-      // Clear form and navigate
-      values.email = '';
-      values.password = '';
-      navigate('/tools');
+      login(data.user);
+      navigate('/');
     } catch (error) {
       console.error('Login error:', error);
-      setError(error.message || 'An error occurred during login');
+      setError(error.message || 'Failed to login');
     } finally {
       setSubmitting(false);
     }
