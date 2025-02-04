@@ -42,7 +42,30 @@ const userSchema = new mongoose.Schema({
     default: false
   },
   resetPasswordToken: String,
-  resetPasswordExpires: Date
+  resetPasswordExpires: Date,
+  securityQuestion: {
+    question: {
+      type: String,
+      required: [true, 'Please select a security question'],
+      enum: [
+        'What was the name of your first pet?',
+        'In which city were you born?',
+        'What was your mother\'s maiden name?',
+        'What was the name of your primary school?',
+        'What was the make of your first car?',
+        'What is your favorite book?',
+        'What is the name of the street you grew up on?',
+        'What was your childhood nickname?',
+        'What is your favorite movie?',
+        'Who was your childhood best friend?'
+      ]
+    },
+    answer: {
+      type: String,
+      required: [true, 'Please provide an answer to the security question'],
+      select: false // Hide answer by default
+    }
+  }
 }, {
   timestamps: true
 });
@@ -55,6 +78,22 @@ userSchema.pre('save', async function(next) {
   try {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Add this pre-save middleware after the existing password hashing middleware
+userSchema.pre('save', async function(next) {
+  // Only hash the security answer if it's been modified (or is new)
+  if (!this.isModified('securityQuestion.answer')) {
+    return next();
+  }
+
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.securityQuestion.answer = await bcrypt.hash(this.securityQuestion.answer, salt);
     next();
   } catch (error) {
     next(error);

@@ -209,4 +209,9 @@ router.get('/check', auth, async (req, res) => {
   }
 });
 
+// Forgot password routes
+router.post('/forgot-password', authController.forgotPassword);
+router.post('/verify-security-answer', authController.verifySecurityAnswer);
+router.post('/reset-password', authController.resetPassword);
+
 module.exports = router; 

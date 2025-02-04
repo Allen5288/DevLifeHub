@@ -10,7 +10,8 @@ import {
   Divider,
   IconButton,
   InputAdornment,
-  Alert
+  Alert,
+  Box
 } from '@mui/material';
 import { 
   Google as GoogleIcon,
@@ -101,7 +102,7 @@ function Login() {
         </Typography>
 
         {error && (
-          <Alert severity="error" sx={{ mb: 2 }}>
+          <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError('')}>
             {error}
           </Alert>
         )}
@@ -189,14 +190,17 @@ function Login() {
           )}
         </Formik>
 
-        <div className="register-prompt">
+        <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
+          <Link to="/forgot-password" className="forgot-password-link">
+            Forgot Password?
+          </Link>
           <Typography variant="body2">
             Don't have an account?{' '}
             <Link to="/register" className="register-link">
               Sign Up
             </Link>
           </Typography>
-        </div>
+        </Box>
       </Paper>
     </div>
   );

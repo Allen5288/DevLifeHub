@@ -9,7 +9,8 @@ import {
   Paper,
   IconButton,
   InputAdornment,
-  Alert
+  Alert,
+  MenuItem
 } from '@mui/material';
 import {
   Visibility,
@@ -33,31 +34,51 @@ const validationSchema = Yup.object({
     .min(6, 'Password must be at least 6 characters'),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref('password'), null], 'Passwords must match')
-    .required('Confirm Password is required')
+    .required('Confirm Password is required'),
+  securityQuestion: Yup.string()
+    .required('Please select a security question'),
+  securityAnswer: Yup.string()
+    .required('Please provide an answer')
+    .min(2, 'Answer must be at least 2 characters')
 });
 
 function Register() {
   const navigate = useNavigate();
-  const { setUser } = useAuth();
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
 
+  const securityQuestions = [
+    'What was the name of your first pet?',
+    'In which city were you born?',
+    'What was your mother\'s maiden name?',
+    'What was the name of your primary school?',
+    'What was the make of your first car?',
+    'What is your favorite book?',
+    'What is the name of the street you grew up on?',
+    'What was your childhood nickname?',
+    'What is your favorite movie?',
+    'Who was your childhood best friend?'
+  ];
+
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
+      const { confirmPassword, ...registrationData } = values;
+      
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         credentials: 'include',
-        body: JSON.stringify(values)
+        body: JSON.stringify(registrationData)
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        setUser(data.user);
+        await login(data.user);
         navigate('/tools');
       } else {
         setError(data.message || 'Registration failed');
@@ -88,7 +109,9 @@ function Register() {
             name: '',
             email: '',
             password: '',
-            confirmPassword: ''
+            confirmPassword: '',
+            securityQuestion: '',
+            securityAnswer: ''
           }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
@@ -195,6 +218,39 @@ function Register() {
                     </InputAdornment>
                   ),
                 }}
+              />
+
+              <TextField
+                select
+                fullWidth
+                id="securityQuestion"
+                name="securityQuestion"
+                label="Security Question"
+                value={values.securityQuestion}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.securityQuestion && Boolean(errors.securityQuestion)}
+                helperText={touched.securityQuestion && errors.securityQuestion}
+                margin="normal"
+              >
+                {securityQuestions.map((question, index) => (
+                  <MenuItem key={index} value={question}>
+                    {question}
+                  </MenuItem>
+                ))}
+              </TextField>
+
+              <TextField
+                fullWidth
+                id="securityAnswer"
+                name="securityAnswer"
+                label="Security Answer"
+                value={values.securityAnswer}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.securityAnswer && Boolean(errors.securityAnswer)}
+                helperText={touched.securityAnswer && errors.securityAnswer}
+                margin="normal"
               />
 
               <Button

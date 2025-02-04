@@ -20,13 +20,15 @@ const registerRules = [
   body('password')
     .isLength({ min: 6 })
     .withMessage('Password must be at least 6 characters long'),
-  body('confirmPassword')
-    .custom((value, { req }) => {
-      if (value !== req.body.password) {
-        throw new Error('Passwords do not match');
-      }
-      return true;
-    })
+  body('securityQuestion')
+    .notEmpty()
+    .withMessage('Please select a security question'),
+  body('securityAnswer')
+    .trim()
+    .notEmpty()
+    .withMessage('Please provide an answer to the security question')
+    .isLength({ min: 2 })
+    .withMessage('Security answer must be at least 2 characters long')
 ];
 
 module.exports = {

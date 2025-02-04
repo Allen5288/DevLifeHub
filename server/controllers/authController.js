@@ -10,7 +10,7 @@ const authController = {
   // Register new user
   register: async (req, res) => {
     try {
-      const { name, email, password } = req.body;
+      const { name, email, password, securityQuestion, securityAnswer } = req.body;
 
       // Check if user already exists
       let user = await User.findOne({ email });
@@ -26,7 +26,11 @@ const authController = {
         name,
         email,
         password,
-        role: 'user'
+        role: 'user',
+        securityQuestion: {
+          question: securityQuestion,
+          answer: securityAnswer
+        }
       });
 
       // Save user to database
@@ -68,7 +72,7 @@ const authController = {
       logger.error('Registration error:', error);
       res.status(500).json({
         success: false,
-        message: 'Error registering user'
+        message: error.message || 'Error registering user'
       });
     }
   },
@@ -197,51 +201,84 @@ const authController = {
 
   forgotPassword: async (req, res) => {
     try {
-      const user = await User.findOne({ email: req.body.email });
+      const { email } = req.body;
+      const user = await User.findOne({ email }).select('+securityQuestion.question');
+
       if (!user) {
-        return res.status(404).json({ message: 'No user with that email' });
+        return res.status(404).json({
+          success: false,
+          message: 'No user found with that email'
+        });
       }
 
-      const resetToken = user.createPasswordResetToken();
-      await user.save({ validateBeforeSave: false });
-
-      await sendPasswordResetEmail(user.email, resetToken);
-
-      res.json({ message: 'Password reset email sent' });
+      res.json({
+        success: true,
+        securityQuestion: user.securityQuestion.question
+      });
     } catch (error) {
-      logger.error('Forgot Password Error:', error);
-      res.status(500).json({ message: 'Error sending reset email' });
+      logger.error('Forgot password error:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Error processing request'
+      });
+    }
+  },
+
+  verifySecurityAnswer: async (req, res) => {
+    try {
+      const { email, answer } = req.body;
+      const user = await User.findOne({ email }).select('+securityQuestion.answer');
+
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: 'User not found'
+        });
+      }
+
+      const isMatch = await bcrypt.compare(answer, user.securityQuestion.answer);
+      if (!isMatch) {
+        return res.status(400).json({
+          success: false,
+          message: 'Incorrect security answer'
+        });
+      }
+
+      res.json({ success: true });
+    } catch (error) {
+      logger.error('Security answer verification error:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Error verifying security answer'
+      });
     }
   },
 
   resetPassword: async (req, res) => {
     try {
-      const hashedToken = crypto
-        .createHash('sha256')
-        .update(req.params.token)
-        .digest('hex');
-
-      const user = await User.findOne({
-        resetPasswordToken: hashedToken,
-        resetPasswordExpire: { $gt: Date.now() }
-      });
+      const { email, password } = req.body;
+      const user = await User.findOne({ email });
 
       if (!user) {
-        return res.status(400).json({ message: 'Invalid or expired reset token' });
+        return res.status(404).json({
+          success: false,
+          message: 'User not found'
+        });
       }
 
-      user.password = req.body.password;
-      user.resetPasswordToken = undefined;
-      user.resetPasswordExpire = undefined;
+      user.password = password;
       await user.save();
 
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRES_IN
+      res.json({
+        success: true,
+        message: 'Password reset successful'
       });
-      res.json({ token });
     } catch (error) {
-      logger.error('Reset Password Error:', error);
-      res.status(400).json({ message: error.message });
+      logger.error('Password reset error:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Error resetting password'
+      });
     }
   }
 };

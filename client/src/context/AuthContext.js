@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext(null);
@@ -7,34 +7,31 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  // Check auth status on mount and after login/logout
+  // Check auth status on mount
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const response = await fetch('/api/auth/check', {
-          credentials: 'include'
-        });
-        
-        if (response.ok) {
-          const data = await response.json();
-          setUser(data.user);
-        } else {
-          setUser(null);
-        }
-      } catch (error) {
-        console.error('Auth check error:', error);
-        setUser(null);
+    checkAuthStatus();
+  }, []);
+
+  const checkAuthStatus = async () => {
+    try {
+      const response = await fetch('/api/auth/check', {
+        credentials: 'include'
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        setUser(data.user);
       }
-    };
+    } catch (error) {
+      console.error('Auth check error:', error);
+    }
+  };
 
-    checkAuth();
-  }, []);
-
-  const login = useCallback((userData) => {
+  const login = async (userData) => {
     setUser(userData);
-  }, []);
+  };
 
-  const logout = useCallback(async () => {
+  const logout = async () => {
     try {
       await fetch('/api/auth/logout', {
         method: 'POST',
@@ -45,7 +42,7 @@ export function AuthProvider({ children }) {
     } catch (error) {
       console.error('Logout error:', error);
     }
-  }, [navigate]);
+  };
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>
