@@ -1,51 +1,25 @@
-import React, { useState } from 'react';
-import JsonFormatter from './components/JsonFormatter';
-import Base64Converter from './components/Base64Converter';
-import SessionKeyGenerator from './components/SessionKeyGenerator';
-import JwtConfigGenerator from './components/JwtConfigGenerator';
-import GoogleOAuthGenerator from './components/GoogleOAuthGenerator';
-import ClassCalendar from './components/ClassCalendar';
-import './Tools.css';
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import ToolsPage from './ToolsPage';
+import JsonFormatterPage from './features/jsonFormatter/JsonFormatterPage';
+import Base64ConverterPage from './features/base64/Base64ConverterPage';
+import SessionKeyGeneratorPage from './features/sessionKey/SessionKeyGeneratorPage';
+import JwtConfigGeneratorPage from './features/jwtConfig/JwtConfigGeneratorPage';
+import GoogleOAuthGeneratorPage from './features/googleOAuth/GoogleOAuthGeneratorPage';
+import ClassCalendarPage from './features/calendar/ClassCalendarPage';
 
 function Tools() {
-  const [activeTool, setActiveTool] = useState('json');
-
-  const tools = [
-    { id: 'json', name: 'JSON Formatter' },
-    { id: 'base64', name: 'Base64 Converter' },
-    { id: 'session-key', name: 'Session Key Generator' },
-    { id: 'jwt-config', name: 'JWT Config Generator' },
-    { id: 'google-oauth', name: 'Google OAuth Config' },
-    { id: 'class-calendar', name: 'Class Calendar' }
-  ];
-
   return (
-    <div className="tools-page">
-      <h1>Developer Tools</h1>
-      <p className="tools-description">A collection of useful tools for developers</p>
-
-      <div className="tools-navigation">
-        {tools.map(tool => (
-          <button
-            key={tool.id}
-            className={`tool-button ${activeTool === tool.id ? 'active' : ''}`}
-            onClick={() => setActiveTool(tool.id)}
-          >
-            {tool.name}
-          </button>
-        ))}
-      </div>
-
-      <div className="tool-container">
-        {activeTool === 'json' && <JsonFormatter />}
-        {activeTool === 'base64' && <Base64Converter />}
-        {activeTool === 'session-key' && <SessionKeyGenerator />}
-        {activeTool === 'jwt-config' && <JwtConfigGenerator />}
-        {activeTool === 'google-oauth' && <GoogleOAuthGenerator />}
-        {activeTool === 'class-calendar' && <ClassCalendar />}
-      </div>
-    </div>
+    <Routes>
+      <Route path="/" element={<ToolsPage />} />
+      <Route path="/json-formatter" element={<JsonFormatterPage />} />
+      <Route path="/base64" element={<Base64ConverterPage />} />
+      <Route path="/session-key" element={<SessionKeyGeneratorPage />} />
+      <Route path="/jwt-config" element={<JwtConfigGeneratorPage />} />
+      <Route path="/google-oauth" element={<GoogleOAuthGeneratorPage />} />
+      <Route path="/calendar" element={<ClassCalendarPage />} />
+    </Routes>
   );
 }
 
-export default Tools; 
+export default Tools;
