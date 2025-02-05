@@ -7,8 +7,9 @@ const { logger } = require('../middleware/logger');
 // Get all classes for the logged-in user
 router.get('/', auth, async (req, res) => {
   try {
+    console.log('User ID:', req.user._id);
     const classes = await Class.find({ userId: req.user._id });
-    
+    console.log('Classes:', classes);
     // Convert dates to ISO strings manually
     const formattedClasses = classes.map(cls => ({
       ...cls.toObject(),

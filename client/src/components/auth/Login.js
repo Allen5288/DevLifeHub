@@ -42,7 +42,7 @@ function Login() {
     try {
       setError('');
 
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -71,7 +71,7 @@ function Login() {
   };
 
   const handleGoogleLogin = () => {
-    const googleAuthUrl = '/api/auth/google';
+    const googleAuthUrl = `${process.env.REACT_APP_API_URL}/auth/google`;
     const width = 500;
     const height = 600;
     const left = (window.innerWidth - width) / 2;

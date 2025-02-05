@@ -23,7 +23,7 @@ function ClassCalendar() {
 
   const fetchClasses = async () => {
     try {
-      const response = await fetch('/api/classes', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/classes`, {
         credentials: 'include'
       });
       if (response.ok) {
@@ -49,7 +49,7 @@ function ClassCalendar() {
         color: eventData.color || '#3788d8'
       };
 
-      const response = await fetch('/api/classes', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/classes`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

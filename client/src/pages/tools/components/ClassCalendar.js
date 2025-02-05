@@ -171,7 +171,7 @@ function ClassCalendar() {
   const fetchEvents = useCallback(async () => {
     try {
       clearErrors();
-      const response = await fetch('/api/classes', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/classes`, {
         credentials: 'include'
       });
       
@@ -266,7 +266,7 @@ function ClassCalendar() {
 
   const handleDeleteClass = async (eventId) => {
     try {
-      const response = await fetch(`/api/classes/${eventId}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/classes/${eventId}`, {
         method: 'DELETE',
         credentials: 'include'
       });
@@ -315,8 +315,8 @@ function ClassCalendar() {
 
       const method = editingEvent ? 'PUT' : 'POST';
       const url = editingEvent ? 
-        `/api/classes/${editingEvent.id}` : 
-        '/api/classes';
+        `${process.env.REACT_APP_API_URL}/classes/${editingEvent.id}` : 
+        `${process.env.REACT_APP_API_URL}/classes`;
 
       const response = await fetch(url, {
         method,

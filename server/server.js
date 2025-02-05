@@ -1,7 +1,12 @@
-require('dotenv').config();
-if (process.env.NODE_ENV === 'development') {
+const dotenv = require('dotenv');
+// 根据环境加载不同的 .env 文件
+if (process.env.NODE_ENV === 'production') {
+  dotenv.config({ path: '.env.production' });
+} else {
+  dotenv.config({ path: '.env.development' });
   require('./config/development');
 }
+
 
 const express = require('express');
 const cors = require('cors');
@@ -134,14 +139,16 @@ app.use('*', (req, res) => {
   });
 });
 
+const PORT = process.env.PORT || 5001;
+
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('MongoDB connection error:', err));
 
-const PORT = process.env.PORT || 5000;
+// Start the server
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
 
 module.exports = app; 

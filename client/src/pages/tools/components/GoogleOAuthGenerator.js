@@ -4,7 +4,7 @@ function GoogleOAuthGenerator() {
   const [oauthConfig, setOauthConfig] = useState({
     clientId: '',
     clientSecret: '',
-    callbackUrl: 'http://localhost:5000/auth/google/callback'
+    callbackUrl: `${process.env.REACT_APP_API_URL}/auth/google/callback`
   });
   const [copied, setCopied] = useState(false);
 
@@ -69,7 +69,7 @@ GOOGLE_CALLBACK_URL='${oauthConfig.callbackUrl}'`;
               name="callbackUrl"
               value={oauthConfig.callbackUrl}
               onChange={handleInputChange}
-              placeholder="http://localhost:5000/auth/google/callback"
+              placeholder={`{process.env.REACT_APP_API_URL}/auth/google/callback`}
               className="config-input"
             />
           </div>
@@ -100,7 +100,7 @@ GOOGLE_CALLBACK_URL='${oauthConfig.callbackUrl}'`}
                 <li>Go to Credentials section</li>
                 <li>Create OAuth client ID for Web application</li>
                 <li>Add authorized origins: <code>http://localhost:3000</code></li>
-                <li>Add redirect URI: <code>http://localhost:5000/auth/google/callback</code></li>
+                <li>Add redirect URI: <code>${process.env.REACT_APP_API_URL}/auth/google/callback</code></li>
                 <li>Copy the generated Client ID and Client Secret</li>
                 <li>Paste them in the fields above</li>
               </ol>

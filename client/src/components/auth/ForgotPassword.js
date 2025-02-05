@@ -25,7 +25,7 @@ function ForgotPassword() {
 
   const handleEmailSubmit = async (values, { setSubmitting }) => {
     try {
-      const response = await fetch('/api/auth/forgot-password', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/forgot-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: values.email })
@@ -49,7 +49,7 @@ function ForgotPassword() {
 
   const handleSecurityAnswerSubmit = async (values, { setSubmitting }) => {
     try {
-      const response = await fetch('/api/auth/verify-security-answer', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/verify-security-answer`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -73,7 +73,7 @@ function ForgotPassword() {
 
   const handlePasswordReset = async (values, { setSubmitting }) => {
     try {
-      const response = await fetch('/api/auth/reset-password', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/reset-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

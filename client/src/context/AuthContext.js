@@ -14,7 +14,7 @@ export function AuthProvider({ children }) {
 
   const checkAuthStatus = async () => {
     try {
-      const response = await fetch('/api/auth/check', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/check`, {
         credentials: 'include'
       });
       const data = await response.json();
@@ -33,7 +33,7 @@ export function AuthProvider({ children }) {
 
   const logout = async () => {
     try {
-      await fetch('/api/auth/logout', {
+      await fetch(`${process.env.REACT_APP_API_URL}/auth/logout`, {
         method: 'POST',
         credentials: 'include'
       });
