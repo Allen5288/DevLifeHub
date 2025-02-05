@@ -1,10 +1,10 @@
-const nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer')
 
 const contactController = {
   // Send contact form message
   sendMessage: async (req, res) => {
     try {
-      const { name, email, subject, message } = req.body;
+      const { name, email, subject, message } = req.body
 
       // Create email transporter
       const transporter = nodemailer.createTransport({
@@ -13,9 +13,9 @@ const contactController = {
         secure: process.env.SMTP_PORT === '465',
         auth: {
           user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASS
-        }
-      });
+          pass: process.env.SMTP_PASS,
+        },
+      })
 
       // Email content
       const mailOptions = {
@@ -30,25 +30,25 @@ const contactController = {
           <p><strong>Subject:</strong> ${subject}</p>
           <p><strong>Message:</strong></p>
           <p>${message}</p>
-        `
-      };
+        `,
+      }
 
       // Send email
-      await transporter.sendMail(mailOptions);
+      await transporter.sendMail(mailOptions)
 
       res.status(200).json({
         success: true,
-        message: 'Message sent successfully'
-      });
+        message: 'Message sent successfully',
+      })
     } catch (error) {
-      console.error('Contact Form Error:', error);
+      console.error('Contact Form Error:', error)
       res.status(500).json({
         success: false,
         message: 'Error sending message',
-        error: error.message
-      });
+        error: error.message,
+      })
     }
-  }
-};
+  },
+}
 
-module.exports = contactController; 
+module.exports = contactController

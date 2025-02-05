@@ -49,18 +49,19 @@ Backend server for the personal website, built with Node.js and Express.
    Create a `.env` file in the root directory with the following:
 
    Google OAuth configuration.
-      First, you need to get credentials from Google Cloud Console:
-      1) Go to Google Cloud Console(<https://console.cloud.google.com/home/dashboard>)
-      2) Create a new project or select an existing one
-      3) Enable the Google+ API and Google OAuth2 API
-      4) Go to "Credentials" section
-      5) Click "Create Credentials" → "OAuth client ID"
-      6) Select "Web application"
-      7) Set up authorized origins and redirect URIs:
+   First, you need to get credentials from Google Cloud Console:
+
+   1. Go to Google Cloud Console(<https://console.cloud.google.com/home/dashboard>)
+   2. Create a new project or select an existing one
+   3. Enable the Google+ API and Google OAuth2 API
+   4. Go to "Credentials" section
+   5. Click "Create Credentials" → "OAuth client ID"
+   6. Select "Web application"
+   7. Set up authorized origins and redirect URIs:
       Authorized JavaScript origins: <http://localhost:3000>
       Authorized redirect URIs: <http://localhost:5000/auth/google/callback>
-      8) Click "Create"
-      9) You'll get your Client ID and Client Secret
+   8. Click "Create"
+   9. You'll get your Client ID and Client Secret
 
    ```env
    # Server Configuration
@@ -180,6 +181,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 Here’s a step-by-step guide to obtaining Google OAuth `Client ID` and `Client Secret` based on the **latest English Google Cloud Console interface** (as of 2024):
 
 ---
+
 **Step 1: Go to Google Cloud Console**
 
 1. Visit [Google Cloud Console](https://console.cloud.google.com/).
@@ -243,6 +245,7 @@ Here’s a step-by-step guide to obtaining Google OAuth `Client ID` and `Client 
      - Click **+ ADD URI**.
 4. Click **CREATE**.
 5. **Copy the Client ID and Client Secret**:
+
    - A popup will display your `Client ID` and `Client Secret`.
    - Save them securely (they’ll look like this):
 
@@ -270,9 +273,9 @@ GOOGLE_CALLBACK_URL='http://localhost:5000/auth/google/callback'
 1. In your code, load the environment variables. For example, in Node.js:
 
    ```javascript
-   require('dotenv').config();
-   const clientId = process.env.GOOGLE_CLIENT_ID;
-   const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+   require('dotenv').config()
+   const clientId = process.env.GOOGLE_CLIENT_ID
+   const clientSecret = process.env.GOOGLE_CLIENT_SECRET
    ```
 
 2. Start your app and test the Google OAuth flow.

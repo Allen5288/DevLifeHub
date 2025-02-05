@@ -1,5 +1,5 @@
-const nodemailer = require('nodemailer');
-const { logger } = require('../middleware/logger');
+const nodemailer = require('nodemailer')
+const { logger } = require('../middleware/logger')
 
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
@@ -7,12 +7,12 @@ const transporter = nodemailer.createTransport({
   secure: process.env.NODE_ENV === 'production',
   auth: {
     user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASSWORD
-  }
-});
+    pass: process.env.EMAIL_PASSWORD,
+  },
+})
 
 exports.sendPasswordResetEmail = async (email, resetToken) => {
-  const resetUrl = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
+  const resetUrl = `${process.env.CLIENT_URL}/reset-password/${resetToken}`
 
   try {
     await transporter.sendMail({
@@ -25,12 +25,12 @@ exports.sendPasswordResetEmail = async (email, resetToken) => {
         <a href="${resetUrl}">Reset Password</a>
         <p>If you didn't request this, please ignore this email.</p>
         <p>This link will expire in 10 minutes.</p>
-      `
-    });
+      `,
+    })
 
-    logger.info(`Password reset email sent to ${email}`);
+    logger.info(`Password reset email sent to ${email}`)
   } catch (error) {
-    logger.error('Email Error:', error);
-    throw new Error('Error sending password reset email');
+    logger.error('Email Error:', error)
+    throw new Error('Error sending password reset email')
   }
-}; 
+}
