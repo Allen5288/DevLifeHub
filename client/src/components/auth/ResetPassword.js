@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 function ResetPassword() {
   return (
@@ -6,7 +6,7 @@ function ResetPassword() {
       <h2>Reset Password</h2>
       {/* Reset password form will be added later */}
     </div>
-  );
+  )
 }
 
-export default ResetPassword; 
+export default ResetPassword

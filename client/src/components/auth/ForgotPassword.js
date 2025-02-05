@@ -1,51 +1,42 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Formik, Form } from 'formik';
-import * as Yup from 'yup';
-import {
-  TextField,
-  Button,
-  Typography,
-  Paper,
-  Stepper,
-  Step,
-  StepLabel,
-  Alert
-} from '@mui/material';
-import './ForgotPassword.css';
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Formik, Form } from 'formik'
+import * as Yup from 'yup'
+import { TextField, Button, Typography, Paper, Stepper, Step, StepLabel, Alert } from '@mui/material'
+import './ForgotPassword.css'
 
 function ForgotPassword() {
-  const navigate = useNavigate();
-  const [activeStep, setActiveStep] = useState(0);
-  const [email, setEmail] = useState('');
-  const [securityQuestion, setSecurityQuestion] = useState('');
-  const [error, setError] = useState('');
+  const navigate = useNavigate()
+  const [activeStep, setActiveStep] = useState(0)
+  const [email, setEmail] = useState('')
+  const [securityQuestion, setSecurityQuestion] = useState('')
+  const [error, setError] = useState('')
 
-  const steps = ['Enter Email', 'Answer Security Question', 'Reset Password'];
+  const steps = ['Enter Email', 'Answer Security Question', 'Reset Password']
 
   const handleEmailSubmit = async (values, { setSubmitting }) => {
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/forgot-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: values.email })
-      });
+        body: JSON.stringify({ email: values.email }),
+      })
 
-      const data = await response.json();
+      const data = await response.json()
 
       if (response.ok) {
-        setEmail(values.email);
-        setSecurityQuestion(data.securityQuestion);
-        setActiveStep(1);
+        setEmail(values.email)
+        setSecurityQuestion(data.securityQuestion)
+        setActiveStep(1)
       } else {
-        setError(data.message);
+        setError(data.message)
       }
     } catch (error) {
-      setError('An error occurred. Please try again.');
+      setError('An error occurred. Please try again.')
     } finally {
-      setSubmitting(false);
+      setSubmitting(false)
     }
-  };
+  }
 
   const handleSecurityAnswerSubmit = async (values, { setSubmitting }) => {
     try {
@@ -54,22 +45,22 @@ function ForgotPassword() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email,
-          answer: values.securityAnswer
-        })
-      });
+          answer: values.securityAnswer,
+        }),
+      })
 
       if (response.ok) {
-        setActiveStep(2);
+        setActiveStep(2)
       } else {
-        const data = await response.json();
-        setError(data.message);
+        const data = await response.json()
+        setError(data.message)
       }
     } catch (error) {
-      setError('An error occurred. Please try again.');
+      setError('An error occurred. Please try again.')
     } finally {
-      setSubmitting(false);
+      setSubmitting(false)
     }
-  };
+  }
 
   const handlePasswordReset = async (values, { setSubmitting }) => {
     try {
@@ -78,35 +69,35 @@ function ForgotPassword() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email,
-          password: values.password
-        })
-      });
+          password: values.password,
+        }),
+      })
 
       if (response.ok) {
         // Redirect to login with success message
-        navigate('/login', { 
-          state: { message: 'Password reset successful. Please login with your new password.' }
-        });
+        navigate('/login', {
+          state: { message: 'Password reset successful. Please login with your new password.' },
+        })
       } else {
-        const data = await response.json();
-        setError(data.message);
+        const data = await response.json()
+        setError(data.message)
       }
     } catch (error) {
-      setError('An error occurred. Please try again.');
+      setError('An error occurred. Please try again.')
     } finally {
-      setSubmitting(false);
+      setSubmitting(false)
     }
-  };
+  }
 
   return (
-    <div className="forgot-password-container">
-      <Paper elevation={3} className="forgot-password-paper">
-        <Typography variant="h5" component="h1" gutterBottom>
+    <div className='forgot-password-container'>
+      <Paper elevation={3} className='forgot-password-paper'>
+        <Typography variant='h5' component='h1' gutterBottom>
           Reset Password
         </Typography>
 
         <Stepper activeStep={activeStep} sx={{ mb: 4 }}>
-          {steps.map((label) => (
+          {steps.map(label => (
             <Step key={label}>
               <StepLabel>{label}</StepLabel>
             </Step>
@@ -114,7 +105,7 @@ function ForgotPassword() {
         </Stepper>
 
         {error && (
-          <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError('')}>
+          <Alert severity='error' sx={{ mb: 2 }} onClose={() => setError('')}>
             {error}
           </Alert>
         )}
@@ -123,9 +114,7 @@ function ForgotPassword() {
           <Formik
             initialValues={{ email: '' }}
             validationSchema={Yup.object({
-              email: Yup.string()
-                .email('Invalid email address')
-                .required('Email is required')
+              email: Yup.string().email('Invalid email address').required('Email is required'),
             })}
             onSubmit={handleEmailSubmit}
           >
@@ -133,23 +122,17 @@ function ForgotPassword() {
               <Form>
                 <TextField
                   fullWidth
-                  id="email"
-                  name="email"
-                  label="Email"
+                  id='email'
+                  name='email'
+                  label='Email'
                   value={values.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={touched.email && Boolean(errors.email)}
                   helperText={touched.email && errors.email}
-                  margin="normal"
+                  margin='normal'
                 />
-                <Button
-                  type="submit"
-                  variant="contained"
-                  fullWidth
-                  disabled={isSubmitting}
-                  sx={{ mt: 2 }}
-                >
+                <Button type='submit' variant='contained' fullWidth disabled={isSubmitting} sx={{ mt: 2 }}>
                   {isSubmitting ? 'Submitting...' : 'Continue'}
                 </Button>
               </Form>
@@ -161,34 +144,26 @@ function ForgotPassword() {
           <Formik
             initialValues={{ securityAnswer: '' }}
             validationSchema={Yup.object({
-              securityAnswer: Yup.string().required('Answer is required')
+              securityAnswer: Yup.string().required('Answer is required'),
             })}
             onSubmit={handleSecurityAnswerSubmit}
           >
             {({ values, errors, touched, handleChange, handleBlur, isSubmitting }) => (
               <Form>
-                <Typography className="security-question">
-                  {securityQuestion}
-                </Typography>
+                <Typography className='security-question'>{securityQuestion}</Typography>
                 <TextField
                   fullWidth
-                  id="securityAnswer"
-                  name="securityAnswer"
-                  label="Your Answer"
+                  id='securityAnswer'
+                  name='securityAnswer'
+                  label='Your Answer'
                   value={values.securityAnswer}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={touched.securityAnswer && Boolean(errors.securityAnswer)}
                   helperText={touched.securityAnswer && errors.securityAnswer}
-                  margin="normal"
+                  margin='normal'
                 />
-                <Button
-                  type="submit"
-                  variant="contained"
-                  fullWidth
-                  disabled={isSubmitting}
-                  sx={{ mt: 2 }}
-                >
+                <Button type='submit' variant='contained' fullWidth disabled={isSubmitting} sx={{ mt: 2 }}>
                   {isSubmitting ? 'Verifying...' : 'Verify Answer'}
                 </Button>
               </Form>
@@ -200,12 +175,10 @@ function ForgotPassword() {
           <Formik
             initialValues={{ password: '', confirmPassword: '' }}
             validationSchema={Yup.object({
-              password: Yup.string()
-                .min(6, 'Password must be at least 6 characters')
-                .required('Password is required'),
+              password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
               confirmPassword: Yup.string()
                 .oneOf([Yup.ref('password'), null], 'Passwords must match')
-                .required('Confirm Password is required')
+                .required('Confirm Password is required'),
             })}
             onSubmit={handlePasswordReset}
           >
@@ -213,37 +186,31 @@ function ForgotPassword() {
               <Form>
                 <TextField
                   fullWidth
-                  type="password"
-                  id="password"
-                  name="password"
-                  label="New Password"
+                  type='password'
+                  id='password'
+                  name='password'
+                  label='New Password'
                   value={values.password}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={touched.password && Boolean(errors.password)}
                   helperText={touched.password && errors.password}
-                  margin="normal"
+                  margin='normal'
                 />
                 <TextField
                   fullWidth
-                  type="password"
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  label="Confirm New Password"
+                  type='password'
+                  id='confirmPassword'
+                  name='confirmPassword'
+                  label='Confirm New Password'
                   value={values.confirmPassword}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={touched.confirmPassword && Boolean(errors.confirmPassword)}
                   helperText={touched.confirmPassword && errors.confirmPassword}
-                  margin="normal"
+                  margin='normal'
                 />
-                <Button
-                  type="submit"
-                  variant="contained"
-                  fullWidth
-                  disabled={isSubmitting}
-                  sx={{ mt: 2 }}
-                >
+                <Button type='submit' variant='contained' fullWidth disabled={isSubmitting} sx={{ mt: 2 }}>
                   {isSubmitting ? 'Resetting...' : 'Reset Password'}
                 </Button>
               </Form>
@@ -252,7 +219,7 @@ function ForgotPassword() {
         )}
       </Paper>
     </div>
-  );
+  )
 }
 
-export default ForgotPassword; 
+export default ForgotPassword

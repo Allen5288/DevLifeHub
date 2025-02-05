@@ -55,7 +55,7 @@
   background-color: white;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .recipe-image {
@@ -180,19 +180,19 @@
   .food-page {
     padding: 1rem;
   }
-  
+
   .category-filter {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .recipes-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .recipe-info {
     justify-content: center;
   }
 }
 
-/* Move Food.css content here */ 
+/* Move Food.css content here */

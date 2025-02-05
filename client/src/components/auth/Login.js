@@ -1,125 +1,103 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { Formik, Form } from 'formik';
-import * as Yup from 'yup';
-import { 
-  TextField, 
-  Button, 
-  Typography, 
-  Paper, 
-  Divider,
-  IconButton,
-  InputAdornment,
-  Alert,
-  Box
-} from '@mui/material';
-import { 
+import React, { useState } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
+import { Formik, Form } from 'formik'
+import * as Yup from 'yup'
+import { TextField, Button, Typography, Paper, Divider, IconButton, InputAdornment, Alert, Box } from '@mui/material'
+import {
   Google as GoogleIcon,
   Visibility,
   VisibilityOff,
   Email as EmailIcon,
-  Lock as LockIcon
-} from '@mui/icons-material';
-import { useAuth } from '../../context/AuthContext';
-import './Login.css';
+  Lock as LockIcon,
+} from '@mui/icons-material'
+import { useAuth } from '../../context/AuthContext'
+import './Login.css'
 
 const validationSchema = Yup.object({
-  email: Yup.string()
-    .email('Invalid email address')
-    .required('Email is required'),
-  password: Yup.string()
-    .required('Password is required')
-    .min(6, 'Password must be at least 6 characters')
-});
+  email: Yup.string().email('Invalid email address').required('Email is required'),
+  password: Yup.string().required('Password is required').min(6, 'Password must be at least 6 characters'),
+})
 
 function Login() {
-  const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
-  const { performLogin } = useAuth();
+  const navigate = useNavigate()
+  const [showPassword, setShowPassword] = useState(false)
+  const [error, setError] = useState('')
+  const { performLogin } = useAuth()
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      setError('');
-      await performLogin(values.email, values.password, navigate);
+      setError('')
+      await performLogin(values.email, values.password, navigate)
     } catch (error) {
-      console.error('Login error:', error);
-      setError(error.message || 'Failed to login');
+      console.error('Login error:', error)
+      setError(error.message || 'Failed to login')
     } finally {
-      setSubmitting(false);
+      setSubmitting(false)
     }
-  };
+  }
 
   const handleGoogleLogin = () => {
-    const googleAuthUrl = `${process.env.REACT_APP_API_URL}/auth/google`;
-    const width = 500;
-    const height = 600;
-    const left = (window.innerWidth - width) / 2;
-    const top = (window.innerHeight - height) / 2;
+    const googleAuthUrl = `${process.env.REACT_APP_API_URL}/auth/google`
+    const width = 500
+    const height = 600
+    const left = (window.innerWidth - width) / 2
+    const top = (window.innerHeight - height) / 2
 
-    const popup = window.open(
-      googleAuthUrl,
-      'Google Auth',
-      `width=${width},height=${height},left=${left},top=${top}`
-    );
+    const popup = window.open(googleAuthUrl, 'Google Auth', `width=${width},height=${height},left=${left},top=${top}`)
 
     const checkPopup = setInterval(() => {
       if (popup.closed) {
-        clearInterval(checkPopup);
-        const isAuthenticated = document.cookie.includes('isAuthenticated=true');
+        clearInterval(checkPopup)
+        const isAuthenticated = document.cookie.includes('isAuthenticated=true')
         if (isAuthenticated) {
-          window.location.reload();
+          window.location.reload()
         }
       }
-    }, 1000);
-  };
+    }, 1000)
+  }
 
   return (
-    <div className="login-container">
-      <Paper elevation={3} className="login-paper">
-        <Typography variant="h5" component="h1" gutterBottom>
+    <div className='login-container'>
+      <Paper elevation={3} className='login-paper'>
+        <Typography variant='h5' component='h1' gutterBottom>
           Sign In
         </Typography>
 
         {error && (
-          <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError('')}>
+          <Alert severity='error' sx={{ mb: 2 }} onClose={() => setError('')}>
             {error}
           </Alert>
         )}
 
         <Button
-          variant="outlined"
+          variant='outlined'
           fullWidth
           startIcon={<GoogleIcon />}
           onClick={handleGoogleLogin}
-          className="google-button"
+          className='google-button'
         >
           Sign in with Google
         </Button>
 
         <Divider sx={{ my: 2 }}>OR</Divider>
 
-        <Formik
-          initialValues={{ email: '', password: '' }}
-          validationSchema={validationSchema}
-          onSubmit={handleSubmit}
-        >
+        <Formik initialValues={{ email: '', password: '' }} validationSchema={validationSchema} onSubmit={handleSubmit}>
           {({ values, errors, touched, handleChange, handleBlur, isSubmitting }) => (
             <Form>
               <TextField
                 fullWidth
-                id="email"
-                name="email"
-                label="Email"
+                id='email'
+                name='email'
+                label='Email'
                 value={values.email}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 error={touched.email && Boolean(errors.email)}
                 helperText={touched.email && errors.email}
-                margin="normal"
+                margin='normal'
                 InputProps={{
                   startAdornment: (
-                    <InputAdornment position="start">
+                    <InputAdornment position='start'>
                       <EmailIcon />
                     </InputAdornment>
                   ),
@@ -128,28 +106,25 @@ function Login() {
 
               <TextField
                 fullWidth
-                id="password"
-                name="password"
-                label="Password"
+                id='password'
+                name='password'
+                label='Password'
                 type={showPassword ? 'text' : 'password'}
                 value={values.password}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 error={touched.password && Boolean(errors.password)}
                 helperText={touched.password && errors.password}
-                margin="normal"
+                margin='normal'
                 InputProps={{
                   startAdornment: (
-                    <InputAdornment position="start">
+                    <InputAdornment position='start'>
                       <LockIcon />
                     </InputAdornment>
                   ),
                   endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => setShowPassword(!showPassword)}
-                        edge="end"
-                      >
+                    <InputAdornment position='end'>
+                      <IconButton onClick={() => setShowPassword(!showPassword)} edge='end'>
                         {showPassword ? <VisibilityOff /> : <Visibility />}
                       </IconButton>
                     </InputAdornment>
@@ -157,13 +132,7 @@ function Login() {
                 }}
               />
 
-              <Button
-                type="submit"
-                variant="contained"
-                fullWidth
-                disabled={isSubmitting}
-                sx={{ mt: 2 }}
-              >
+              <Button type='submit' variant='contained' fullWidth disabled={isSubmitting} sx={{ mt: 2 }}>
                 {isSubmitting ? 'Signing in...' : 'Sign In'}
               </Button>
             </Form>
@@ -171,19 +140,19 @@ function Login() {
         </Formik>
 
         <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
-          <Link to="/forgot-password" className="forgot-password-link">
+          <Link to='/forgot-password' className='forgot-password-link'>
             Forgot Password?
           </Link>
-          <Typography variant="body2">
+          <Typography variant='body2'>
             Don't have an account?{' '}
-            <Link to="/register" className="register-link">
+            <Link to='/register' className='register-link'>
               Sign Up
             </Link>
           </Typography>
         </Box>
       </Paper>
     </div>
-  );
+  )
 }
 
-export default Login; 
+export default Login

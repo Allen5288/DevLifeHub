@@ -1,312 +1,312 @@
 .tools-page {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
 }
 
 .tools-description {
-    text-align: center;
-    color: #666;
-    margin-bottom: 2rem;
+  text-align: center;
+  color: #666;
+  margin-bottom: 2rem;
 }
 
 .tools-navigation {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
 }
 
 .tool-card-content {
-    min-height: 160px !important;
-    max-width: 270px !important;
+  min-height: 160px !important;
+  max-width: 270px !important;
 }
 
 .tool-card {
-    transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease; /* 添加过渡效果 */
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease; /* 添加过渡效果 */
 }
 
 .tool-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* 调整阴影效果 */
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* 调整阴影效果 */
 }
 
 .tool-button {
-    padding: 0.8rem 1.5rem;
-    border: 2px solid #333;
-    border-radius: 25px;
-    background: none;
-    color: #333;
-    cursor: pointer;
-    transition: all 0.3s ease;
+  padding: 0.8rem 1.5rem;
+  border: 2px solid #333;
+  border-radius: 25px;
+  background: none;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .tool-button.active {
-    background-color: #333;
-    color: white;
+  background-color: #333;
+  color: white;
 }
 
 .tool-container {
-    background: #f5f5f5;
-    padding: 2rem;
-    border-radius: 8px;
+  background: #f5f5f5;
+  padding: 2rem;
+  border-radius: 8px;
 }
 
 .tool-content {
-    max-width: 900px;
-    margin: 0 auto;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .tool-layout {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .input-section,
 .output-section {
-    width: 100%;
+  width: 100%;
 }
 
 textarea {
-    width: 100%;
-    min-height: 200px;
-    padding: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-family: monospace;
-    font-size: 14px;
+  width: 100%;
+  min-height: 200px;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 14px;
 }
 
 .actions {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
 }
 
 .actions button {
-    padding: 0.8rem 1.5rem;
-    background: #333;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+  padding: 0.8rem 1.5rem;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .actions button:hover {
-    background-color: #444;
+  background-color: #444;
 }
 
 .mode-selector {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .mode-selector button {
-    padding: 0.5rem 1rem;
-    border: 1px solid #333;
-    background: none;
-    cursor: pointer;
+  padding: 0.5rem 1rem;
+  border: 1px solid #333;
+  background: none;
+  cursor: pointer;
 }
 
 .mode-selector button.active {
-    background: #333;
-    color: white;
+  background: #333;
+  color: white;
 }
 
 pre {
-    background: white;
-    padding: 1rem;
-    border-radius: 4px;
-    overflow-x: auto;
-    white-space: pre-wrap;
-    word-wrap: break-word;
+  background: white;
+  padding: 1rem;
+  border-radius: 4px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 .error-message {
-    color: #dc3545;
-    padding: 1rem;
-    background: #fff;
-    border-radius: 4px;
+  color: #dc3545;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 4px;
 }
 
 @media (max-width: 768px) {
-    .tools-page {
-        padding: 1rem;
-    }
+  .tools-page {
+    padding: 1rem;
+  }
 
-    .tools-navigation {
-        flex-direction: column;
-    }
+  .tools-navigation {
+    flex-direction: column;
+  }
 }
 
 .key-display {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    background: white;
-    padding: 1rem;
-    border-radius: 4px;
-    margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: white;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
 }
 
 .key-display pre {
-    flex: 1;
-    margin: 0;
-    overflow-x: auto;
-    white-space: pre-wrap;
-    word-break: break-all;
+  flex: 1;
+  margin: 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
 }
 
 .copy-btn {
-    padding: 0.5rem 1rem;
-    background: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    min-width: 80px;
+  padding: 0.5rem 1rem;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 80px;
 }
 
 .copy-btn.copied {
-    background: var(--secondary-color);
+  background: var(--secondary-color);
 }
 
 .generate-btn {
-    padding: 1rem 2rem;
-    background: var(--gradient);
-    color: white;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
+  padding: 1rem 2rem;
+  background: var(--gradient);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
 }
 
 .generate-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
 }
 
 .tool-description {
-    color: #666;
-    margin-bottom: 2rem;
-    text-align: center;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+  color: #666;
+  margin-bottom: 2rem;
+  text-align: center;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .usage-example {
-    background: #f8f9fa;
-    padding: 1.5rem;
-    border-radius: 4px;
-    margin-top: 1.5rem;
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 4px;
+  margin-top: 1.5rem;
 }
 
 .usage-example h3 {
-    color: #333;
-    margin-bottom: 1rem;
-    font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
 }
 
 .usage-example pre {
-    background: white;
-    padding: 1rem;
-    border-radius: 4px;
-    color: #333;
+  background: white;
+  padding: 1rem;
+  border-radius: 4px;
+  color: #333;
 }
 
 .config-options {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .option-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .option-group label {
-    font-weight: 500;
-    color: #333;
+  font-weight: 500;
+  color: #333;
 }
 
 .secret-input {
-    display: flex;
-    gap: 1rem;
+  display: flex;
+  gap: 1rem;
 }
 
 .secret-input input {
-    flex: 1;
-    padding: 0.8rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-family: monospace;
-    font-size: 14px;
+  flex: 1;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 14px;
 }
 
 .option-group select {
-    padding: 0.8rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background: white;
-    cursor: pointer;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
 }
 
 .config-display {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 4px;
-    margin-bottom: 1.5rem;
-    position: relative;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  position: relative;
 }
 
 .config-display pre {
-    margin: 0;
-    padding-right: 100px;
+  margin: 0;
+  padding-right: 100px;
 }
 
 .config-input {
-    width: 100%;
-    padding: 0.8rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-family: monospace;
-    font-size: 14px;
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 14px;
 }
 
 .setup-steps {
-    padding-left: 1.5rem;
-    margin-top: 1rem;
+  padding-left: 1.5rem;
+  margin-top: 1rem;
 }
 
 .setup-steps li {
-    margin-bottom: 0.5rem;
-    line-height: 1.5;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
 }
 
 .setup-steps code {
-    background: #f0f0f0;
-    padding: 0.2rem 0.4rem;
-    border-radius: 3px;
-    font-family: monospace;
+  background: #f0f0f0;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-family: monospace;
 }
 
 .setup-steps a {
-    color: var(--primary-color);
-    text-decoration: none;
+  color: var(--primary-color);
+  text-decoration: none;
 }
 
 .setup-steps a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }

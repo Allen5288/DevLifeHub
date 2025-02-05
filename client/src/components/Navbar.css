@@ -1,182 +1,182 @@
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    padding: 0 2rem;
-    background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
-    color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2rem;
+  background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-brand {
-    text-decoration: none;
-    color: white;
-    font-weight: bold;
-    font-size: 1.5rem;
-    padding: 0.5rem 0;
-    position: relative;
-    overflow: hidden;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding: 0.5rem 0;
+  position: relative;
+  overflow: hidden;
 }
 
 .navbar-brand::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: #64b5f6;
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #64b5f6;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
 }
 
 .navbar-brand:hover::after {
-    transform: scaleX(1);
+  transform: scaleX(1);
 }
 
 .navbar-links {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
 }
 
 .navbar-links .MuiButton-root {
-    color: white;
-    padding: 6px 16px;
-    border-radius: 20px;
-    transition: all 0.3s ease;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
 }
 
 .navbar-links .MuiButton-root:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    transform: translateY(-2px);
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
 }
 
 .navbar-auth {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .navbar-auth .MuiButton-root {
-    color: white;
-    border-radius: 20px;
-    padding: 6px 16px;
-    transition: all 0.3s ease;
+  color: white;
+  border-radius: 20px;
+  padding: 6px 16px;
+  transition: all 0.3s ease;
 }
 
 .navbar-auth .MuiButton-root:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    transform: translateY(-2px);
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
 }
 
 .user-avatar {
-    width: 32px;
-    height: 32px;
-    margin-right: 8px;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    transition: border-color 0.3s ease;
+  width: 32px;
+  height: 32px;
+  margin-right: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  transition: border-color 0.3s ease;
 }
 
 .menu-button {
-    display: none !important;
-    margin-right: 1rem !important;
-    color: white !important;
+  display: none !important;
+  margin-right: 1rem !important;
+  color: white !important;
 }
 
 .mobile-drawer {
-    width: 240px;
+  width: 240px;
 }
 
 .mobile-drawer .MuiDrawer-paper {
-    width: 240px;
-    background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
-    color: white;
+  width: 240px;
+  background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+  color: white;
 }
 
 .mobile-drawer .MuiListItem-root {
-    color: white;
-    margin: 4px 8px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
+  color: white;
+  margin: 4px 8px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
 }
 
 .mobile-drawer .MuiListItem-root:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .mobile-drawer .MuiListItemText-primary {
-    font-weight: 500;
+  font-weight: 500;
 }
 
 @media (max-width: 1024px) {
-    .navbar {
-        padding: 0 1rem;
-    }
+  .navbar {
+    padding: 0 1rem;
+  }
 
-    .navbar-links {
-        gap: 0.25rem;
-    }
+  .navbar-links {
+    gap: 0.25rem;
+  }
 
-    .navbar-links .MuiButton-root {
-        padding: 6px 12px;
-        min-width: auto;
-    }
+  .navbar-links .MuiButton-root {
+    padding: 6px 12px;
+    min-width: auto;
+  }
 }
 
 @media (max-width: 768px) {
-    .menu-button {
-        display: inline-flex !important;
-    }
+  .menu-button {
+    display: inline-flex !important;
+  }
 
-    .navbar-links {
-        display: none;
-    }
+  .navbar-links {
+    display: none;
+  }
 
-    .navbar-brand {
-        flex-grow: 1;
-        text-align: center;
-    }
+  .navbar-brand {
+    flex-grow: 1;
+    text-align: center;
+  }
 
-    .navbar-auth .MuiButton-root {
-        padding: 6px 12px;
-    }
+  .navbar-auth .MuiButton-root {
+    padding: 6px 12px;
+  }
 }
 
 /* Animation for active link */
 .navbar-links .MuiButton-root.active {
-    background-color: rgba(255, 255, 255, 0.15);
-    position: relative;
+  background-color: rgba(255, 255, 255, 0.15);
+  position: relative;
 }
 
 .navbar-links .MuiButton-root.active::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 20px;
-    height: 2px;
-    background-color: #64b5f6;
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background-color: #64b5f6;
 }
 
 /* Hover effect for auth button */
 .navbar-auth .MuiButton-root:hover {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Style for user menu */
 .MuiMenu-paper {
-    background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%) !important;
-    color: white !important;
-    margin-top: 8px !important;
-    border-radius: 8px !important;
+  background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%) !important;
+  color: white !important;
+  margin-top: 8px !important;
+  border-radius: 8px !important;
 }
 
 .MuiMenu-paper .MuiMenuItem-root {
-    color: white;
-    transition: all 0.3s ease;
+  color: white;
+  transition: all 0.3s ease;
 }
 
 .MuiMenu-paper .MuiMenuItem-root:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.1);
 }

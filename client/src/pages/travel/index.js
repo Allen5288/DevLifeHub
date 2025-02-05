@@ -1,1 +1,1 @@
-export { default } from './Travel'; 
+export { default } from './Travel'

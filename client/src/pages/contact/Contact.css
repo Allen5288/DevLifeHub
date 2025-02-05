@@ -17,7 +17,7 @@
   background: white;
   padding: 30px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .contact-info {
@@ -124,16 +124,16 @@
   .contact-container {
     grid-template-columns: 1fr;
   }
-  
+
   .contact-info {
     text-align: center;
   }
-  
+
   .contact-item {
     justify-content: center;
   }
-  
+
   .social-links {
     justify-content: center;
   }
-} 
+}

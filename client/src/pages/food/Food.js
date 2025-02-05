@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import './Food.css';
+import React, { useState } from 'react'
+import './Food.css'
 
 function Food() {
   const [recipes] = useState([
@@ -12,18 +12,8 @@ function Food() {
       cookTime: '20 mins',
       image: '/images/pasta.jpg',
       description: 'Authentic Italian pasta with homemade sauce',
-      ingredients: [
-        '400g spaghetti',
-        '4 ripe tomatoes',
-        'Fresh basil',
-        'Olive oil',
-        'Garlic'
-      ],
-      steps: [
-        'Boil pasta in salted water',
-        'Prepare the sauce',
-        'Combine and serve'
-      ]
+      ingredients: ['400g spaghetti', '4 ripe tomatoes', 'Fresh basil', 'Olive oil', 'Garlic'],
+      steps: ['Boil pasta in salted water', 'Prepare the sauce', 'Combine and serve'],
     },
     {
       id: 2,
@@ -34,37 +24,25 @@ function Food() {
       cookTime: '15 mins',
       image: '/images/stir-fry.jpg',
       description: 'Quick and healthy vegetable stir fry',
-      ingredients: [
-        'Mixed vegetables',
-        'Soy sauce',
-        'Ginger',
-        'Garlic',
-        'Rice'
-      ],
-      steps: [
-        'Prepare vegetables',
-        'Cook rice',
-        'Stir fry vegetables',
-        'Combine with sauce'
-      ]
-    }
-  ]);
+      ingredients: ['Mixed vegetables', 'Soy sauce', 'Ginger', 'Garlic', 'Rice'],
+      steps: ['Prepare vegetables', 'Cook rice', 'Stir fry vegetables', 'Combine with sauce'],
+    },
+  ])
 
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  const categories = ['All', 'Italian', 'Asian', 'Mexican', 'American', 'Desserts'];
+  const [selectedCategory, setSelectedCategory] = useState('All')
+  const categories = ['All', 'Italian', 'Asian', 'Mexican', 'American', 'Desserts']
 
-  const filteredRecipes = selectedCategory === 'All'
-    ? recipes
-    : recipes.filter(recipe => recipe.category === selectedCategory);
+  const filteredRecipes =
+    selectedCategory === 'All' ? recipes : recipes.filter(recipe => recipe.category === selectedCategory)
 
   return (
-    <div className="food-page">
-      <div className="food-header">
+    <div className='food-page'>
+      <div className='food-header'>
         <h1>Food & Cooking Blog</h1>
         <p>Discover delicious recipes and cooking tips from around the world</p>
       </div>
 
-      <div className="category-filter">
+      <div className='category-filter'>
         {categories.map(category => (
           <button
             key={category}
@@ -76,23 +54,23 @@ function Food() {
         ))}
       </div>
 
-      <div className="recipes-grid">
+      <div className='recipes-grid'>
         {filteredRecipes.map(recipe => (
-          <div key={recipe.id} className="recipe-card">
-            <div className="recipe-image">
+          <div key={recipe.id} className='recipe-card'>
+            <div className='recipe-image'>
               <img src={recipe.image} alt={recipe.title} />
-              <span className="category-tag">{recipe.category}</span>
+              <span className='category-tag'>{recipe.category}</span>
             </div>
-            <div className="recipe-content">
+            <div className='recipe-content'>
               <h2>{recipe.title}</h2>
-              <div className="recipe-info">
+              <div className='recipe-info'>
                 <span>🕒 Prep: {recipe.prepTime}</span>
                 <span>👨‍🍳 Cook: {recipe.cookTime}</span>
                 <span>📊 {recipe.difficulty}</span>
               </div>
-              <p className="description">{recipe.description}</p>
-              
-              <div className="ingredients">
+              <p className='description'>{recipe.description}</p>
+
+              <div className='ingredients'>
                 <h3>Ingredients:</h3>
                 <ul>
                   {recipe.ingredients.map((ingredient, index) => (
@@ -101,7 +79,7 @@ function Food() {
                 </ul>
               </div>
 
-              <div className="steps">
+              <div className='steps'>
                 <h3>Steps:</h3>
                 <ol>
                   {recipe.steps.map((step, index) => (
@@ -110,31 +88,31 @@ function Food() {
                 </ol>
               </div>
 
-              <button className="view-recipe-btn">View Full Recipe</button>
+              <button className='view-recipe-btn'>View Full Recipe</button>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="cooking-tips">
+      <div className='cooking-tips'>
         <h2>Cooking Tips & Techniques</h2>
-        <div className="tips-grid">
-          <div className="tip-card">
+        <div className='tips-grid'>
+          <div className='tip-card'>
             <h3>Knife Skills</h3>
             <p>Master basic cutting techniques for better food preparation.</p>
           </div>
-          <div className="tip-card">
+          <div className='tip-card'>
             <h3>Seasoning</h3>
             <p>Learn how to properly season your dishes.</p>
           </div>
-          <div className="tip-card">
+          <div className='tip-card'>
             <h3>Kitchen Organization</h3>
             <p>Tips for keeping your kitchen efficient and organized.</p>
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default Food; 
+export default Food

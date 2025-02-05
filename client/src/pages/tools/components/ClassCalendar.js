@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
-import format from 'date-fns/format';
-import parse from 'date-fns/parse';
-import startOfWeek from 'date-fns/startOfWeek';
-import getDay from 'date-fns/getDay';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
-import './ClassCalendar.css';
+import React, { useState, useEffect, useCallback } from 'react'
+import { Calendar, dateFnsLocalizer } from 'react-big-calendar'
+import format from 'date-fns/format'
+import parse from 'date-fns/parse'
+import startOfWeek from 'date-fns/startOfWeek'
+import getDay from 'date-fns/getDay'
+import 'react-big-calendar/lib/css/react-big-calendar.css'
+import './ClassCalendar.css'
 import {
   Dialog,
   DialogTitle,
@@ -21,49 +21,34 @@ import {
   IconButton,
   ButtonGroup,
   Select,
-  MenuItem
-} from '@mui/material';
-import { Bar, Pie } from 'react-chartjs-2';
-import { saveAs } from 'file-saver';
-import * as XLSX from 'xlsx';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Legend,
-  ArcElement
-} from 'chart.js';
-import { useAuth } from '../../../context/AuthContext';
-import { styled } from '@mui/material/styles';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import DownloadIcon from '@mui/icons-material/Download';
-import { useNavigate } from 'react-router-dom';
+  MenuItem,
+} from '@mui/material'
+import { Bar, Pie } from 'react-chartjs-2'
+import { saveAs } from 'file-saver'
+import * as XLSX from 'xlsx'
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Legend, ArcElement } from 'chart.js'
+import { useAuth } from '../../../context/AuthContext'
+import { styled } from '@mui/material/styles'
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import DownloadIcon from '@mui/icons-material/Download'
+import { useNavigate } from 'react-router-dom'
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Legend,
-  ArcElement
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Legend, ArcElement)
 
 const locales = {
-  'en-US': require('date-fns/locale/en-US')
-};
+  'en-US': require('date-fns/locale/en-US'),
+}
 
 const localizer = dateFnsLocalizer({
   format,
   parse,
   startOfWeek,
   getDay,
-  locales
-});
+  locales,
+})
 
 // Styled components for the agenda
 const EventWrapper = styled(Paper)(({ theme }) => ({
@@ -74,34 +59,34 @@ const EventWrapper = styled(Paper)(({ theme }) => ({
   borderRadius: '4px',
   '&:hover': {
     backgroundColor: '#eeeeee',
-    cursor: 'pointer'
-  }
-}));
+    cursor: 'pointer',
+  },
+}))
 
 const EventTime = styled('div')({
   fontSize: '0.85rem',
   color: '#666',
-  fontWeight: 'bold'
-});
+  fontWeight: 'bold',
+})
 
 const EventTitle = styled('div')({
   fontSize: '1rem',
   fontWeight: 'bold',
-  marginBottom: '4px'
-});
+  marginBottom: '4px',
+})
 
 const EventDetails = styled('div')({
   fontSize: '0.85rem',
-  color: '#666'
-});
+  color: '#666',
+})
 
 const ToolbarWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
   padding: theme.spacing(1),
-  marginBottom: theme.spacing(2)
-}));
+  marginBottom: theme.spacing(2),
+}))
 
 const DateSelector = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -109,9 +94,9 @@ const DateSelector = styled(Box)(({ theme }) => ({
   gap: theme.spacing(1),
   '& .MuiSelect-root': {
     minWidth: 120,
-    backgroundColor: 'white'
-  }
-}));
+    backgroundColor: 'white',
+  },
+}))
 
 const StyledCalendarContainer = styled(Box)(({ theme }) => ({
   background: 'white',
@@ -120,203 +105,206 @@ const StyledCalendarContainer = styled(Box)(({ theme }) => ({
   boxShadow: theme.shadows[1],
   marginBottom: theme.spacing(3),
   '& .rbc-calendar': {
-    fontFamily: theme.typography.fontFamily
-  }
-}));
+    fontFamily: theme.typography.fontFamily,
+  },
+}))
 
 const StyledAnalyticsDashboard = styled(Box)(({ theme }) => ({
   background: 'white',
   padding: theme.spacing(3),
   borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.shadows[1]
-}));
+  boxShadow: theme.shadows[1],
+}))
 
 const StyledChartContainer = styled(Box)(({ theme }) => ({
   display: 'grid',
   gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
   gap: theme.spacing(3),
-  margin: `${theme.spacing(3)} 0`
-}));
+  margin: `${theme.spacing(3)} 0`,
+}))
 
 function ClassCalendar() {
-  const { user } = useAuth();
-  const [events, setEvents] = useState([]);
-  const [openDialog, setOpenDialog] = useState(false);
+  const { user } = useAuth()
+  const [events, setEvents] = useState([])
+  const [openDialog, setOpenDialog] = useState(false)
   const [newClass, setNewClass] = useState({
     subject: '',
     students: '',
     start: null,
     end: null,
-    hourlyRate: 50
-  });
+    hourlyRate: 50,
+  })
   const [analytics, setAnalytics] = useState({
     totalHours: 0,
     totalEarnings: 0,
     studentHours: {},
-    monthlyData: {}
-  });
-  
-  const [fetchError, setFetchError] = useState('');
-  const [saveError, setSaveError] = useState('');
-  const [validationError, setValidationError] = useState('');
-  const [editingEvent, setEditingEvent] = useState(null);
-  const navigate = useNavigate();
+    monthlyData: {},
+  })
+
+  const [fetchError, setFetchError] = useState('')
+  const [saveError, setSaveError] = useState('')
+  const [validationError, setValidationError] = useState('')
+  const [editingEvent, setEditingEvent] = useState(null)
+  const navigate = useNavigate()
 
   const clearErrors = useCallback(() => {
-    setFetchError('');
-    setSaveError('');
-    setValidationError('');
-  }, []);
+    setFetchError('')
+    setSaveError('')
+    setValidationError('')
+  }, [])
 
   const fetchEvents = useCallback(async () => {
     try {
-      clearErrors();
+      clearErrors()
       const response = await fetch(`${process.env.REACT_APP_API_URL}/classes`, {
-        credentials: 'include'
-      });
-      
+        credentials: 'include',
+      })
+
       if (!response.ok) {
         if (response.status === 401) {
-          const data = await response.json();
+          const data = await response.json()
           if (data.message === 'No token provided' || data.message === 'Token expired') {
-            navigate('/login');
-            return;
+            navigate('/login')
+            return
           }
         }
-        throw new Error('Failed to fetch classes');
+        throw new Error('Failed to fetch classes')
       }
-      
-      const data = await response.json();
+
+      const data = await response.json()
       const formattedEvents = data.map(event => ({
         ...event,
         start: new Date(event.start),
-        end: new Date(event.end)
-      }));
+        end: new Date(event.end),
+      }))
 
-      setEvents(formattedEvents);
+      setEvents(formattedEvents)
     } catch (error) {
-      console.error('Error fetching classes:', error);
-      setFetchError(error.message || 'Error fetching classes');
+      console.error('Error fetching classes:', error)
+      setFetchError(error.message || 'Error fetching classes')
     }
-  }, [clearErrors, navigate]);
+  }, [clearErrors, navigate])
 
   useEffect(() => {
     if (user) {
-      fetchEvents();
+      fetchEvents()
     }
-  }, [user, fetchEvents]);
+  }, [user, fetchEvents])
 
   const calculateAnalytics = useCallback(() => {
-    const analytics = events.reduce((acc, event) => {
-      try {
-        if (!event.start || !event.end) {
-          console.warn('Invalid event data:', event);
-          return acc;
+    const analytics = events.reduce(
+      (acc, event) => {
+        try {
+          if (!event.start || !event.end) {
+            console.warn('Invalid event data:', event)
+            return acc
+          }
+
+          const startDate = event.start instanceof Date ? event.start : new Date(event.start)
+          const endDate = event.end instanceof Date ? event.end : new Date(event.end)
+
+          if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+            console.warn('Invalid date in event:', event)
+            return acc
+          }
+
+          const hours = (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60)
+          const earnings = hours * event.hourlyRate
+          const month = format(startDate, 'MMMM yyyy')
+          const students = event.students.split(',').map(s => s.trim())
+
+          acc.totalHours += hours
+          acc.totalEarnings += earnings
+
+          acc.monthlyData[month] = acc.monthlyData[month] || { hours: 0, earnings: 0 }
+          acc.monthlyData[month].hours += hours
+          acc.monthlyData[month].earnings += earnings
+
+          students.forEach(student => {
+            acc.studentHours[student] = (acc.studentHours[student] || 0) + hours
+          })
+        } catch (error) {
+          console.error('Error processing event:', error, event)
         }
-
-        const startDate = event.start instanceof Date ? event.start : new Date(event.start);
-        const endDate = event.end instanceof Date ? event.end : new Date(event.end);
-
-        if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
-          console.warn('Invalid date in event:', event);
-          return acc;
-        }
-
-        const hours = (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60);
-        const earnings = hours * event.hourlyRate;
-        const month = format(startDate, 'MMMM yyyy');
-        const students = event.students.split(',').map(s => s.trim());
-
-        acc.totalHours += hours;
-        acc.totalEarnings += earnings;
-
-        acc.monthlyData[month] = acc.monthlyData[month] || { hours: 0, earnings: 0 };
-        acc.monthlyData[month].hours += hours;
-        acc.monthlyData[month].earnings += earnings;
-
-        students.forEach(student => {
-          acc.studentHours[student] = (acc.studentHours[student] || 0) + hours;
-        });
-      } catch (error) {
-        console.error('Error processing event:', error, event);
+        return acc
+      },
+      {
+        totalHours: 0,
+        totalEarnings: 0,
+        studentHours: {},
+        monthlyData: {},
       }
-      return acc;
-    }, {
-      totalHours: 0,
-      totalEarnings: 0,
-      studentHours: {},
-      monthlyData: {}
-    });
+    )
 
-    setAnalytics(analytics);
-  }, [events]);
+    setAnalytics(analytics)
+  }, [events])
 
   useEffect(() => {
-    calculateAnalytics();
-  }, [events, calculateAnalytics]);
+    calculateAnalytics()
+  }, [events, calculateAnalytics])
 
   const handleSelectSlot = ({ start }) => {
     setNewClass(prev => ({
       ...prev,
       start,
-      end: new Date(start.getTime() + 60 * 60 * 1000) // 1 hour default
-    }));
-    setOpenDialog(true);
-  };
+      end: new Date(start.getTime() + 60 * 60 * 1000), // 1 hour default
+    }))
+    setOpenDialog(true)
+  }
 
-  const handleDeleteClass = async (eventId) => {
+  const handleDeleteClass = async eventId => {
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/classes/${eventId}`, {
         method: 'DELETE',
-        credentials: 'include'
-      });
+        credentials: 'include',
+      })
 
       if (!response.ok) {
-        throw new Error('Failed to delete class');
+        throw new Error('Failed to delete class')
       }
 
-      setEvents(prev => prev.filter(event => event.id !== eventId));
+      setEvents(prev => prev.filter(event => event.id !== eventId))
     } catch (error) {
-      console.error('Error deleting class:', error);
-      setSaveError('Failed to delete class');
+      console.error('Error deleting class:', error)
+      setSaveError('Failed to delete class')
     }
-  };
+  }
 
-  const handleEditClass = (event) => {
-    setEditingEvent(event);
+  const handleEditClass = event => {
+    setEditingEvent(event)
     setNewClass({
       subject: event.subject,
       students: event.students,
       start: new Date(event.start),
       end: new Date(event.end),
-      hourlyRate: event.hourlyRate
-    });
-    setOpenDialog(true);
-  };
+      hourlyRate: event.hourlyRate,
+    })
+    setOpenDialog(true)
+  }
 
   const handleSaveClass = async () => {
     try {
-      clearErrors();
+      clearErrors()
 
       // Validation
       if (!newClass.subject || !newClass.students || !newClass.start || !newClass.end) {
-        setValidationError('Please fill in all required fields');
-        return;
+        setValidationError('Please fill in all required fields')
+        return
       }
 
       // Date validation
-      const start = new Date(newClass.start);
-      const end = new Date(newClass.end);
+      const start = new Date(newClass.start)
+      const end = new Date(newClass.end)
 
       if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-        setValidationError('Invalid date format');
-        return;
+        setValidationError('Invalid date format')
+        return
       }
 
-      const method = editingEvent ? 'PUT' : 'POST';
-      const url = editingEvent ? 
-        `${process.env.REACT_APP_API_URL}/classes/${editingEvent.id}` : 
-        `${process.env.REACT_APP_API_URL}/classes`;
+      const method = editingEvent ? 'PUT' : 'POST'
+      const url = editingEvent
+        ? `${process.env.REACT_APP_API_URL}/classes/${editingEvent.id}`
+        : `${process.env.REACT_APP_API_URL}/classes`
 
       const response = await fetch(url, {
         method,
@@ -327,86 +315,86 @@ function ClassCalendar() {
           students: newClass.students,
           start: start.toISOString(),
           end: end.toISOString(),
-          hourlyRate: newClass.hourlyRate || 50
-        })
-      });
+          hourlyRate: newClass.hourlyRate || 50,
+        }),
+      })
 
-      const data = await response.json();
+      const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to save class');
+        throw new Error(data.message || 'Failed to save class')
       }
 
       const formattedClass = {
         ...data,
         start: new Date(data.start),
-        end: new Date(data.end)
-      };
+        end: new Date(data.end),
+      }
 
       setEvents(prev => {
         if (editingEvent) {
-          return prev.map(event => 
-            event.id === editingEvent.id ? formattedClass : event
-          );
+          return prev.map(event => (event.id === editingEvent.id ? formattedClass : event))
         }
-        return [...prev, formattedClass];
-      });
+        return [...prev, formattedClass]
+      })
 
-      setOpenDialog(false);
-      resetForm();
+      setOpenDialog(false)
+      resetForm()
     } catch (error) {
-      console.error('Error saving class:', error);
-      setSaveError(error.message || 'Error saving class');
+      console.error('Error saving class:', error)
+      setSaveError(error.message || 'Error saving class')
     }
-  };
+  }
 
   const exportToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(events.map(event => {
-      const startDate = event.start instanceof Date ? event.start : new Date(event.start);
-      const endDate = event.end instanceof Date ? event.end : new Date(event.end);
-      
-      return {
-        Date: format(startDate, 'MM/dd/yyyy'),
-        StartTime: format(startDate, 'HH:mm'),
-        EndTime: format(endDate, 'HH:mm'),
-        Students: event.students,
-        Subject: event.subject,
-        Hours: (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60),
-        Earnings: ((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60)) * event.hourlyRate
-      };
-    }));
+    const worksheet = XLSX.utils.json_to_sheet(
+      events.map(event => {
+        const startDate = event.start instanceof Date ? event.start : new Date(event.start)
+        const endDate = event.end instanceof Date ? event.end : new Date(event.end)
 
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Classes');
-    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    saveAs(new Blob([excelBuffer]), 'class_schedule.xlsx');
-  };
+        return {
+          Date: format(startDate, 'MM/dd/yyyy'),
+          StartTime: format(startDate, 'HH:mm'),
+          EndTime: format(endDate, 'HH:mm'),
+          Students: event.students,
+          Subject: event.subject,
+          Hours: (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60),
+          Earnings: ((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60)) * event.hourlyRate,
+        }
+      })
+    )
+
+    const workbook = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Classes')
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+    saveAs(new Blob([excelBuffer]), 'class_schedule.xlsx')
+  }
 
   // Custom event component for agenda view
   const EventAgenda = ({ event }) => {
-    const startTime = format(event.start, 'h:mm a');
-    const endTime = format(event.end, 'h:mm a');
-    const duration = (event.end - event.start) / (1000 * 60 * 60);
+    const startTime = format(event.start, 'h:mm a')
+    const endTime = format(event.end, 'h:mm a')
+    const duration = (event.end - event.start) / (1000 * 60 * 60)
 
     return (
       <EventWrapper elevation={1}>
-        <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Box display='flex' justifyContent='space-between' alignItems='center'>
           <EventTime>
             {startTime} - {endTime}
           </EventTime>
           <Box>
-            <IconButton size="small" onClick={() => handleEditClass(event)}>
-              <EditIcon fontSize="small" />
+            <IconButton size='small' onClick={() => handleEditClass(event)}>
+              <EditIcon fontSize='small' />
             </IconButton>
-            <IconButton 
-              size="small" 
+            <IconButton
+              size='small'
               onClick={() => {
                 if (window.confirm('Are you sure you want to delete this class?')) {
-                  handleDeleteClass(event.id);
+                  handleDeleteClass(event.id)
                 }
               }}
             >
-              <DeleteIcon fontSize="small" />
+              <DeleteIcon fontSize='small' />
             </IconButton>
           </Box>
         </Box>
@@ -418,38 +406,44 @@ function ClassCalendar() {
           <strong>Earnings:</strong> ${(duration * event.hourlyRate).toFixed(2)}
         </EventDetails>
       </EventWrapper>
-    );
-  };
+    )
+  }
 
   // Custom event component for calendar view
   const EventCalendar = ({ event }) => {
     return (
-      <Tooltip 
+      <Tooltip
         title={
           <div>
-            <div><strong>Students:</strong> {event.students}</div>
-            <div><strong>Rate:</strong> ${event.hourlyRate}/hr</div>
-            <div><strong>Duration:</strong> {
-              ((event.end - event.start) / (1000 * 60 * 60)).toFixed(1)
-            } hours</div>
+            <div>
+              <strong>Students:</strong> {event.students}
+            </div>
+            <div>
+              <strong>Rate:</strong> ${event.hourlyRate}/hr
+            </div>
+            <div>
+              <strong>Duration:</strong> {((event.end - event.start) / (1000 * 60 * 60)).toFixed(1)} hours
+            </div>
           </div>
         }
         arrow
       >
-        <div style={{ 
-          height: '100%', 
-          backgroundColor: '#3788d8',
-          color: 'white',
-          padding: '2px 4px',
-          borderRadius: '3px',
-          overflow: 'hidden'
-        }}>
+        <div
+          style={{
+            height: '100%',
+            backgroundColor: '#3788d8',
+            color: 'white',
+            padding: '2px 4px',
+            borderRadius: '3px',
+            overflow: 'hidden',
+          }}
+        >
           <div style={{ fontWeight: 'bold' }}>{event.subject}</div>
           <div style={{ fontSize: '0.85em' }}>{event.students}</div>
         </div>
       </Tooltip>
-    );
-  };
+    )
+  }
 
   const resetForm = () => {
     setNewClass({
@@ -457,10 +451,10 @@ function ClassCalendar() {
       students: '',
       start: null,
       end: null,
-      hourlyRate: 50
-    });
-    setEditingEvent(null);
-  };
+      hourlyRate: 50,
+    })
+    setEditingEvent(null)
+  }
 
   const BarChartComponent = () => {
     const data = {
@@ -472,7 +466,7 @@ function ClassCalendar() {
           backgroundColor: 'rgba(54, 162, 235, 0.5)',
           borderColor: 'rgba(54, 162, 235, 1)',
           borderWidth: 1,
-          yAxisID: 'hours'
+          yAxisID: 'hours',
         },
         {
           label: 'Earnings',
@@ -480,10 +474,10 @@ function ClassCalendar() {
           backgroundColor: 'rgba(75, 192, 192, 0.5)',
           borderColor: 'rgba(75, 192, 192, 1)',
           borderWidth: 1,
-          yAxisID: 'earnings'
-        }
-      ]
-    };
+          yAxisID: 'earnings',
+        },
+      ],
+    }
 
     const options = {
       responsive: true,
@@ -497,120 +491,139 @@ function ClassCalendar() {
           position: 'left',
           title: {
             display: true,
-            text: 'Hours'
-          }
+            text: 'Hours',
+          },
         },
         earnings: {
           type: 'linear',
           position: 'right',
           title: {
             display: true,
-            text: 'Earnings ($)'
+            text: 'Earnings ($)',
           },
           grid: {
-            drawOnChartArea: false
-          }
-        }
-      }
-    };
+            drawOnChartArea: false,
+          },
+        },
+      },
+    }
 
-    return <Bar data={data} options={options} />;
-  };
+    return <Bar data={data} options={options} />
+  }
 
   const PieChartComponent = () => {
     const colors = [
-      '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
-      '#FF9F40', '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'
-    ];
+      '#FF6384',
+      '#36A2EB',
+      '#FFCE56',
+      '#4BC0C0',
+      '#9966FF',
+      '#FF9F40',
+      '#FF6384',
+      '#36A2EB',
+      '#FFCE56',
+      '#4BC0C0',
+    ]
 
     const data = {
       labels: Object.keys(analytics.studentHours),
-      datasets: [{
-        data: Object.values(analytics.studentHours),
-        backgroundColor: colors.slice(0, Object.keys(analytics.studentHours).length),
-        borderWidth: 1
-      }]
-    };
+      datasets: [
+        {
+          data: Object.values(analytics.studentHours),
+          backgroundColor: colors.slice(0, Object.keys(analytics.studentHours).length),
+          borderWidth: 1,
+        },
+      ],
+    }
 
     const options = {
       responsive: true,
       plugins: {
         tooltip: {
           callbacks: {
-            label: (context) => {
-              const label = context.label || '';
-              const value = context.raw || 0;
-              const percentage = ((value / analytics.totalHours) * 100).toFixed(1);
-              return `${label}: ${value.toFixed(1)} hours (${percentage}%)`;
-            }
-          }
+            label: context => {
+              const label = context.label || ''
+              const value = context.raw || 0
+              const percentage = ((value / analytics.totalHours) * 100).toFixed(1)
+              return `${label}: ${value.toFixed(1)} hours (${percentage}%)`
+            },
+          },
         },
         legend: {
           position: 'right',
           labels: {
-            generateLabels: (chart) => {
-              const data = chart.data;
+            generateLabels: chart => {
+              const data = chart.data
               return data.labels.map((label, i) => ({
                 text: `${label} (${data.datasets[0].data[i].toFixed(1)}h)`,
                 fillStyle: colors[i],
                 hidden: false,
-                index: i
-              }));
-            }
-          }
-        }
-      }
-    };
+                index: i,
+              }))
+            },
+          },
+        },
+      },
+    }
 
-    return <Pie data={data} options={options} />;
-  };
+    return <Pie data={data} options={options} />
+  }
 
-  const CustomToolbar = (toolbar) => {
-    const currentDate = toolbar.date;
-    const currentMonth = currentDate.getMonth();
-    const currentYear = currentDate.getFullYear();
+  const CustomToolbar = toolbar => {
+    const currentDate = toolbar.date
+    const currentMonth = currentDate.getMonth()
+    const currentYear = currentDate.getFullYear()
 
-    const handleMonthChange = (event) => {
-      const newMonth = event.target.value;
-      const newDate = new Date(currentYear, newMonth, 1);
-      toolbar.onNavigate('DATE', newDate);
-    };
+    const handleMonthChange = event => {
+      const newMonth = event.target.value
+      const newDate = new Date(currentYear, newMonth, 1)
+      toolbar.onNavigate('DATE', newDate)
+    }
 
-    const handleYearChange = (event) => {
-      const newYear = event.target.value;
-      const newDate = new Date(newYear, currentMonth, 1);
-      toolbar.onNavigate('DATE', newDate);
-    };
+    const handleYearChange = event => {
+      const newYear = event.target.value
+      const newDate = new Date(newYear, currentMonth, 1)
+      toolbar.onNavigate('DATE', newDate)
+    }
 
-    const handleViewChange = (view) => {
+    const handleViewChange = view => {
       // Ensure date is first of month when switching to month view
       if (view === 'month') {
-        const newDate = new Date(currentYear, currentMonth, 1);
-        toolbar.onNavigate('DATE', newDate);
+        const newDate = new Date(currentYear, currentMonth, 1)
+        toolbar.onNavigate('DATE', newDate)
       }
-      toolbar.onView(view.toLowerCase());
-    };
+      toolbar.onView(view.toLowerCase())
+    }
 
-    const years = Array.from(
-      { length: 11 },
-      (_, i) => new Date().getFullYear() - 5 + i
-    );
+    const years = Array.from({ length: 11 }, (_, i) => new Date().getFullYear() - 5 + i)
 
     const months = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
-    ];
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ]
 
     return (
       <ToolbarWrapper>
-        <ButtonGroup size="small" variant="outlined">
+        <ButtonGroup size='small' variant='outlined'>
           <IconButton onClick={() => toolbar.onNavigate('PREV')}>
             <ChevronLeftIcon />
           </IconButton>
-          <Button onClick={() => {
-            const today = new Date();
-            toolbar.onNavigate('DATE', today);
-          }}>
+          <Button
+            onClick={() => {
+              const today = new Date()
+              toolbar.onNavigate('DATE', today)
+            }}
+          >
             Today
           </Button>
           <IconButton onClick={() => toolbar.onNavigate('NEXT')}>
@@ -619,30 +632,24 @@ function ClassCalendar() {
         </ButtonGroup>
 
         <DateSelector>
-          <Select
-            value={currentMonth}
-            onChange={handleMonthChange}
-            size="small"
-            variant="outlined"
-          >
+          <Select value={currentMonth} onChange={handleMonthChange} size='small' variant='outlined'>
             {months.map((month, idx) => (
-              <MenuItem key={month} value={idx}>{month}</MenuItem>
+              <MenuItem key={month} value={idx}>
+                {month}
+              </MenuItem>
             ))}
           </Select>
 
-          <Select
-            value={currentYear}
-            onChange={handleYearChange}
-            size="small"
-            variant="outlined"
-          >
+          <Select value={currentYear} onChange={handleYearChange} size='small' variant='outlined'>
             {years.map(year => (
-              <MenuItem key={year} value={year}>{year}</MenuItem>
+              <MenuItem key={year} value={year}>
+                {year}
+              </MenuItem>
             ))}
           </Select>
         </DateSelector>
 
-        <ButtonGroup size="small" variant="outlined">
+        <ButtonGroup size='small' variant='outlined'>
           {['Month', 'Week', 'Day', 'Agenda'].map(view => (
             <Button
               key={view}
@@ -654,25 +661,25 @@ function ClassCalendar() {
           ))}
         </ButtonGroup>
       </ToolbarWrapper>
-    );
-  };
+    )
+  }
 
   return (
-    <div className="class-calendar">
+    <div className='class-calendar'>
       {/* Error displays */}
       <Box sx={{ mb: 2 }}>
         {fetchError && (
-          <Alert severity="error" onClose={() => setFetchError('')}>
+          <Alert severity='error' onClose={() => setFetchError('')}>
             {fetchError}
           </Alert>
         )}
         {saveError && (
-          <Alert severity="error" onClose={() => setSaveError('')}>
+          <Alert severity='error' onClose={() => setSaveError('')}>
             {saveError}
           </Alert>
         )}
         {validationError && (
-          <Alert severity="warning" onClose={() => setValidationError('')}>
+          <Alert severity='warning' onClose={() => setValidationError('')}>
             {validationError}
           </Alert>
         )}
@@ -682,57 +689,57 @@ function ClassCalendar() {
         <Calendar
           localizer={localizer}
           events={events}
-          startAccessor="start"
-          endAccessor="end"
+          startAccessor='start'
+          endAccessor='end'
           style={{ height: 700 }}
           onSelectSlot={handleSelectSlot}
           selectable
           components={{
             toolbar: CustomToolbar,
             agenda: {
-              event: EventAgenda
+              event: EventAgenda,
             },
-            event: EventCalendar
+            event: EventCalendar,
           }}
           views={['month', 'week', 'day', 'agenda']}
-          defaultView="month"
+          defaultView='month'
           popup
           onNavigate={(newDate, view, action) => {
             // Handle date navigation consistently across views
-            const date = new Date(newDate);
+            const date = new Date(newDate)
             if (action === 'PREV') {
               switch (view) {
                 case 'month':
-                  date.setMonth(date.getMonth() - 1);
-                  break;
+                  date.setMonth(date.getMonth() - 1)
+                  break
                 case 'week':
-                  date.setDate(date.getDate() - 7);
-                  break;
+                  date.setDate(date.getDate() - 7)
+                  break
                 case 'day':
-                  date.setDate(date.getDate() - 1);
-                  break;
+                  date.setDate(date.getDate() - 1)
+                  break
                 case 'agenda':
-                  date.setMonth(date.getMonth() - 1);
-                  break;
+                  date.setMonth(date.getMonth() - 1)
+                  break
                 default:
-                  break;
+                  break
               }
             } else if (action === 'NEXT') {
               switch (view) {
                 case 'month':
-                  date.setMonth(date.getMonth() + 1);
-                  break;
+                  date.setMonth(date.getMonth() + 1)
+                  break
                 case 'week':
-                  date.setDate(date.getDate() + 7);
-                  break;
+                  date.setDate(date.getDate() + 7)
+                  break
                 case 'day':
-                  date.setDate(date.getDate() + 1);
-                  break;
+                  date.setDate(date.getDate() + 1)
+                  break
                 case 'agenda':
-                  date.setMonth(date.getMonth() + 1);
-                  break;
+                  date.setMonth(date.getMonth() + 1)
+                  break
                 default:
-                  break;
+                  break
               }
             }
           }}
@@ -741,27 +748,27 @@ function ClassCalendar() {
             agendaDateFormat: 'MMMM do, yyyy',
             agendaTimeFormat: 'h:mm a',
             agendaTimeRangeFormat: ({ start, end }) => {
-              return `${format(start, 'h:mm a')} - ${format(end, 'h:mm a')}`;
+              return `${format(start, 'h:mm a')} - ${format(end, 'h:mm a')}`
             },
             dayRangeHeaderFormat: ({ start, end }) => {
-              const startStr = format(start, 'MMM do');
-              const endStr = format(end, 'MMM do, yyyy');
-              return `${startStr} - ${endStr}`;
-            }
+              const startStr = format(start, 'MMM do')
+              const endStr = format(end, 'MMM do, yyyy')
+              return `${startStr} - ${endStr}`
+            },
           }}
           messages={{
             noEventsInRange: 'No classes scheduled',
-            allDay: 'All day'
+            allDay: 'All day',
           }}
         />
       </StyledCalendarContainer>
 
       <StyledAnalyticsDashboard>
-        <Typography variant="h5" sx={{ mb: 3 }}>
+        <Typography variant='h5' sx={{ mb: 3 }}>
           Analytics Dashboard
         </Typography>
-        
-        <Box className="analytics-summary">
+
+        <Box className='analytics-summary'>
           <Typography>Total Hours: {analytics.totalHours.toFixed(2)}</Typography>
           <Typography>
             Total Earnings: ${analytics.totalEarnings.toFixed(2)} (RMB: {analytics.totalEarnings.toFixed(2) * 5})
@@ -769,107 +776,108 @@ function ClassCalendar() {
         </Box>
 
         <StyledChartContainer>
-          <Box className="chart">
+          <Box className='chart'>
             <BarChartComponent />
           </Box>
-          <Box className="chart">
+          <Box className='chart'>
             <PieChartComponent />
           </Box>
         </StyledChartContainer>
 
-        <Button 
-          onClick={exportToExcel} 
-          variant="contained" 
-          color="primary"
-          startIcon={<DownloadIcon />}
-          sx={{ mt: 2 }}
-        >
+        <Button onClick={exportToExcel} variant='contained' color='primary' startIcon={<DownloadIcon />} sx={{ mt: 2 }}>
           Export to Excel
         </Button>
       </StyledAnalyticsDashboard>
 
-      <Dialog open={openDialog} onClose={() => {
-        setOpenDialog(false);
-        clearErrors();
-        resetForm();
-      }}>
+      <Dialog
+        open={openDialog}
+        onClose={() => {
+          setOpenDialog(false)
+          clearErrors()
+          resetForm()
+        }}
+      >
         <DialogTitle>Add New Class</DialogTitle>
         <DialogContent>
           <TextField
-            label="Subject"
+            label='Subject'
             value={newClass.subject}
-            onChange={(e) => setNewClass({ ...newClass, subject: e.target.value })}
+            onChange={e => setNewClass({ ...newClass, subject: e.target.value })}
             fullWidth
-            margin="normal"
+            margin='normal'
           />
           <TextField
-            label="Students (comma-separated)"
+            label='Students (comma-separated)'
             value={newClass.students}
-            onChange={(e) => setNewClass({ ...newClass, students: e.target.value })}
+            onChange={e => setNewClass({ ...newClass, students: e.target.value })}
             fullWidth
-            margin="normal"
+            margin='normal'
           />
           <TextField
-            label="Start Time"
-            type="datetime-local"
+            label='Start Time'
+            type='datetime-local'
             value={newClass.start ? format(newClass.start, "yyyy-MM-dd'T'HH:mm") : ''}
-            onChange={(e) => {
-              const date = new Date(e.target.value);
+            onChange={e => {
+              const date = new Date(e.target.value)
               setNewClass(prev => ({
                 ...prev,
                 start: date,
-                end: prev.end || new Date(date.getTime() + 60 * 60 * 1000)
-              }));
+                end: prev.end || new Date(date.getTime() + 60 * 60 * 1000),
+              }))
             }}
             fullWidth
-            margin="normal"
+            margin='normal'
             InputLabelProps={{
               shrink: true,
             }}
           />
           <TextField
-            label="End Time"
-            type="datetime-local"
+            label='End Time'
+            type='datetime-local'
             value={newClass.end ? format(newClass.end, "yyyy-MM-dd'T'HH:mm") : ''}
-            onChange={(e) => {
-              const date = new Date(e.target.value);
+            onChange={e => {
+              const date = new Date(e.target.value)
               setNewClass(prev => ({
                 ...prev,
-                end: date
-              }));
+                end: date,
+              }))
             }}
             fullWidth
-            margin="normal"
+            margin='normal'
             InputLabelProps={{
               shrink: true,
             }}
           />
           <TextField
-            label="Hourly Rate ($)"
-            type="number"
+            label='Hourly Rate ($)'
+            type='number'
             value={newClass.hourlyRate}
-            onChange={(e) => setNewClass(prev => ({
-              ...prev,
-              hourlyRate: Number(e.target.value)
-            }))}
+            onChange={e =>
+              setNewClass(prev => ({
+                ...prev,
+                hourlyRate: Number(e.target.value),
+              }))
+            }
             fullWidth
-            margin="normal"
+            margin='normal'
             InputProps={{
-              startAdornment: <span>$</span>
+              startAdornment: <span>$</span>,
             }}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => {
-            setOpenDialog(false);
-            clearErrors();
-            resetForm();
-          }}>
+          <Button
+            onClick={() => {
+              setOpenDialog(false)
+              clearErrors()
+              resetForm()
+            }}
+          >
             Cancel
           </Button>
-          <Button 
-            onClick={handleSaveClass} 
-            color="primary"
+          <Button
+            onClick={handleSaveClass}
+            color='primary'
             disabled={!newClass.subject || !newClass.students || !newClass.start || !newClass.end}
           >
             Save
@@ -877,7 +885,7 @@ function ClassCalendar() {
         </DialogActions>
       </Dialog>
     </div>
-  );
+  )
 }
 
-export default ClassCalendar; 
+export default ClassCalendar
