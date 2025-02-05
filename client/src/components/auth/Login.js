@@ -34,34 +34,14 @@ const validationSchema = Yup.object({
 
 function Login() {
   const navigate = useNavigate();
-  const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const { performLogin } = useAuth();
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       setError('');
-
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        credentials: 'include',
-        body: JSON.stringify({
-          email: values.email.trim().toLowerCase(),
-          password: values.password
-        })
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to login');
-      }
-
-      login(data.user);
-      navigate('/');
+      await performLogin(values.email, values.password, navigate);
     } catch (error) {
       console.error('Login error:', error);
       setError(error.message || 'Failed to login');

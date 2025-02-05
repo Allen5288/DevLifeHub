@@ -44,8 +44,32 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const performLogin = async (email, password, navigate) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify({ email, password })
+      });
+  
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || 'Login failed');
+      }
+  
+      const data = await response.json();
+      login(data.user);
+      navigate('/tools');
+    } catch (error) {
+      throw error; // Re-throw the error to be caught by the caller
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, performLogin }}>
       {children}
     </AuthContext.Provider>
   );

@@ -44,7 +44,7 @@ const validationSchema = Yup.object({
 
 function Register() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, performLogin } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
@@ -78,7 +78,13 @@ function Register() {
       const data = await response.json();
 
       if (response.ok) {
+        try {
+        await performLogin(values.email, values.password, navigate);
         await login(data.user);
+      } catch (error) {
+        console.error('Login error:', error);
+        setError(error.message || 'Failed to login');
+      }
         navigate('/tools');
       } else {
         setError(data.message || 'Registration failed');
