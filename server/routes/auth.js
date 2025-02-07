@@ -6,19 +6,13 @@ const { body, validationResult } = require('express-validator')
 const User = require('../models/User')
 const router = express.Router()
 const authController = require('../controllers/authController')
-const validate = require('../middleware/validate')
-const { loginRules, registerRules } = require('../validation/authValidation')
+const { validate, registerRules } = require('../middleware/validate')
 const { logger } = require('../middleware/logger')
 const auth = require('../middleware/auth')
 
 // Auth routes
 router.post('/register', validate(registerRules), authController.register)
 
-// Validation middleware
-const validateLogin = [
-  body('email').isEmail().withMessage('Please enter a valid email'),
-  body('password').notEmpty().withMessage('Password is required'),
-]
 
 // @route   POST /api/auth/login
 // @desc    Login user & get token

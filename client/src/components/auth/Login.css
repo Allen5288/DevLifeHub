@@ -32,6 +32,7 @@
 .google-button {
   margin-top: 1rem;
   text-transform: none;
+  display: none !important;
 }
 
 .divider-container {
