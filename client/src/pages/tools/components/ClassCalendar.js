@@ -23,6 +23,10 @@ import {
   Select,
   MenuItem,
 } from '@mui/material'
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { Bar, Pie } from 'react-chartjs-2'
 import { saveAs } from 'file-saver'
 import * as XLSX from 'xlsx'
@@ -155,14 +159,6 @@ function ClassCalendar() {
     setValidationError('')
   }, [])
 
-  const handleStartDateChange = (event) => {
-    setStartDate(event.target.value)
-  }
-
-  const handleEndDateChange = (event) => {
-    setEndDate(event.target.value)
-  }
-
   const fetchEvents = useCallback(async () => {
     try {
       clearErrors()
@@ -203,10 +199,10 @@ function ClassCalendar() {
 
   const calculateAnalytics = useCallback(() => {
     const filteredEvents = events.filter(event => {
-      if (!startDate || !endDate) return true // Show all events if no date range selected
+      if (!startDate && !endDate) return true // Show all events if no date range selected
       const eventDate = new Date(event.start)
-      const start = new Date(startDate)
-      const end = new Date(endDate)
+      const start = startDate ? new Date(startDate) : new Date('0001-01-01') // Default to earliest possible date if no start date
+      const end = endDate ? new Date(endDate) : new Date('9999-12-31') // Default to latest possible date if no end date
       return eventDate >= start && eventDate <= end
     })
 
@@ -787,24 +783,28 @@ function ClassCalendar() {
         </Typography>
 
         <Box sx={{ mb: 2, display: 'flex', gap: 2, alignItems: 'center' }}>
-          <TextField
-            id="startDate"
-            type="date"
-            label="Start Date"
-            InputLabelProps={{ shrink: true }}
-            value={startDate}
-            onChange={handleStartDateChange}
-          />
-          <TextField
-            id="endDate"
-            type="date"
-            label="End Date"
-            InputLabelProps={{ shrink: true }}
-            value={endDate}
-            onChange={handleEndDateChange}
-          />
-          <Button variant="contained" color="primary" onClick={calculateAnalytics}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer components={['DatePicker']}>
+              <DatePicker label='Start Date' value={startDate} onChange={newValue => setStartDate(newValue)} />
+            </DemoContainer>
+          </LocalizationProvider>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer components={['DatePicker']}>
+              <DatePicker label='Start Date' value={endDate} onChange={newValue => setEndDate(newValue)} />
+            </DemoContainer>
+          </LocalizationProvider>
+          <Button variant='contained' color='primary' onClick={calculateAnalytics}>
             Apply Date Filter
+          </Button>
+          <Button
+            variant='contained'
+            color='secondary'
+            onClick={() => {
+              setStartDate(null)
+              setEndDate(null)
+            }}
+          >
+            Clear Date Filter
           </Button>
         </Box>
 
