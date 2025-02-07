@@ -145,6 +145,8 @@ function ClassCalendar() {
   const [saveError, setSaveError] = useState('')
   const [validationError, setValidationError] = useState('')
   const [editingEvent, setEditingEvent] = useState(null)
+  const [startDate, setStartDate] = useState(null)
+  const [endDate, setEndDate] = useState(null)
   const navigate = useNavigate()
 
   const clearErrors = useCallback(() => {
@@ -152,6 +154,14 @@ function ClassCalendar() {
     setSaveError('')
     setValidationError('')
   }, [])
+
+  const handleStartDateChange = (event) => {
+    setStartDate(event.target.value)
+  }
+
+  const handleEndDateChange = (event) => {
+    setEndDate(event.target.value)
+  }
 
   const fetchEvents = useCallback(async () => {
     try {
@@ -192,7 +202,15 @@ function ClassCalendar() {
   }, [user, fetchEvents])
 
   const calculateAnalytics = useCallback(() => {
-    const analytics = events.reduce(
+    const filteredEvents = events.filter(event => {
+      if (!startDate || !endDate) return true // Show all events if no date range selected
+      const eventDate = new Date(event.start)
+      const start = new Date(startDate)
+      const end = new Date(endDate)
+      return eventDate >= start && eventDate <= end
+    })
+
+    const analytics = filteredEvents.reduce(
       (acc, event) => {
         try {
           if (!event.start || !event.end) {
@@ -237,11 +255,11 @@ function ClassCalendar() {
     )
 
     setAnalytics(analytics)
-  }, [events])
+  }, [events, startDate, endDate])
 
   useEffect(() => {
     calculateAnalytics()
-  }, [events, calculateAnalytics])
+  }, [events, calculateAnalytics, startDate, endDate])
 
   const handleSelectSlot = ({ start }) => {
     setNewClass(prev => ({
@@ -767,6 +785,28 @@ function ClassCalendar() {
         <Typography variant='h5' sx={{ mb: 3 }}>
           Analytics Dashboard
         </Typography>
+
+        <Box sx={{ mb: 2, display: 'flex', gap: 2, alignItems: 'center' }}>
+          <TextField
+            id="startDate"
+            type="date"
+            label="Start Date"
+            InputLabelProps={{ shrink: true }}
+            value={startDate}
+            onChange={handleStartDateChange}
+          />
+          <TextField
+            id="endDate"
+            type="date"
+            label="End Date"
+            InputLabelProps={{ shrink: true }}
+            value={endDate}
+            onChange={handleEndDateChange}
+          />
+          <Button variant="contained" color="primary" onClick={calculateAnalytics}>
+            Apply Date Filter
+          </Button>
+        </Box>
 
         <Box className='analytics-summary'>
           <Typography>Total Hours: {analytics.totalHours.toFixed(2)}</Typography>
