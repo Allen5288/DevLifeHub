@@ -13,9 +13,13 @@ export function AuthProvider({ children }) {
   }, [])
 
   const checkAuthStatus = async () => {
+    const token = localStorage.getItem('token');
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/check`, {
-        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
       })
       const data = await response.json()
 
@@ -32,10 +36,14 @@ export function AuthProvider({ children }) {
   }
 
   const logout = async () => {
+    const token = localStorage.getItem('token');
     try {
       await fetch(`${process.env.REACT_APP_API_URL}/auth/logout`, {
         method: 'POST',
-        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
       })
       setUser(null)
       navigate('/login')
@@ -45,13 +53,14 @@ export function AuthProvider({ children }) {
   }
 
   const performLogin = async (email, password, navigate) => {
+    const token = localStorage.getItem('token');
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
-        credentials: 'include',
         body: JSON.stringify({ email, password }),
       })
 
@@ -61,6 +70,9 @@ export function AuthProvider({ children }) {
       }
 
       const data = await response.json()
+      if (data.token) {
+        localStorage.setItem('token', data.token) // 存储令牌
+      }
       login(data.user)
       navigate('/tools')
     } catch (error) {

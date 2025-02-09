@@ -160,10 +160,14 @@ function ClassCalendar() {
   }, [])
 
   const fetchEvents = useCallback(async () => {
+    const token = localStorage.getItem('token')
     try {
       clearErrors()
       const response = await fetch(`${process.env.REACT_APP_API_URL}/classes`, {
-        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
       })
 
       if (!response.ok) {
@@ -267,10 +271,14 @@ function ClassCalendar() {
   }
 
   const handleDeleteClass = async eventId => {
+    const token = localStorage.getItem('token')
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/classes/${eventId}`, {
         method: 'DELETE',
-        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
       })
 
       if (!response.ok) {
@@ -319,11 +327,13 @@ function ClassCalendar() {
       const url = editingEvent
         ? `${process.env.REACT_APP_API_URL}/classes/${editingEvent.id}`
         : `${process.env.REACT_APP_API_URL}/classes`
-
+      const token = localStorage.getItem('token')
       const response = await fetch(url, {
         method,
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
         body: JSON.stringify({
           subject: newClass.subject,
           students: newClass.students,

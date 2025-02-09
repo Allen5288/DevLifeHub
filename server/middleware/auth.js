@@ -5,7 +5,7 @@ const { logger } = require('./logger')
 const auth = async (req, res, next) => {
   try {
     // Get token from cookie
-    const token = req.cookies.jwt
+    const token = req.headers['authorization']
 
     if (!token) {
       return res.status(401).json({
@@ -14,9 +14,14 @@ const auth = async (req, res, next) => {
       })
     }
 
+    // const storedToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+    //   expiresIn: process.env.JWT_EXPIRES_IN,
+    // })
+    const tokenValue = token.split(' ')[1]
+
     try {
       // Verify token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET)
+      const decoded = jwt.verify(tokenValue, process.env.JWT_SECRET)
 
       // Get user from token
       const user = await User.findById(decoded.id).select('-password')

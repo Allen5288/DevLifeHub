@@ -48,12 +48,15 @@ function Register() {
     try {
       const { confirmPassword, ...registrationData } = values
 
+      const token = localStorage.getItem('token');
+
       const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
-        credentials: 'include',
+        
         body: JSON.stringify(registrationData),
       })
 
