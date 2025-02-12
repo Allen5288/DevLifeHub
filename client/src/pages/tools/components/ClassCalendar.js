@@ -166,7 +166,7 @@ function ClassCalendar() {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/classes`, {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       })
 
@@ -277,7 +277,7 @@ function ClassCalendar() {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       })
 
@@ -332,7 +332,7 @@ function ClassCalendar() {
         method,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           subject: newClass.subject,
@@ -712,12 +712,12 @@ function ClassCalendar() {
       <StyledCalendarContainer>
         <Calendar
           localizer={localizer}
-          events={events}
           startAccessor='start'
           endAccessor='end'
           style={{ height: 700 }}
           onSelectSlot={handleSelectSlot}
           selectable
+          events={events}
           components={{
             toolbar: CustomToolbar,
             agenda: {
@@ -728,45 +728,6 @@ function ClassCalendar() {
           views={['month', 'week', 'day', 'agenda']}
           defaultView='month'
           popup
-          onNavigate={(newDate, view, action) => {
-            // Handle date navigation consistently across views
-            const date = new Date(newDate)
-            if (action === 'PREV') {
-              switch (view) {
-                case 'month':
-                  date.setMonth(date.getMonth() - 1)
-                  break
-                case 'week':
-                  date.setDate(date.getDate() - 7)
-                  break
-                case 'day':
-                  date.setDate(date.getDate() - 1)
-                  break
-                case 'agenda':
-                  date.setMonth(date.getMonth() - 1)
-                  break
-                default:
-                  break
-              }
-            } else if (action === 'NEXT') {
-              switch (view) {
-                case 'month':
-                  date.setMonth(date.getMonth() + 1)
-                  break
-                case 'week':
-                  date.setDate(date.getDate() + 7)
-                  break
-                case 'day':
-                  date.setDate(date.getDate() + 1)
-                  break
-                case 'agenda':
-                  date.setMonth(date.getMonth() + 1)
-                  break
-                default:
-                  break
-              }
-            }
-          }}
           formats={{
             monthHeaderFormat: 'MMMM yyyy',
             agendaDateFormat: 'MMMM do, yyyy',

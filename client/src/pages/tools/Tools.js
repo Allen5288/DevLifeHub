@@ -7,6 +7,8 @@ import SessionKeyGeneratorPage from './features/sessionKey/SessionKeyGeneratorPa
 import JwtConfigGeneratorPage from './features/jwtConfig/JwtConfigGeneratorPage'
 import GoogleOAuthGeneratorPage from './features/googleOAuth/GoogleOAuthGeneratorPage'
 import ClassCalendarPage from './features/calendar/ClassCalendarPage'
+import CodeComparator from './features/CodeCompare/SalaryCalculatePage'
+import SalaryCalculatePage from './features/salaryCalculateApp/SalaryCalculatePage'
 
 function Tools() {
   return (
@@ -18,6 +20,8 @@ function Tools() {
       <Route path='/jwt-config' element={<JwtConfigGeneratorPage />} />
       <Route path='/google-oauth' element={<GoogleOAuthGeneratorPage />} />
       <Route path='/calendar' element={<ClassCalendarPage />} />
+      <Route path='/code-compare' element={<CodeComparator />} />
+      <Route path='/salary-calculator' element={<SalaryCalculatePage />} />
     </Routes>
   )
 }

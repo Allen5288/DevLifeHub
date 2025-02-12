@@ -50,4 +50,18 @@ export const TOOLS_CONFIG = [
     icon: CalendarIcon,
     path: '/tools/calendar',
   },
+  {
+    id: 'code-compare',
+    title: 'Code Compare',
+    description: 'Show Code diffs',
+    icon: CalendarIcon,
+    path: '/tools/code-compare',
+  },
+  {
+    id: 'salary-calculator',
+    title: 'Salary Calculator',
+    description: 'Calculate mutlple country tax and after tax salary',
+    icon: CalendarIcon,
+    path: '/tools/salary-calculator',
+  },
 ]
