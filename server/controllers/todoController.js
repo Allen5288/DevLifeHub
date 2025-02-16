@@ -11,12 +11,14 @@ function invalidateUserCache(userId) {
 // Project Controllers
 const createProject = async (req, res) => {
   try {
-    if (!req.body.name) {
+    const { name, description, category, color } = req.body;
+    
+    if (!name) {
       return res.status(400).json({ message: 'Project name is required' });
     }
     
     const existingProject = await Project.findOne({ 
-      name: req.body.name, 
+      name: name, 
       user: req.user.id 
     });
     
@@ -25,13 +27,21 @@ const createProject = async (req, res) => {
     }
 
     const project = await Project.create({
-      name: req.body.name,
+      name,
+      description,
+      category,
+      color,
       user: req.user.id
     });
+    
     invalidateUserCache(req.user.id);
     res.status(201).json(project);
   } catch (error) {
-    res.status(500).json({ message: 'Server error while creating project' });
+    console.error('Project creation error:', error);
+    res.status(500).json({ 
+      message: 'Server error while creating project',
+      details: error.message 
+    });
   }
 };
 
@@ -72,6 +82,38 @@ const deleteProject = async (req, res) => {
       return res.status(404).json({ message: error.message });
     }
     res.status(500).json({ message: 'Server error while deleting project' });
+  }
+};
+
+const updateProject = async (req, res) => {
+  try {
+    const { name, description, category, color } = req.body;
+
+    // Check for duplicate project name
+    const existingProject = await Project.findOne({
+      name,
+      user: req.user.id,
+      _id: { $ne: req.params.projectId }
+    });
+
+    if (existingProject) {
+      return res.status(400).json({ message: 'Project with this name already exists' });
+    }
+
+    const updatedProject = await Project.findOneAndUpdate(
+      { _id: req.params.projectId, user: req.user.id },
+      { name, description, category, color },
+      { new: true }
+    );
+
+    if (!updatedProject) {
+      return res.status(404).json({ message: 'Project not found' });
+    }
+
+    invalidateUserCache(req.user.id);
+    res.json(updatedProject);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error while updating project' });
   }
 };
 
@@ -118,7 +160,7 @@ const getTodosByProject = async (req, res) => {
     const todos = await Todo.find({
       project: req.params.projectId,
       user: req.user.id
-    }).sort({ completed: 1, createdAt: -1 });
+    }).sort({ important: -1, completed: 1, createdAt: -1 }); // Important todos first, then incomplete, then by creation date
     
     res.json(todos);
   } catch (error) {
@@ -128,14 +170,22 @@ const getTodosByProject = async (req, res) => {
 
 const updateTodo = async (req, res) => {
   try {
-    if (typeof req.body.completed !== 'boolean' && !req.body.text) {
-      return res.status(400).json({ message: 'Invalid update data' });
+    const allowedUpdates = ['completed', 'important', 'text', 'order'];
+    const updates = Object.keys(req.body);
+    const isValidOperation = updates.every(update => allowedUpdates.includes(update));
+
+    if (!isValidOperation) {
+      return res.status(400).json({ message: 'Invalid update fields' });
+    }
+
+    if (updates.length === 0) {
+      return res.status(400).json({ message: 'No update data provided' });
     }
 
     const todo = await Todo.findOneAndUpdate(
       { _id: req.params.id, user: req.user.id },
       { $set: req.body },
-      { new: true }
+      { new: true, runValidators: true }
     );
     
     if (!todo) {
@@ -145,7 +195,11 @@ const updateTodo = async (req, res) => {
     invalidateUserCache(req.user.id);
     res.json(todo);
   } catch (error) {
-    res.status(500).json({ message: 'Server error while updating todo' });
+    console.error('Todo update error:', error);
+    res.status(500).json({ 
+      message: 'Server error while updating todo',
+      details: error.message 
+    });
   }
 };
 
@@ -167,6 +221,25 @@ const deleteTodo = async (req, res) => {
   }
 };
 
+const updateTodoOrder = async (req, res) => {
+  try {
+    const { todos } = req.body;
+    
+    // Update each todo's position in parallel
+    await Promise.all(todos.map(async (todo, index) => {
+      await Todo.findOneAndUpdate(
+        { _id: todo._id, user: req.user._id },
+        { $set: { order: index } },
+        { new: true }
+      );
+    }));
+    
+    res.json({ message: 'Todo order updated successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error while updating todo order' });
+  }
+};
+
 module.exports = {
   createProject,
   getProjects,
@@ -174,5 +247,7 @@ module.exports = {
   createTodo,
   getTodosByProject,
   updateTodo,
-  deleteTodo
+  deleteTodo,
+  updateTodoOrder,
+  updateProject
 };

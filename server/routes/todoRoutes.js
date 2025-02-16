@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
-const rateLimit = require('express-rate-limit');
 const cacheMiddleware = require('../middleware/cacheMiddleware');
 const {
   createProject,
@@ -10,25 +9,22 @@ const {
   createTodo,
   getTodosByProject,
   updateTodo,
-  deleteTodo
+  deleteTodo,
+  updateTodoOrder,
+  updateProject
 } = require('../controllers/todoController');
 
-// Specific rate limiter for todo routes
-const todoLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100,
-  message: { message: 'Too many requests from this IP, please try again later' }
-});
-
-// Project routes with rate limiting
+// Project routes
 router.post('/projects', auth, createProject);
 router.get('/projects', auth, cacheMiddleware(300), getProjects);
+router.patch('/projects/:projectId', auth, updateProject);
 router.delete('/projects/:projectId', auth, deleteProject);
 
-// Todo routes with rate limiting
+// Todo routes
 router.post('/', auth, createTodo);
 router.get('/project/:projectId', auth, cacheMiddleware(300), getTodosByProject);
 router.patch('/:id', auth, updateTodo);
 router.delete('/:id', auth, deleteTodo);
+router.put('/order', auth, updateTodoOrder);
 
 module.exports = router;
