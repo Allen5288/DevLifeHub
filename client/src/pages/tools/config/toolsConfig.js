@@ -64,4 +64,18 @@ export const TOOLS_CONFIG = [
     icon: CalendarIcon,
     path: '/tools/salary-calculator',
   },
+  {
+    id: 'currency-exchange',
+    title: 'Currency Exchange',
+    description: 'Have a quick look for the currency exchange rates',
+    icon: CalendarIcon,
+    path: '/tools/currency-exchange',
+  },
+  {
+    id: 'todo',
+    title: 'Todo Manager',
+    description: 'Organize your tasks and projects efficiently',
+    icon: CalendarIcon,
+    path: '/tools/todo',
+  }
 ]

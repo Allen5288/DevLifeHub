@@ -14,9 +14,6 @@ const auth = async (req, res, next) => {
       })
     }
 
-    // const storedToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-    //   expiresIn: process.env.JWT_EXPIRES_IN,
-    // })
     const tokenValue = token.split(' ')[1]
 
     try {

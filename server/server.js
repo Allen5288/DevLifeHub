@@ -28,6 +28,7 @@ const blogRoutes = require('./routes/blog')
 const travelRoutes = require('./routes/travel')
 const foodRoutes = require('./routes/food')
 const fullstackRoutes = require('./routes/fullstack')
+const todoRoutes = require('./routes/todoRoutes')
 
 // Import middleware
 const errorHandler = require('./middleware/errorHandler')
@@ -124,6 +125,7 @@ app.use('/api/blog', blogRoutes)
 app.use('/api/travel', travelRoutes)
 app.use('/api/food', foodRoutes)
 app.use('/api/fullstack', fullstackRoutes)
+app.use('/api/todos', todoRoutes)
 
 // Error handling middleware
 app.use(errorHandler)

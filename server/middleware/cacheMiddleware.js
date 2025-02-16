@@ -7,7 +7,8 @@ const cacheMiddleware = duration => async (req, res, next) => {
     return next()
   }
 
-  const key = `cache:${req.originalUrl}`
+  // Use _id to match MongoDB's id format
+  const key = `${req.user._id}-${req.originalUrl}`
 
   try {
     const cachedData = await cache.get(key)

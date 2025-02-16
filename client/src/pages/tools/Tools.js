@@ -9,6 +9,8 @@ import GoogleOAuthGeneratorPage from './features/googleOAuth/GoogleOAuthGenerato
 import ClassCalendarPage from './features/calendar/ClassCalendarPage'
 import CodeComparator from './features/CodeCompare/SalaryCalculatePage'
 import SalaryCalculatePage from './features/salaryCalculateApp/SalaryCalculatePage'
+import CurrencyExchangePage from './features/currencyExchange/CurrencyExchangePage'
+import TodoPage from './features/todo/TodoPage'
 
 function Tools() {
   return (
@@ -22,6 +24,8 @@ function Tools() {
       <Route path='/calendar' element={<ClassCalendarPage />} />
       <Route path='/code-compare' element={<CodeComparator />} />
       <Route path='/salary-calculator' element={<SalaryCalculatePage />} />
+      <Route path='/currency-exchange' element={<CurrencyExchangePage />} />
+      <Route path='/todo' element={<TodoPage />} />
     </Routes>
   )
 }
