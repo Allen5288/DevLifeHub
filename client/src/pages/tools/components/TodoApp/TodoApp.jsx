@@ -90,7 +90,7 @@ const TodoItem = styled(motion.div)(({ theme }) => ({
   overflow: 'hidden',
 }))
 
-const TodoContent = styled(Paper)(({ theme, completed, isDragging, isImportant }) => ({
+const TodoContent = styled(Paper)(({ theme, completed, isdragging, isImportant }) => ({
   padding: theme.spacing(2),
   display: 'flex',
   alignItems: 'center',
@@ -123,7 +123,7 @@ const TodoContent = styled(Paper)(({ theme, completed, isDragging, isImportant }
     opacity: 0.5,
     transition: 'all 0.2s ease',
     borderRight: `1px solid ${theme.palette.divider}`,
-    cursor: isDragging ? 'grabbing' : 'grab',
+    cursor: isdragging ? 'grabbing' : 'grab',
     touchAction: 'none',
     '&:hover': {
       opacity: 1,
@@ -259,7 +259,7 @@ const EmptyState = styled(Box)(({ theme }) => ({
   },
 }))
 
-const TodoCheckbox = ({ completed, onClick, isToggling, isDragging }) => {
+const TodoCheckbox = ({ completed, onClick, isToggling, isdragging }) => {
   return (
     <Box
       sx={{
@@ -269,7 +269,7 @@ const TodoCheckbox = ({ completed, onClick, isToggling, isDragging }) => {
         height: 44,
         marginLeft: -1,
         marginRight: 1,
-        opacity: isDragging ? 0.5 : 1,
+        opacity: isdragging ? 0.5 : 1,
       }}
     >
       <ButtonBase
@@ -396,7 +396,7 @@ const ImportantFlag = ({ isImportant, onClick, disabled }) => (
 );
 
 const SortableTodoItem = forwardRef(({ todo, onDelete, onToggle, onToggleImportant }, ref) => {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ 
+  const { attributes, listeners, setNodeRef, transform, transition, isdragging } = useSortable({ 
     id: todo._id,
     disabled: false,
     modifiers: [
@@ -414,7 +414,7 @@ const SortableTodoItem = forwardRef(({ todo, onDelete, onToggle, onToggleImporta
   const [isTogglingImportant, setIsTogglingImportant] = useState(false);
 
   const handleToggle = async (e) => {
-    if (isDragging) return;
+    if (isdragging) return;
     e.preventDefault();
     e.stopPropagation();
     if (isToggling) return;
@@ -425,7 +425,7 @@ const SortableTodoItem = forwardRef(({ todo, onDelete, onToggle, onToggleImporta
   };
 
   const handleDelete = async (e) => {
-    if (isDragging) return;
+    if (isdragging) return;
     e.preventDefault();
     e.stopPropagation();
     if (isDeleting) return;
@@ -436,7 +436,7 @@ const SortableTodoItem = forwardRef(({ todo, onDelete, onToggle, onToggleImporta
   };
 
   const handleToggleImportant = async (e) => {
-    if (isDragging) return;
+    if (isdragging) return;
     e.preventDefault();
     e.stopPropagation();
     if (isTogglingImportant) return;
@@ -449,7 +449,7 @@ const SortableTodoItem = forwardRef(({ todo, onDelete, onToggle, onToggleImporta
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: isDragging ? 0.5 : 1,
+    opacity: isdragging ? 0.5 : 1,
   };
 
   const composedRef = useCallback(
@@ -469,7 +469,7 @@ const SortableTodoItem = forwardRef(({ todo, onDelete, onToggle, onToggleImporta
       ref={composedRef}
       style={style}
     >
-      <TodoContent completed={todo.completed} isDragging={isDragging} isImportant={todo.important}>
+      <TodoContent completed={todo.completed} isdragging={isdragging} isImportant={todo.important}>
         <Box 
           className="drag-handle"
           {...attributes}
@@ -482,7 +482,7 @@ const SortableTodoItem = forwardRef(({ todo, onDelete, onToggle, onToggleImporta
             completed={todo.completed}
             onClick={handleToggle}
             isToggling={isToggling}
-            isDragging={isDragging}
+            isdragging={isdragging}
           />
           <Typography
             sx={{
@@ -603,6 +603,7 @@ const DEFAULT_PROJECT_CATEGORIES = [
   'Personal',
   'Work',
   'Study',
+  'AustriliaGO',
   'Shopping',
   'Health',
   'Family',
@@ -631,131 +632,6 @@ const ColorPickerPopover = ({ color, onChange, onClose, anchorEl }) => (
     <ChromePicker color={color} onChange={color => onChange(color.hex)} />
   </Popover>
 )
-
-const ProjectCategoryMenuItem = styled(MenuItem)(({ theme, selected }) => ({
-  padding: theme.spacing(1, 2),
-  margin: theme.spacing(0.25, 1),
-  borderRadius: theme.shape.borderRadius,
-  '&:hover': {
-    backgroundColor: theme.palette.action.hover,
-    '& .category-dot': {
-      transform: 'scale(1.2)',
-    },
-  },
-  '& .category-dot': {
-    transition: 'transform 0.2s ease',
-  },
-  ...(selected && {
-    backgroundColor: `${theme.palette.primary.main}15 !important`,
-    '& .category-dot': {
-      backgroundColor: theme.palette.primary.main,
-    },
-    '& .MuiListItemText-primary': {
-      fontWeight: 600,
-      color: theme.palette.primary.main,
-    },
-  }),
-}));
-
-const ProjectCategoryMenu = ({ categories, onSelect, onAddCustom, selected }) => {
-  const handleSelect = (category) => (event) => {
-    onSelect(event, category);
-  };
-
-  return (
-    <Box sx={{ maxHeight: 300, overflowY: 'auto' }}>
-      <List dense>
-        <ListSubheader sx={{ bgcolor: 'background.paper', lineHeight: '32px', fontWeight: 600 }}>
-          Default Categories
-        </ListSubheader>
-        {DEFAULT_PROJECT_CATEGORIES.map(category => (
-          <ProjectCategoryMenuItem 
-            key={category} 
-            value={category} 
-            selected={selected === category}
-            onClick={(e) => handleSelect(category)(e)}
-          >
-            <ListItemIcon>
-              <Box
-                className="category-dot"
-                sx={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: '50%',
-                  bgcolor: selected === category ? 'primary.main' : 'action.disabled',
-                }}
-              />
-            </ListItemIcon>
-            <ListItemText 
-              primary={category}
-              primaryTypographyProps={{
-                sx: { fontWeight: selected === category ? 600 : 400 }
-              }}
-            />
-          </ProjectCategoryMenuItem>
-        ))}
-        
-        {categories.filter(cat => !DEFAULT_PROJECT_CATEGORIES.includes(cat)).length > 0 && (
-          <>
-            <Divider sx={{ my: 1 }} />
-            <ListSubheader sx={{ bgcolor: 'background.paper', lineHeight: '32px', fontWeight: 600 }}>
-              Custom Categories
-            </ListSubheader>
-            {categories
-              .filter(cat => !DEFAULT_PROJECT_CATEGORIES.includes(cat))
-              .map(category => (
-                <ProjectCategoryMenuItem 
-                  key={category} 
-                  value={category}
-                  selected={selected === category}
-                  onClick={(e) => handleSelect(category)(e)}
-                >
-                  <ListItemIcon>
-                    <Box
-                      className="category-dot"
-                      sx={{
-                        width: 8,
-                        height: 8,
-                        borderRadius: '50%',
-                        bgcolor: selected === category ? 'primary.main' : 'action.disabled',
-                      }}
-                    />
-                  </ListItemIcon>
-                  <ListItemText 
-                    primary={category}
-                    primaryTypographyProps={{
-                      sx: { fontWeight: selected === category ? 600 : 400 }
-                    }}
-                  />
-                </ProjectCategoryMenuItem>
-              ))}
-          </>
-        )}
-        
-        <Divider sx={{ my: 1 }} />
-        <ProjectCategoryMenuItem 
-          onClick={onAddCustom}
-          sx={{ 
-            color: 'primary.main',
-            '&:hover': {
-              backgroundColor: theme => `${theme.palette.primary.main}15`,
-            },
-          }}
-        >
-          <ListItemIcon>
-            <AddIcon color="inherit" />
-          </ListItemIcon>
-          <ListItemText 
-            primary="Add Custom Category"
-            primaryTypographyProps={{
-              sx: { fontWeight: 500 }
-            }}
-          />
-        </ProjectCategoryMenuItem>
-      </List>
-    </Box>
-  );
-};
 
 const ProjectForm = ({ onSubmit, initialValues = {} }) => {
   const [formData, setFormData] = useState({
@@ -849,11 +725,31 @@ const ProjectForm = ({ onSubmit, initialValues = {} }) => {
             value={formData.category}
             label="Category"
             onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
+            renderValue={(selected) => (
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Box
+                  sx={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: '50%',
+                    bgcolor: 'primary.main',
+                    ml: 0.5
+                  }}
+                />
+                {selected}
+              </Box>
+            )}
+            sx={{
+              '& .MuiSelect-select': {
+                display: 'flex',
+                alignItems: 'center'
+              }
+            }}
           >
             <ListSubheader>Default Categories</ListSubheader>
             {DEFAULT_PROJECT_CATEGORIES.map(category => (
-              <MenuItem key={category} value={category}>
-                <ListItemIcon>
+              <MenuItem key={category} value={category} sx={{ py: 1.5, px: 2, display: 'flex', alignItems: 'center' }}>
+                <ListItemIcon sx={{ minWidth: 28, mr: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <Box
                     sx={{
                       width: 8,
@@ -863,7 +759,7 @@ const ProjectForm = ({ onSubmit, initialValues = {} }) => {
                     }}
                   />
                 </ListItemIcon>
-                <ListItemText primary={category} />
+                <ListItemText primary={category} sx={{ m: 0 }} />
               </MenuItem>
             ))}
 
@@ -873,8 +769,8 @@ const ProjectForm = ({ onSubmit, initialValues = {} }) => {
                 {categories
                   .filter(cat => !DEFAULT_PROJECT_CATEGORIES.includes(cat))
                   .map(category => (
-                    <MenuItem key={category} value={category}>
-                      <ListItemIcon>
+                    <MenuItem key={category} value={category} sx={{ py: 1.5, px: 2, display: 'flex', alignItems: 'center' }}>
+                      <ListItemIcon sx={{ minWidth: 28, mr: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <Box
                           sx={{
                             width: 8,
@@ -884,7 +780,7 @@ const ProjectForm = ({ onSubmit, initialValues = {} }) => {
                           }}
                         />
                       </ListItemIcon>
-                      <ListItemText primary={category} />
+                      <ListItemText primary={category} sx={{ m: 0 }} />
                     </MenuItem>
                   ))}
               </>
@@ -894,12 +790,12 @@ const ProjectForm = ({ onSubmit, initialValues = {} }) => {
             <MenuItem 
               value="ADD_CUSTOM"
               onClick={() => setCategoryDialogOpen(true)}
-              sx={{ color: 'primary.main' }}
+              sx={{ py: 1.5, px: 2, display: 'flex', alignItems: 'center', color: 'primary.main' }}
             >
-              <ListItemIcon>
-                <AddIcon color="inherit" />
+              <ListItemIcon sx={{ minWidth: 28, mr: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <AddIcon fontSize="small" color="inherit" />
               </ListItemIcon>
-              <ListItemText primary="Add Custom Category" />
+              <ListItemText primary="Add Custom Category" sx={{ m: 0 }} />
             </MenuItem>
           </Select>
         </FormControl>
