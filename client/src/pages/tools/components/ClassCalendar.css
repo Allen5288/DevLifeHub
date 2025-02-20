@@ -1,7 +1,13 @@
 .class-calendar {
-  padding: 24px;
+  padding: 12px;
   background-color: #f8f9fa;
   min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .class-calendar {
+    padding: 8px;
+  }
 }
 
 .calendar-container {
@@ -17,6 +23,33 @@
   background: white;
   padding: 16px;
   border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .rbc-calendar {
+    min-height: 500px !important;
+    padding: 8px;
+  }
+
+  .rbc-toolbar {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 8px;
+  }
+
+  .rbc-toolbar-label {
+    margin: 8px 0 !important;
+  }
+
+  .rbc-btn-group {
+    width: 100%;
+    justify-content: center !important;
+  }
+
+  .rbc-header {
+    padding: 4px !important;
+    font-size: 0.8rem !important;
+  }
 }
 
 .rbc-month-view {
@@ -86,6 +119,39 @@
   border-radius: 8px;
 }
 
+@media (max-width: 768px) {
+  .rbc-agenda-view {
+    font-size: 0.9rem;
+  }
+
+  .rbc-agenda-content {
+    flex: 1;
+  }
+
+  .rbc-agenda-date-cell,
+  .rbc-agenda-time-cell,
+  .rbc-agenda-event-cell {
+    padding: 6px 4px !important;
+    font-size: 0.9rem;
+  }
+
+  .rbc-agenda-date-cell {
+    min-width: 80px;
+  }
+
+  .rbc-agenda-time-cell {
+    min-width: 90px;
+  }
+
+  .rbc-agenda-event-cell {
+    padding-left: 8px !important;
+  }
+
+  .event-wrapper {
+    margin: 4px 0;
+  }
+}
+
 .rbc-agenda-empty {
   padding: 20px;
   text-align: center;
@@ -125,6 +191,14 @@
   border-radius: 6px;
 }
 
+@media (max-width: 768px) {
+  .analytics-summary {
+    grid-template-columns: 1fr;
+    padding: 12px;
+    margin: 16px 0;
+  }
+}
+
 .analytics-summary .MuiTypography-root {
   font-size: 1.1rem;
   color: #1976d2;
@@ -136,6 +210,19 @@
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   gap: 24px;
   margin: 24px 0;
+}
+
+@media (max-width: 768px) {
+  .charts-container {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+
+  .chart {
+    height: 250px;
+    padding: 12px;
+  }
 }
 
 .chart {
@@ -152,15 +239,48 @@
 
 /* Custom Toolbar Styles */
 .toolbar-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
   background-color: #f8f9fa;
   border-radius: 8px;
-  padding: 12px 16px;
+  padding: 12px;
   margin-bottom: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .toolbar-wrapper {
+    flex-direction: column;
+    padding: 8px;
+  }
+
+  .toolbar-wrapper .MuiButtonGroup-root,
+  .toolbar-wrapper .MuiSelect-root {
+    width: 100%;
+  }
+
+  .toolbar-wrapper .MuiSelect-root {
+    min-width: unset;
+  }
 }
 
 .toolbar-wrapper .MuiButtonGroup-root {
   box-shadow: none;
+}
+
+@media (max-width: 768px) {
+  .toolbar-wrapper .MuiButtonGroup-root {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    gap: 4px;
+  }
+
+  .toolbar-wrapper .MuiButtonGroup-root .MuiButton-root {
+    width: 100%;
+    margin: 0;
+    border-radius: 4px !important;
+  }
 }
 
 .toolbar-wrapper .MuiSelect-root {
@@ -217,6 +337,14 @@
 /* Dialog Styles */
 .MuiDialog-paper {
   min-width: 400px;
+}
+
+@media (max-width: 768px) {
+  .MuiDialog-paper {
+    min-width: unset !important;
+    width: 95% !important;
+    margin: 16px !important;
+  }
 }
 
 .dialog-content {

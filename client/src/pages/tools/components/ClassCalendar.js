@@ -100,6 +100,14 @@ const DateSelector = styled(Box)(({ theme }) => ({
     minWidth: 120,
     backgroundColor: 'white',
   },
+  [theme.breakpoints.down('md')]: {
+    flexDirection: 'column',
+    width: '100%',
+    '& .MuiSelect-root': {
+      width: '100%',
+      minWidth: 'unset'
+    }
+  }
 }))
 
 const StyledCalendarContainer = styled(Box)(({ theme }) => ({
@@ -111,6 +119,9 @@ const StyledCalendarContainer = styled(Box)(({ theme }) => ({
   '& .rbc-calendar': {
     fontFamily: theme.typography.fontFamily,
   },
+  [theme.breakpoints.down('md')]: {
+    padding: theme.spacing(1),
+  }
 }))
 
 const StyledAnalyticsDashboard = styled(Box)(({ theme }) => ({
@@ -118,6 +129,9 @@ const StyledAnalyticsDashboard = styled(Box)(({ theme }) => ({
   padding: theme.spacing(3),
   borderRadius: theme.shape.borderRadius,
   boxShadow: theme.shadows[1],
+  [theme.breakpoints.down('md')]: {
+    padding: theme.spacing(2),
+  }
 }))
 
 const StyledChartContainer = styled(Box)(({ theme }) => ({
@@ -125,6 +139,10 @@ const StyledChartContainer = styled(Box)(({ theme }) => ({
   gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
   gap: theme.spacing(3),
   margin: `${theme.spacing(3)} 0`,
+  [theme.breakpoints.down('md')]: {
+    gridTemplateColumns: '1fr',
+    gap: theme.spacing(2)
+  }
 }))
 
 function ClassCalendar() {
@@ -399,19 +417,35 @@ function ClassCalendar() {
     const startTime = format(event.start, 'h:mm a')
     const endTime = format(event.end, 'h:mm a')
     const duration = (event.end - event.start) / (1000 * 60 * 60)
+    const isMobile = window.innerWidth <= 768
 
     return (
-      <EventWrapper elevation={1}>
-        <Box display='flex' justifyContent='space-between' alignItems='center'>
+      <EventWrapper 
+        elevation={1}
+        sx={{
+          p: { xs: 1, sm: 2 },
+          m: { xs: 0.5, sm: 1 }
+        }}
+      >
+        <Box 
+          display='flex' 
+          justifyContent='space-between' 
+          alignItems='center'
+          flexDirection={isMobile ? 'column' : 'row'}
+          gap={isMobile ? 1 : 0}
+        >
           <EventTime>
             {startTime} - {endTime}
           </EventTime>
           <Box>
-            <IconButton size='small' onClick={() => handleEditClass(event)}>
+            <IconButton 
+              size={isMobile ? 'small' : 'medium'} 
+              onClick={() => handleEditClass(event)}
+            >
               <EditIcon fontSize='small' />
             </IconButton>
             <IconButton
-              size='small'
+              size={isMobile ? 'small' : 'medium'}
               onClick={() => {
                 if (window.confirm('Are you sure you want to delete this class?')) {
                   handleDeleteClass(event.id)
@@ -422,11 +456,13 @@ function ClassCalendar() {
             </IconButton>
           </Box>
         </Box>
-        <EventTitle>{event.subject}</EventTitle>
-        <EventDetails>
+        <EventTitle sx={{ fontSize: { xs: '0.9rem', sm: '1rem' } }}>
+          {event.subject}
+        </EventTitle>
+        <EventDetails sx={{ fontSize: { xs: '0.8rem', sm: '0.85rem' } }}>
           <strong>Students:</strong> {event.students}
         </EventDetails>
-        <EventDetails>
+        <EventDetails sx={{ fontSize: { xs: '0.8rem', sm: '0.85rem' } }}>
           <strong>Earnings:</strong> ${(duration * event.hourlyRate).toFixed(2)}
         </EventDetails>
       </EventWrapper>
@@ -638,25 +674,36 @@ function ClassCalendar() {
 
     return (
       <ToolbarWrapper>
-        <ButtonGroup size='small' variant='outlined'>
-          <IconButton onClick={() => toolbar.onNavigate('PREV')}>
-            <ChevronLeftIcon />
-          </IconButton>
-          <Button
-            onClick={() => {
+        <Box sx={{ 
+          display: 'flex', 
+          gap: 1, 
+          width: '100%',
+          justifyContent: 'center'
+        }}>
+          <ButtonGroup size='small' variant='outlined'>
+            <IconButton onClick={() => toolbar.onNavigate('PREV')}>
+              <ChevronLeftIcon />
+            </IconButton>
+            <Button onClick={() => {
               const today = new Date()
               toolbar.onNavigate('DATE', today)
-            }}
-          >
-            Today
-          </Button>
-          <IconButton onClick={() => toolbar.onNavigate('NEXT')}>
-            <ChevronRightIcon />
-          </IconButton>
-        </ButtonGroup>
+            }}>
+              Today
+            </Button>
+            <IconButton onClick={() => toolbar.onNavigate('NEXT')}>
+              <ChevronRightIcon />
+            </IconButton>
+          </ButtonGroup>
+        </Box>
 
         <DateSelector>
-          <Select value={currentMonth} onChange={handleMonthChange} size='small' variant='outlined'>
+          <Select 
+            value={currentMonth} 
+            onChange={handleMonthChange} 
+            size='small' 
+            variant='outlined'
+            fullWidth
+          >
             {months.map((month, idx) => (
               <MenuItem key={month} value={idx}>
                 {month}
@@ -664,7 +711,13 @@ function ClassCalendar() {
             ))}
           </Select>
 
-          <Select value={currentYear} onChange={handleYearChange} size='small' variant='outlined'>
+          <Select 
+            value={currentYear} 
+            onChange={handleYearChange} 
+            size='small' 
+            variant='outlined'
+            fullWidth
+          >
             {years.map(year => (
               <MenuItem key={year} value={year}>
                 {year}
@@ -673,17 +726,32 @@ function ClassCalendar() {
           </Select>
         </DateSelector>
 
-        <ButtonGroup size='small' variant='outlined'>
-          {['Month', 'Week', 'Day', 'Agenda'].map(view => (
-            <Button
-              key={view}
-              onClick={() => handleViewChange(view.toLowerCase())}
-              variant={toolbar.view === view.toLowerCase() ? 'contained' : 'outlined'}
-            >
-              {view}
-            </Button>
-          ))}
-        </ButtonGroup>
+        <Box sx={{ width: '100%' }}>
+          <ButtonGroup 
+            size='small' 
+            variant='outlined' 
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr 1fr', sm: 'repeat(4, 1fr)' },
+              gap: 0.5,
+              width: '100%'
+            }}
+          >
+            {['Month', 'Week', 'Day', 'Agenda'].map(view => (
+              <Button
+                key={view}
+                onClick={() => handleViewChange(view.toLowerCase())}
+                variant={toolbar.view === view.toLowerCase() ? 'contained' : 'outlined'}
+                sx={{
+                  borderRadius: '4px !important',
+                  border: '1px solid rgba(0, 0, 0, 0.23) !important'
+                }}
+              >
+                {view}
+              </Button>
+            ))}
+          </ButtonGroup>
+        </Box>
       </ToolbarWrapper>
     )
   }
@@ -714,7 +782,7 @@ function ClassCalendar() {
           localizer={localizer}
           startAccessor='start'
           endAccessor='end'
-          style={{ height: 700 }}
+          style={{ height: window.innerWidth <= 768 ? 500 : 700 }}
           onSelectSlot={handleSelectSlot}
           selectable
           events={events}
@@ -725,8 +793,11 @@ function ClassCalendar() {
             },
             event: EventCalendar,
           }}
-          views={['month', 'week', 'day', 'agenda']}
-          defaultView='month'
+          views={window.innerWidth <= 768 ? 
+            ['month', 'agenda'] : 
+            ['month', 'week', 'day', 'agenda']
+          }
+          defaultView={window.innerWidth <= 768 ? 'agenda' : 'month'}
           popup
           formats={{
             monthHeaderFormat: 'MMMM yyyy',
@@ -753,30 +824,58 @@ function ClassCalendar() {
           Analytics Dashboard
         </Typography>
 
-        <Box sx={{ mb: 2, display: 'flex', gap: 2, alignItems: 'center' }}>
+        <Box sx={{ 
+          mb: 2, 
+          display: 'flex', 
+          flexDirection: { xs: 'column', md: 'row' },
+          gap: 2, 
+          alignItems: { xs: 'stretch', md: 'center' } 
+        }}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={['DatePicker']}>
-              <DatePicker label='Start Date' value={startDate} onChange={newValue => setStartDate(newValue)} />
+              <DatePicker 
+                label='Start Date' 
+                value={startDate} 
+                onChange={newValue => setStartDate(newValue)}
+                sx={{ width: '100%' }}
+              />
             </DemoContainer>
           </LocalizationProvider>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={['DatePicker']}>
-              <DatePicker label='Start Date' value={endDate} onChange={newValue => setEndDate(newValue)} />
+              <DatePicker 
+                label='End Date' 
+                value={endDate} 
+                onChange={newValue => setEndDate(newValue)}
+                sx={{ width: '100%' }}
+              />
             </DemoContainer>
           </LocalizationProvider>
-          <Button variant='contained' color='primary' onClick={calculateAnalytics}>
-            Apply Date Filter
-          </Button>
-          <Button
-            variant='contained'
-            color='secondary'
-            onClick={() => {
-              setStartDate(null)
-              setEndDate(null)
-            }}
-          >
-            Clear Date Filter
-          </Button>
+          <Box sx={{ 
+            display: 'flex', 
+            gap: 1,
+            flexDirection: { xs: 'column', md: 'row' } 
+          }}>
+            <Button 
+              variant='contained' 
+              color='primary' 
+              onClick={calculateAnalytics}
+              fullWidth
+            >
+              Apply Date Filter
+            </Button>
+            <Button 
+              variant='contained' 
+              color='secondary' 
+              onClick={() => {
+                setStartDate(null)
+                setEndDate(null)
+              }}
+              fullWidth
+            >
+              Clear Date Filter
+            </Button>
+          </Box>
         </Box>
 
         <Box className='analytics-summary'>

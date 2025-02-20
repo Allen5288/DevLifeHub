@@ -55,25 +55,31 @@ import {
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
-const drawerWidth = 280
+const drawerWidth = {
+  xs: '100%',
+  sm: 280,
+}
 
 const Main = styled('main', {
   shouldForwardProp: prop => prop !== 'open',
 })(({ theme, open }) => ({
   flexGrow: 1,
-  padding: theme.spacing(3),
+  padding: theme.spacing(2),
   transition: theme.transitions.create(['margin', 'width'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
   marginLeft: 0,
-  ...(open && {
-    marginLeft: drawerWidth,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
+  [theme.breakpoints.up('sm')]: {
+    padding: theme.spacing(3),
+    ...(open && {
+      marginLeft: drawerWidth.sm,
+      transition: theme.transitions.create(['margin', 'width'], {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
     }),
-  }),
+  },
 }))
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -102,6 +108,9 @@ const TodoContent = styled(Paper)(({ theme, completed, isdragging, isImportant }
     theme.palette.divider
   }`,
   position: 'relative',
+  [theme.breakpoints.down('sm')]: {
+    padding: theme.spacing(1.5),
+  },
   '&:hover': {
     backgroundColor: completed ? 'rgba(76, 175, 80, 0.12)' : 
                   isImportant ? 'rgba(244, 67, 54, 0.08)' : 
@@ -116,7 +125,10 @@ const TodoContent = styled(Paper)(({ theme, completed, isdragging, isImportant }
     left: 0,
     top: 0,
     bottom: 0,
-    width: '32px',
+    width: {
+      xs: '24px',
+      sm: '32px'
+    },
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -135,12 +147,26 @@ const TodoContent = styled(Paper)(({ theme, completed, isdragging, isImportant }
     },
   },
   '& .todo-content': {
-    marginLeft: '32px',
-    paddingLeft: '12px',
+    marginLeft: {
+      xs: '24px',
+      sm: '32px'
+    },
+    paddingLeft: {
+      xs: '8px',
+      sm: '12px'
+    },
     width: 'calc(100% - 32px)',
     display: 'flex',
     alignItems: 'center',
     borderLeft: `1px solid ${theme.palette.divider}`,
+    [theme.breakpoints.down('sm')]: {
+      '& .MuiTypography-root': {
+        fontSize: '0.9rem',
+      },
+      '& .MuiIconButton-root': {
+        padding: 6,
+      },
+    },
   }
 }))
 
@@ -202,7 +228,10 @@ const PageTransition = styled(motion.div)({
 
 const MenuButton = styled(IconButton)(({ theme, open }) => ({
   position: 'fixed',
-  left: open ? drawerWidth - 20 : 20,
+  left: {
+    xs: 20,
+    sm: open ? drawerWidth.sm - 20 : 20,
+  },
   top: theme.spacing(2),
   transition: theme.transitions.create(['left', 'transform'], {
     easing: theme.transitions.easing.sharp,
@@ -226,6 +255,9 @@ const StyledDrawer = styled(Drawer)(({ theme }) => ({
     borderRight: 'none',
     boxShadow: '4px 0 10px rgba(0, 0, 0, 0.1)',
     background: theme.palette.grey[50],
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
   },
 }))
 
@@ -246,6 +278,10 @@ const StyledContainer = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   borderRadius: theme.shape.borderRadius,
   boxShadow: theme.shadows[1],
+  [theme.breakpoints.down('sm')]: {
+    padding: theme.spacing(2),
+    gap: theme.spacing(2),
+  },
 }))
 
 const EmptyState = styled(Box)(({ theme }) => ({
@@ -993,7 +1029,7 @@ function TodoApp() {
   const [newTodoText, setNewTodoText] = useState('')
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState({ projects: false, todos: false })
-  const [drawerOpen, setDrawerOpen] = useState(true)
+  const [drawerOpen, setDrawerOpen] = useState(window.innerWidth >= 600)
   const [deleteDialog, setDeleteDialog] = useState({
     open: false,
     type: null, // 'todo' or 'project'
@@ -1004,6 +1040,18 @@ function TodoApp() {
   const [projectDialogOpen, setProjectDialogOpen] = useState(false)
   const [editingProject, setEditingProject] = useState(null)
   const [helpDialogOpen, setHelpDialogOpen] = useState(false)
+
+  // Add useEffect to handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 600) {
+        setDrawerOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Fetch projects with loading state
   const fetchProjects = useCallback(async () => {
