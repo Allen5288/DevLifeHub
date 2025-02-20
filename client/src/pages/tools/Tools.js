@@ -11,6 +11,7 @@ import CodeComparator from './features/CodeCompare/SalaryCalculatePage'
 import SalaryCalculatePage from './features/salaryCalculateApp/SalaryCalculatePage'
 import CurrencyExchangePage from './features/currencyExchange/CurrencyExchangePage'
 import TodoPage from './features/todo/TodoPage'
+import LoanCalculatorPage from './features/loanCalculator/LoanCalculatorPage'
 
 function Tools() {
   return (
@@ -26,6 +27,7 @@ function Tools() {
       <Route path='/salary-calculator' element={<SalaryCalculatePage />} />
       <Route path='/currency-exchange' element={<CurrencyExchangePage />} />
       <Route path='/todo' element={<TodoPage />} />
+      <Route path='/loan-calculator' element={<LoanCalculatorPage />} />
     </Routes>
   )
 }

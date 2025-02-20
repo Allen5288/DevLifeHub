@@ -5,6 +5,7 @@ import {
   Translate as Base64Icon,
   Key as JwtIcon,
   Google as GoogleIcon,
+  Calculate as CalculateIcon,
 } from '@mui/icons-material'
 
 export const TOOLS_CONFIG = [
@@ -77,5 +78,12 @@ export const TOOLS_CONFIG = [
     description: 'Organize your tasks and projects efficiently',
     icon: CalendarIcon,
     path: '/tools/todo',
+  },
+  {
+    id: 'loan-calculator',
+    title: 'Loan Calculator',
+    description: 'Calculate loan payments with support for CNY and AUD currencies',
+    icon: CalculateIcon,
+    path: '/tools/loan-calculator',
   }
 ]
