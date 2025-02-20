@@ -629,7 +629,18 @@ const ColorPickerPopover = ({ color, onChange, onClose, anchorEl }) => (
     }}
     sx={{ mt: 1 }}
   >
-    <ChromePicker color={color} onChange={color => onChange(color.hex)} />
+    <Box sx={{ p: 2 }}>
+      <ChromePicker color={color} onChange={color => onChange(color.hex)} />
+      <Button
+        fullWidth
+        variant="contained"
+        onClick={onClose}
+        sx={{ mt: 2 }}
+        size="small"
+      >
+        Confirm Color
+      </Button>
+    </Box>
   </Popover>
 )
 
@@ -665,6 +676,13 @@ const ProjectForm = ({ onSubmit, initialValues = {} }) => {
     loadCategories();
   }, []);
 
+  useEffect(() => {
+    // Ensure formData.category is always a valid value
+    if (!categories.includes(formData.category)) {
+      setFormData(prev => ({ ...prev, category: 'Other' }));
+    }
+  }, [categories, formData.category]);
+
   const handleCustomCategorySubmit = () => {
     if (!customCategory.trim()) {
       setCategoryError('Category name cannot be empty');
@@ -689,7 +707,7 @@ const ProjectForm = ({ onSubmit, initialValues = {} }) => {
     }
 
     // Update form data with new category
-    setFormData(prev => ({ ...prev, category: newCategory }));
+    setFormData(prev => ({ ...prev, category: newCategory })); // Correctly set the new category
     setCustomCategory('');
     setCategoryDialogOpen(false);
     setCategoryError('');
@@ -717,12 +735,19 @@ const ProjectForm = ({ onSubmit, initialValues = {} }) => {
           value={formData.description}
           onChange={e => setFormData(prev => ({ ...prev, description: e.target.value }))}
           multiline
-          rows={2}
+          rows={1}
+          size="small"
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              padding: '8px 14px',  // Adjust padding
+            },
+          }}
         />
         <FormControl fullWidth>
           <InputLabel>Category</InputLabel>
           <Select
             value={formData.category}
+            defaultValue={"Other"}
             label="Category"
             onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
             renderValue={(selected) => (
@@ -763,28 +788,29 @@ const ProjectForm = ({ onSubmit, initialValues = {} }) => {
               </MenuItem>
             ))}
 
-            {categories.filter(cat => !DEFAULT_PROJECT_CATEGORIES.includes(cat)).length > 0 && (
-              <>
-                <ListSubheader>Custom Categories</ListSubheader>
-                {categories
-                  .filter(cat => !DEFAULT_PROJECT_CATEGORIES.includes(cat))
-                  .map(category => (
-                    <MenuItem key={category} value={category} sx={{ py: 1.5, px: 2, display: 'flex', alignItems: 'center' }}>
-                      <ListItemIcon sx={{ minWidth: 28, mr: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Box
-                          sx={{
-                            width: 8,
-                            height: 8,
-                            borderRadius: '50%',
-                            bgcolor: formData.category === category ? 'primary.main' : 'action.disabled',
-                          }}
-                        />
-                      </ListItemIcon>
-                      <ListItemText primary={category} sx={{ m: 0 }} />
-                    </MenuItem>
-                  ))}
-              </>
-            )}
+            <ListSubheader>Custom Categories</ListSubheader>
+            {categories
+              .filter(cat => !DEFAULT_PROJECT_CATEGORIES.includes(cat))
+              .map(category => (
+                <MenuItem 
+                  key={category} 
+                  value={category}  // This is correct
+                  onClick={() => setFormData(prev => ({ ...prev, category }))} // Add this line if needed
+                  sx={{ py: 1.5, px: 2, display: 'flex', alignItems: 'center' }}
+                >
+                  <ListItemIcon sx={{ minWidth: 28, mr: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Box
+                      sx={{
+                        width: 8,
+                        height: 8,
+                        borderRadius: '50%',
+                        bgcolor: formData.category === category ? 'primary.main' : 'action.disabled',
+                      }}
+                    />
+                  </ListItemIcon>
+                  <ListItemText primary={category} sx={{ m: 0 }} />
+                </MenuItem>
+              ))}
 
             <Divider />
             <MenuItem 

@@ -228,43 +228,45 @@ function Home() {
       </main>
 
       {/* MongoDB Test Section */}
-      <section className='mongodb-test'>
-        <h2>MongoDB Connection Test</h2>
+      {process.env.NODE_ENV === 'development' && (
+        <section className='mongodb-test'>
+          <h2>MongoDB Connection Test</h2>
 
-        {/* Test Form */}
-        <form onSubmit={handleSubmit} className='test-form'>
-          <div className='form-group'>
-            <input
-              type='text'
-              value={message}
-              onChange={e => setMessage(e.target.value)}
-              placeholder='Enter a test message'
-              required
-            />
-            <button type='submit' disabled={loading}>
-              {loading ? 'Saving...' : 'Save to MongoDB'}
-            </button>
+          {/* Test Form */}
+          <form onSubmit={handleSubmit} className='test-form'>
+            <div className='form-group'>
+              <input
+                type='text'
+                value={message}
+                onChange={e => setMessage(e.target.value)}
+                placeholder='Enter a test message'
+                required
+              />
+              <button type='submit' disabled={loading}>
+                {loading ? 'Saving...' : 'Save to MongoDB'}
+              </button>
+            </div>
+            {error && <div className='error-message'>{error}</div>}
+          </form>
+
+          {/* Display Test Data */}
+          <div className='test-data'>
+            <h3>Saved Messages:</h3>
+            {testData.length > 0 ? (
+              <ul>
+                {testData.map(test => (
+                  <li key={test._id}>
+                    <span>{test.message}</span>
+                    <small>{new Date(test.timestamp).toLocaleString()}</small>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No messages yet</p>
+            )}
           </div>
-          {error && <div className='error-message'>{error}</div>}
-        </form>
-
-        {/* Display Test Data */}
-        <div className='test-data'>
-          <h3>Saved Messages:</h3>
-          {testData.length > 0 ? (
-            <ul>
-              {testData.map(test => (
-                <li key={test._id}>
-                  <span>{test.message}</span>
-                  <small>{new Date(test.timestamp).toLocaleString()}</small>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No messages yet</p>
-          )}
-        </div>
-      </section>
+        </section>
+      )}
     </div>
   )
 }
