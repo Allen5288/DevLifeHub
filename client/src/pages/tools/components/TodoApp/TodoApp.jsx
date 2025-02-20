@@ -331,6 +331,7 @@ const TodoCheckbox = ({ completed, onClick, isToggling, isdragging }) => {
             width: 24,
             height: 24,
             borderRadius: 1,
+            marginLeft: 2,
             border: `2px solid ${completed ? theme.palette.success.main : theme.palette.grey[500]}`,
             backgroundColor: completed ? theme.palette.success.main : 'white',
             display: 'flex',
