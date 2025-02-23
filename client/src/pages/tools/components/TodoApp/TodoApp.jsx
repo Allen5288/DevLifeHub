@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, forwardRef } from 'react'
+import React, { useState, useEffect, useCallback, forwardRef, useRef } from 'react'
 import {
   Box,
   Paper,
@@ -170,11 +170,14 @@ const TodoContent = styled(Paper)(({ theme, completed, isdragging, isImportant }
   }
 }))
 
-const ProjectItem = ({ project, selected, onClick, onEdit, onDelete }) => (
+const ProjectItem = ({ project, selected, onClick, onEdit, onDelete, onSelect }) => (
   <ListItem
     button
     selected={selected}
-    onClick={onClick}
+    onClick={(e) => {
+      onClick(e);
+      onSelect(project);
+    }}
     sx={{
       margin: theme => theme.spacing(0.5, 0),
       borderRadius: theme => theme.shape.borderRadius,
@@ -446,6 +449,10 @@ const SortableTodoItem = forwardRef(({ todo, onDelete, onToggle, onToggleImporta
     ],
   });
 
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedText, setEditedText] = useState(todo.text);
+  const inputRef = useRef(null);
+
   const [isDeleting, setIsDeleting] = useState(false);
   const [isToggling, setIsToggling] = useState(false);
   const [isTogglingImportant, setIsTogglingImportant] = useState(false);
@@ -482,6 +489,41 @@ const SortableTodoItem = forwardRef(({ todo, onDelete, onToggle, onToggleImporta
     await onToggleImportant(todo._id);
     setIsTogglingImportant(false);
   };
+
+  const handleEdit = async () => {
+    if (!editedText.trim() || editedText === todo.text) {
+      setIsEditing(false);
+      setEditedText(todo.text);
+      return;
+    }
+
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/todos/${todo._id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({ text: editedText.trim() }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update todo');
+      }
+
+      todo.text = editedText.trim();
+      setIsEditing(false);
+    } catch (err) {
+      setEditedText(todo.text);
+      setIsEditing(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isEditing && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isEditing]);
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -521,18 +563,55 @@ const SortableTodoItem = forwardRef(({ todo, onDelete, onToggle, onToggleImporta
             isToggling={isToggling}
             isdragging={isdragging}
           />
-          <Typography
-            sx={{
-              flexGrow: 1,
-              textDecoration: todo.completed ? 'line-through' : 'none',
-              color: todo.completed ? 'text.secondary' : 'text.primary',
-              transition: 'all 0.3s ease',
-              userSelect: 'none',
-            }}
-          >
-            {todo.text}
-          </Typography>
+          {isEditing ? (
+            <TextField
+              fullWidth
+              variant="standard"
+              value={editedText}
+              onChange={(e) => setEditedText(e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  handleEdit();
+                }
+              }}
+              onBlur={handleEdit}
+              inputRef={inputRef}
+              InputProps={{
+                sx: {
+                  fontSize: 'inherit',
+                  '&:before': { display: 'none' },
+                  '&:after': { display: 'none' },
+                }
+              }}
+            />
+          ) : (
+            <Typography
+              sx={{
+                flexGrow: 1,
+                textDecoration: todo.completed ? 'line-through' : 'none',
+                color: todo.completed ? 'text.secondary' : 'text.primary',
+                transition: 'all 0.3s ease',
+                userSelect: 'none',
+              }}
+            >
+              {todo.text}
+            </Typography>
+          )}
           <Box sx={{ display: 'flex', gap: 1 }}>
+            <IconButton
+              size="small"
+              onClick={() => setIsEditing(true)}
+              sx={{
+                opacity: 0.7,
+                '&:hover': {
+                  opacity: 1,
+                  transform: 'scale(1.1)',
+                },
+                transition: 'all 0.2s ease',
+              }}
+            >
+              <EditIcon fontSize="small" />
+            </IconButton>
             <ImportantFlag
               isImportant={todo.important}
               onClick={handleToggleImportant}
@@ -1430,6 +1509,13 @@ function TodoApp() {
     }
   };
 
+  const handleProjectSelect = (project) => {
+    // Close drawer only on mobile devices
+    if (window.innerWidth < 700) {
+      setDrawerOpen(false);
+    }
+  };
+
   return (
     <PageTransition initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
       <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'background.default' }}>
@@ -1483,6 +1569,7 @@ function TodoApp() {
                           onClick={() => setSelectedProject(project)}
                           onEdit={() => setEditingProject(project)}
                           onDelete={() => handleDeleteProject(project._id)}
+                          onSelect={handleProjectSelect}
                         />
                       </motion.div>
                     ))}
