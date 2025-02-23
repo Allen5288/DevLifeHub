@@ -14,22 +14,23 @@ function App() {
       <AuthProvider>
         <div className='app'>
           <Navbar />
-          <Routes>
-            {/* All public routes */}
-            <Route path='/' element={<Home />} />
-            <Route path='/login' element={<Login />} />
-            <Route path='/register' element={<Register />} />
-            <Route path='/forgot-password' element={<ForgotPassword />} />
-            <Route path='/reset-password/:token' element={<ResetPassword />} />
-            <Route path='/contact' element={<Contact />} />
-            <Route path='/fullstack/*' element={<FullStack />} />
-            <Route path='/games/*' element={<Games />} />
-            <Route path='/menu/*' element={<Menu />} />
-            <Route path='/travel/*' element={<Travel />} />
-            <Route path='/food/*' element={<Food />} />
-            <Route path='/tools/*' element={<Tools />} />
-            <Route path='/profile' element={<Profile />} />
-          </Routes>
+          <div className='main-content'>
+            <Routes>
+              <Route path='/' element={<Home />} />
+              <Route path='/login' element={<Login />} />
+              <Route path='/register' element={<Register />} />
+              <Route path='/forgot-password' element={<ForgotPassword />} />
+              <Route path='/reset-password/:token' element={<ResetPassword />} />
+              <Route path='/contact' element={<Contact />} />
+              <Route path='/fullstack/*' element={<FullStack />} />
+              <Route path='/games/*' element={<Games />} />
+              <Route path='/menu/*' element={<Menu />} />
+              <Route path='/travel/*' element={<Travel />} />
+              <Route path='/food/*' element={<Food />} />
+              <Route path='/tools/*' element={<Tools />} />
+              <Route path='/profile' element={<Profile />} />
+            </Routes>
+          </div>
         </div>
       </AuthProvider>
     </Router>

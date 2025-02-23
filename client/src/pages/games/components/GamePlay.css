@@ -1,0 +1,25 @@
+.game-play-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.game-play-container h2 {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.game-play-container .back-button {
+  align-self: flex-start;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .game-play-container {
+    padding: 10px;
+  }
+}

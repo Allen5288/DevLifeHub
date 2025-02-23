@@ -1,7 +1,7 @@
 .games-page {
+  padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
 }
 
 .games-page h1 {
@@ -10,11 +10,18 @@
   color: #333;
 }
 
-.games-container {
+.games-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.games-container {
+  width: 100%;
+  min-height: calc(100vh - 60px);
   padding: 20px;
+  box-sizing: border-box;
 }
 
 .game-wrapper {
@@ -22,8 +29,83 @@
   justify-content: center;
 }
 
+.game-card {
+  text-decoration: none;
+  color: inherit;
+  background: var(--card-bg, #ffffff);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.game-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.game-card-content {
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.game-info {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.difficulty {
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.difficulty.easy {
+  background: #e6f4ea;
+  color: #137333;
+}
+
+.difficulty.medium {
+  background: #fef7e0;
+  color: #b95000;
+}
+
+.difficulty.hard {
+  background: #fce8e6;
+  color: #c5221f;
+}
+
+.duration {
+  color: var(--text-secondary, #666);
+  font-size: 0.875rem;
+}
+
+.players-info {
+  margin-top: auto;
+  font-size: 0.875rem;
+  color: var(--text-secondary, #666);
+}
+
+.games-loading {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.25rem;
+  color: var(--text-secondary, #666);
+}
+
 @media (max-width: 768px) {
-  .games-container {
-    grid-template-columns: 1fr;
+  .games-page {
+    padding: 1rem;
+  }
+  
+  .games-grid {
+    gap: 1rem;
   }
 }

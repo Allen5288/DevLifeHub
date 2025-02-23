@@ -1,0 +1,157 @@
+.tic-tac-toe {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.board {
+  margin: 20px 0;
+}
+
+.board-row {
+  display: flex;
+}
+
+.square {
+  width: 80px;
+  height: 80px;
+  border: 2px solid #333;
+  margin: -1px;
+  font-size: 2.5rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: white;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  outline: none;
+  -webkit-appearance: none;
+  -webkit-highlight: none;
+  -webkit-focus-ring-color: transparent;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  background-color: white !important;
+}
+
+.square:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Only apply hover on devices that support hover */
+@media (hover: hover) and (pointer: fine) {
+  .square:hover:not(:disabled) {
+    background-color: #f0f0f0;
+  }
+}
+
+/* Touch device active state */
+@media (hover: none) {
+  .square:active:not(:disabled) {
+    transform: scale(0.98);
+    background: white !important;
+  }
+  
+  .square:focus {
+    background: white;
+  }
+}
+
+.status {
+  font-size: 1.5rem;
+  margin: 20px 0;
+  font-weight: 500;
+}
+
+.controls {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.controls button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  background: #007bff;
+  color: white;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  outline: none;
+  -webkit-appearance: none;
+  -webkit-highlight: none;
+  -webkit-focus-ring-color: transparent;
+}
+
+/* Only apply hover on devices that support hover */
+@media (hover: hover) and (pointer: fine) {
+  .controls button:hover {
+    background: #0056b3;
+  }
+}
+
+/* Touch device active state */
+@media (hover: none) {
+  .controls button:active {
+    transform: scale(0.98);
+    background: #007bff !important;
+  }
+  
+  .controls button:focus {
+    background: #007bff;
+  }
+}
+
+.game-mode-selection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.game-mode-selection h2 {
+  margin-bottom: 20px;
+}
+
+.game-mode-selection button {
+  padding: 15px 30px;
+  font-size: 18px;
+  border: none;
+  border-radius: 4px;
+  background: #007bff;
+  color: white;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  outline: none;
+  width: 200px;
+}
+
+/* Only apply hover on devices that support hover */
+@media (hover: hover) and (pointer: fine) {
+  .game-mode-selection button:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+  }
+}
+
+/* Touch device active state */
+@media (hover: none) {
+  .game-mode-selection button:active {
+    transform: scale(0.98);
+  }
+}

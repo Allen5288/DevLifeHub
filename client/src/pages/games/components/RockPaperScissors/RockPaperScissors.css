@@ -1,0 +1,168 @@
+.rock-paper-scissors {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.score {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin: 20px 0;
+  font-size: 1.2rem;
+}
+
+.game-status {
+  margin: 20px 0;
+  min-height: 30px;
+}
+
+.choices {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 30px 0;
+}
+
+.choices button {
+  padding: 15px 30px;
+  font-size: 18px;
+  border: 2px solid #007bff;
+  border-radius: 8px;
+  background: white;
+  color: #007bff;
+  cursor: pointer;
+  min-width: 140px;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  outline: none;
+  -webkit-appearance: none;
+  -webkit-highlight: none;
+  -webkit-focus-ring-color: transparent;
+}
+
+.choices button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #f0f0f0;
+}
+
+/* Only apply hover effects on devices that support hover */
+@media (hover: hover) and (pointer: fine) {
+  .choices button:hover:not(:disabled) {
+    background: #007bff;
+    color: white;
+    transform: translateY(-2px);
+  }
+}
+
+/* Touch device active state */
+@media (hover: none) {
+  .choices button:active:not(:disabled) {
+    
+    background: white !important;
+    color: #007bff !important;
+  }
+  
+  .choices button:focus {
+    background: white;
+    color: #007bff;
+  }
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.controls button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  background: #007bff;
+  color: white;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  outline: none;
+  -webkit-appearance: none;
+  -webkit-highlight: none;
+  -webkit-focus-ring-color: transparent;
+}
+
+/* Only apply hover on devices that support hover */
+@media (hover: hover) and (pointer: fine) {
+  .controls button:hover {
+    background: #0056b3;
+  }
+}
+
+/* Touch device active state */
+@media (hover: none) {
+  .controls button:active {
+    background: #007bff !important;
+    transform: scale(0.98);
+  }
+  
+  .controls button:focus {
+    background: #007bff;
+  }
+}
+
+.game-mode-selection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.game-mode-selection h2 {
+  margin-bottom: 20px;
+}
+
+.game-mode-selection button {
+  padding: 15px 30px;
+  font-size: 18px;
+  border: none;
+  border-radius: 4px;
+  background: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 200px;
+}
+
+.game-mode-selection button:hover {
+  background: #0056b3;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+  .choices {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .choices button {
+    width: 200px;
+  }
+
+  .controls {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .controls button {
+    width: 200px;
+  }
+}

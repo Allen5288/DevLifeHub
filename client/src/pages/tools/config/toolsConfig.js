@@ -1,14 +1,60 @@
 import {
-  CalendarMonth as CalendarIcon,
+  FormatListBulleted as TodoIcon,
+  Calculate as CalculateIcon,
+  CurrencyExchange as CurrencyIcon,
   Code as JsonIcon,
   Lock as KeyGenIcon,
   Translate as Base64Icon,
   Key as JwtIcon,
   Google as GoogleIcon,
-  Calculate as CalculateIcon,
+  CalendarMonth as CalendarIcon,
+  CompareArrows as CompareIcon,
 } from '@mui/icons-material'
 
 export const TOOLS_CONFIG = [
+  {
+    id: 'todo',
+    title: 'Todo Manager',
+    description: 'Organize your tasks and projects efficiently',
+    icon: TodoIcon,
+    path: '/tools/todo',
+  },
+  {
+    id: 'calendar',
+    title: 'Class Calendar',
+    description: 'Manage your teaching schedule and track earnings',
+    icon: CalendarIcon,
+    path: '/tools/calendar',
+  },
+  {
+    id: 'salary-calculator',
+    title: 'Salary Calculator',
+    description: 'Calculate multiple country tax and after tax salary',
+    icon: CalculateIcon,
+    path: '/tools/salary-calculator',
+  },
+  {
+    id: 'currency-exchange',
+    title: 'Currency Exchange',
+    description: 'Have a quick look for the currency exchange rates',
+    icon: CurrencyIcon,
+    path: '/tools/currency-exchange',
+  },
+
+  {
+    id: 'loan-calculator',
+    title: 'Loan Calculator',
+    description: 'Calculate loan payments with support for CNY and AUD currencies',
+    icon: CalculateIcon,
+    path: '/tools/loan-calculator',
+  },
+  {
+    id: 'code-compare',
+    title: 'Code Compare',
+    description: 'Show Code diffs',
+    icon: CompareIcon,
+    path: '/tools/code-compare',
+  },
   {
     id: 'json-formatter',
     title: 'JSON Formatter',
@@ -44,46 +90,4 @@ export const TOOLS_CONFIG = [
     icon: GoogleIcon,
     path: '/tools/google-oauth',
   },
-  {
-    id: 'calendar',
-    title: 'Class Calendar',
-    description: 'Manage your teaching schedule and track earnings',
-    icon: CalendarIcon,
-    path: '/tools/calendar',
-  },
-  {
-    id: 'code-compare',
-    title: 'Code Compare',
-    description: 'Show Code diffs',
-    icon: CalendarIcon,
-    path: '/tools/code-compare',
-  },
-  {
-    id: 'salary-calculator',
-    title: 'Salary Calculator',
-    description: 'Calculate mutlple country tax and after tax salary',
-    icon: CalendarIcon,
-    path: '/tools/salary-calculator',
-  },
-  {
-    id: 'currency-exchange',
-    title: 'Currency Exchange',
-    description: 'Have a quick look for the currency exchange rates',
-    icon: CalendarIcon,
-    path: '/tools/currency-exchange',
-  },
-  {
-    id: 'todo',
-    title: 'Todo Manager',
-    description: 'Organize your tasks and projects efficiently',
-    icon: CalendarIcon,
-    path: '/tools/todo',
-  },
-  {
-    id: 'loan-calculator',
-    title: 'Loan Calculator',
-    description: 'Calculate loan payments with support for CNY and AUD currencies',
-    icon: CalculateIcon,
-    path: '/tools/loan-calculator',
-  }
 ]
