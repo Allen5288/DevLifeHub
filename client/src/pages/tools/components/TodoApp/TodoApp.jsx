@@ -1397,6 +1397,39 @@ function TodoApp() {
     }
   };
 
+  const handleToggleAllTodos = async (completed) => {
+    // Store original todos for rollback
+    const originalTodos = [...todos];
+    
+    // Optimistically update UI
+    const updatedTodos = todos.map(todo => ({ ...todo, completed }));
+    setTodos(updatedTodos);
+  
+    try {
+      // Use Promise.all to handle all toggle requests concurrently
+      await Promise.all(
+        todos
+          .filter(todo => todo.completed !== completed) // Only toggle todos that need to change
+          .map(todo =>
+            fetch(`${process.env.REACT_APP_API_URL}/todos/${todo._id}`, {
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+              },
+              body: JSON.stringify({ completed }),
+            })
+          )
+      );
+  
+      // Refresh todos to ensure synchronization
+      await fetchTodos();
+    } catch (err) {
+      setError('Failed to update todos');
+      setTodos(originalTodos); // Revert on failure
+    }
+  };
+
   return (
     <PageTransition initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
       <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'background.default' }}>
@@ -1488,7 +1521,7 @@ function TodoApp() {
 
                 <ProjectProgress todos={todos} />
 
-                <Box sx={{ mb: 4 }}>
+                <Box sx={{ mb: 1, display: 'flex', justifyContent: 'space-between' }}>
                   <StyledTextField
                     fullWidth
                     value={newTodoText}
@@ -1497,7 +1530,7 @@ function TodoApp() {
                     sx={{ mb: 2 }}
                     onKeyPress={e => {
                       if (e.key === 'Enter' && newTodoText) {
-                        handleAddTodo()
+                        handleAddTodo();
                       }
                     }}
                     InputProps={{
@@ -1509,7 +1542,7 @@ function TodoApp() {
                           disabled={!newTodoText}
                           sx={{
                             borderRadius: '0 4px 4px 0',
-                            height: '100%',
+                            height: '80%',
                             margin: '-1px',
                           }}
                         >
@@ -1519,6 +1552,15 @@ function TodoApp() {
                     }}
                   />
                 </Box>
+                <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
+                  <Button variant='contained' onClick={() => handleToggleAllTodos(true)}>
+                    Check All
+                  </Button>
+                  <Button variant='outlined' onClick={() => handleToggleAllTodos(false)}>
+                    Uncheck All
+                  </Button>
+                </Box>
+
 
                 {loading.todos ? (
                   <LoadingAnimation
