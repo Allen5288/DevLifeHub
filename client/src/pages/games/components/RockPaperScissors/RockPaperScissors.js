@@ -3,7 +3,6 @@ import './RockPaperScissors.css';
 
 const RockPaperScissors = () => {
   const [playerChoice, setPlayerChoice] = useState(null);
-  const [player2Choice, setPlayer2Choice] = useState(null);
   const [result, setResult] = useState(null);
   const [score, setScore] = useState({ player1: 0, player2: 0 });
   const [currentPlayer, setCurrentPlayer] = useState(1);
@@ -27,7 +26,6 @@ const RockPaperScissors = () => {
       setPlayerChoice(choice);
       setCurrentPlayer(2);
     } else {
-      setPlayer2Choice(choice);
       const gameResult = getWinner(playerChoice, choice);
       setResult(
         gameResult === 'draw' 
@@ -50,7 +48,6 @@ const RockPaperScissors = () => {
 
   const resetGame = () => {
     setPlayerChoice(null);
-    setPlayer2Choice(null);
     setResult(null);
     setCurrentPlayer(1);
   };

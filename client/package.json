@@ -21,6 +21,7 @@
     "flag-icons": "^7.3.2",
     "formik": "^2.4.5",
     "framer-motion": "^12.4.3",
+    "html2canvas": "^1.4.1",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-big-calendar": "^1.8.7",

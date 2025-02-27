@@ -1,0 +1,60 @@
+.love-diary-container {
+  padding: 24px;
+}
+
+.diary-header {
+  margin-bottom: 24px;
+}
+
+.diary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.diary-card {
+  position: relative;
+  transition: transform 0.2s;
+}
+
+.diary-card:hover {
+  transform: translateY(-4px);
+}
+
+.diary-card .MuiCardMedia-root {
+  height: 140px;
+  object-fit: cover;
+}
+
+.diary-actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+}
+
+.diary-summary {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.diary-date {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 0.875rem;
+  margin-bottom: 8px;
+}
+
+.export-preview {
+  padding: 16px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.image-preview {
+  max-width: 200px;
+  height: auto;
+  margin: 8px 0;
+}

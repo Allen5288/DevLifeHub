@@ -12,6 +12,7 @@ import SalaryCalculatePage from './features/salaryCalculateApp/SalaryCalculatePa
 import CurrencyExchangePage from './features/currencyExchange/CurrencyExchangePage'
 import TodoPage from './features/todo/TodoPage'
 import LoanCalculatorPage from './features/loanCalculator/LoanCalculatorPage'
+import LoveDiary from './features/loveDiary/LoveDiary'
 
 function Tools() {
   return (
@@ -28,6 +29,7 @@ function Tools() {
       <Route path='/currency-exchange' element={<CurrencyExchangePage />} />
       <Route path='/todo' element={<TodoPage />} />
       <Route path='/loan-calculator' element={<LoanCalculatorPage />} />
+      <Route path='/love-diary' element={<LoveDiary />} />
     </Routes>
   )
 }

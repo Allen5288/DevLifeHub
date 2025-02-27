@@ -20,6 +20,13 @@ export const TOOLS_CONFIG = [
     path: '/tools/todo',
   },
   {
+    id: 'love-diary',
+    title: 'Love Diary',
+    description: 'Capture and cherish your memories',
+    icon: TodoIcon,
+    path: '/tools/love-diary',
+  },
+  {
     id: 'calendar',
     title: 'Class Calendar',
     description: 'Manage your teaching schedule and track earnings',
