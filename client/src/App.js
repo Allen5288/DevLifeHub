@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import Navbar from './components/Navbar'
 import { Home, FullStack, Games, Menu, Travel, Food, Contact, Tools } from './pages'
+import GlbGuides from './pages/glbguides'
 import { Login, Register, ForgotPassword, ResetPassword } from './components/auth'
 import Profile from './components/profile/Profile'
 import './styles/App.css'
@@ -28,6 +29,7 @@ function App() {
               <Route path='/travel/*' element={<Travel />} />
               <Route path='/food/*' element={<Food />} />
               <Route path='/tools/*' element={<Tools />} />
+              <Route path='/glbguides/*' element={<GlbGuides />} />
               <Route path='/profile' element={<Profile />} />
             </Routes>
           </div>

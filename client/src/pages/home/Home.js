@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { FaCode, FaGamepad, FaUtensils, FaPlane, FaTools } from 'react-icons/fa'
+import { FaCode, FaGamepad, FaUtensils, FaPlane, FaTools, FaGlobe } from 'react-icons/fa'
 import { BiLogoReact, BiLogoNodejs, BiLogoMongodb } from 'react-icons/bi'
 import { SiExpress, SiRedux, SiTypescript } from 'react-icons/si'
 import './Home.css'
@@ -104,6 +104,23 @@ function Home() {
         { title: 'Play Games', path: '/games/play' },
         { title: 'Tutorials', path: '/games/tutorials' },
         { title: 'Showcase', path: '/games/showcase' },
+      ],
+    },
+    {
+      id: 'glbguides',
+      title: 'Global Guides',
+      description: 'Comprehensive guides for global knowledge and resources.',
+      icon: <FaGlobe className='section-icon' />,
+      path: '/glbguides',
+      features: [
+        { icon: '🌐', name: 'Global' },
+        { icon: '📚', name: 'Guides' },
+        { icon: '🔍', name: 'Resources' },
+      ],
+      quickLinks: [
+        { title: 'Beginner Guides', path: '/glbguides?category=beginner' },
+        { icon: '📚', title: 'Advanced Guides', path: '/glbguides?category=advanced' },
+        { icon: '🔍', title: 'Resources', path: '/glbguides/resources' },
       ],
     },
     {

@@ -48,12 +48,13 @@ function Navbar() {
 
   const navItems = [
     { text: 'Home', path: '/' },
+    { text: 'Tools', path: '/tools' },
+    { text: 'GlbGuides', path: '/glbguides' },
     { text: 'FullStack', path: '/fullstack' },
     { text: 'Games', path: '/games' },
     { text: 'Menu', path: '/menu' },
     { text: 'Travel', path: '/travel' },
     { text: 'Food', path: '/food' },
-    { text: 'Tools', path: '/tools' },
     { text: 'Contact', path: '/contact' },
   ]
 
