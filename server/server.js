@@ -30,6 +30,7 @@ const foodRoutes = require('./routes/food')
 const fullstackRoutes = require('./routes/fullstack')
 const todoRoutes = require('./routes/todoRoutes')
 const loveDiaryRoutes = require('./routes/loveDiary')
+const glbGuidesRoutes = require('./routes/glbGuides')
 
 // Import middleware
 const errorHandler = require('./middleware/errorHandler')
@@ -110,6 +111,7 @@ app.get('/', (req, res) => {
       travel: '/api/travel',
       food: '/api/food',
       fullstack: '/api/fullstack',
+      glbguides: '/api/glbguides',
     },
   })
 })
@@ -128,6 +130,7 @@ app.use('/api/food', foodRoutes)
 app.use('/api/fullstack', fullstackRoutes)
 app.use('/api/todos', todoRoutes)
 app.use('/api/love-diary', loveDiaryRoutes)
+app.use('/api/glbguides', glbGuidesRoutes)
 
 // Error handling middleware
 app.use(errorHandler)
