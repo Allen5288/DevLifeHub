@@ -1,60 +1,87 @@
 .love-diary-container {
-  padding: 24px;
+  padding: 16px;
 }
 
 .diary-header {
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .diary-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 24px;
+  gap: 8px;
 }
 
 .diary-card {
   position: relative;
   transition: transform 0.2s;
+  height: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .diary-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .diary-card .MuiCardMedia-root {
-  height: 140px;
+  height: 120px;
   object-fit: cover;
 }
 
 .diary-actions {
   display: flex;
-  justify-content: space-between;
-  padding: 8px;
+  gap: 4px;
+  padding: 4px;
 }
 
 .diary-summary {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  font-size: 0.8rem !important;
+  margin-top: 4px !important;
 }
 
 .diary-date {
-  color: rgba(0, 0, 0, 0.6);
-  font-size: 0.875rem;
-  margin-bottom: 8px;
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 0.75rem;
+  display: block;
+  margin-top: -4px;
+  margin-bottom: 4px;
 }
 
 .export-preview {
-  padding: 16px;
+  padding: 12px;
   background: white;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .image-preview {
-  max-width: 200px;
+  max-width: 180px;
   height: auto;
   margin: 8px 0;
+}
+
+/* Make icons smaller for compact cards */
+.diary-card .MuiSvgIcon-fontSizeSmall {
+  font-size: 0.9rem;
+}
+
+.diary-card .MuiIconButton-sizeSmall {
+  padding: 4px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .love-diary-container {
+    padding: 12px;
+  }
+  
+  .diary-card .MuiCardContent-root {
+    padding: 8px;
+  }
 }

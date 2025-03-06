@@ -215,9 +215,9 @@ const LoveDiary = () => {
         <Typography variant='h5' sx={{ mb: 2, mt: 3 }}>
           Must Do Things With My Love ❤️
         </Typography>
-        <Grid container spacing={2} className='diary-grid'>
+        <Grid container spacing={1} className='diary-grid'>
           {regularEntries.map(entry => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={entry._id}>
+            <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={entry._id}>
               <Card
                 id={`diary-entry-${entry._id}`}
                 className='diary-card'
@@ -226,36 +226,36 @@ const LoveDiary = () => {
                 {entry.image && (
                   <CardMedia
                     component='img'
-                    height='140'
+                    height='120'
                     image={entry.image}
                     alt={entry.title}
                     sx={{ objectFit: 'cover' }}
                   />
                 )}
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography variant='h6' gutterBottom>
+                <CardContent sx={{ flexGrow: 1, p: 1.5 }}>
+                  <Typography variant='subtitle1' gutterBottom>
                     {entry.title}
                   </Typography>
-                  <Typography variant='body2' color='text.secondary' className='diary-date'>
+                  <Typography variant='caption' color='text.secondary' className='diary-date'>
                     {new Date(entry.date).toLocaleDateString()}
                   </Typography>
                   {entry.summary && (
-                    <Typography variant='body2' className='diary-summary'>
+                    <Typography variant='body2' className='diary-summary' sx={{ fontSize: '0.8rem', mt: 0.5 }}>
                       {entry.summary}
                     </Typography>
                   )}
-                  <Stack direction='row' spacing={1} sx={{ mt: 2 }}>
+                  <Stack direction='row' spacing={0.5} sx={{ mt: 1 }}>
                     <IconButton size='small' onClick={() => handleDelete(entry._id)}>
-                      <DeleteIcon />
+                      <DeleteIcon fontSize="small" />
                     </IconButton>
                     <IconButton size='small' onClick={() => handleExport(entry)}>
-                      <DownloadIcon />
+                      <DownloadIcon fontSize="small" />
                     </IconButton>
                     <IconButton
                       size='small'
                       onClick={() => handleEditClick(entry)}
                     >
-                      <EditIcon />
+                      <EditIcon fontSize="small" />
                     </IconButton>
                   </Stack>
                 </CardContent>
@@ -270,9 +270,9 @@ const LoveDiary = () => {
         <Typography variant='h5' sx={{ mb: 2, mt: 4 }}>
           Our Big Events 🎉
         </Typography>
-        <Grid container spacing={2} className='diary-grid'>
+        <Grid container spacing={1} className='diary-grid'>
           {bigEventEntries.map(entry => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={entry._id}>
+            <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={entry._id}>
               <Card
                 id={`diary-entry-${entry._id}`}
                 className='diary-card'
@@ -281,36 +281,36 @@ const LoveDiary = () => {
                 {entry.image && (
                   <CardMedia
                     component='img'
-                    height='140'
+                    height='120'
                     image={entry.image}
                     alt={entry.title}
                     sx={{ objectFit: 'cover' }}
                   />
                 )}
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography variant='h6' gutterBottom>
+                <CardContent sx={{ flexGrow: 1, p: 1.5 }}>
+                  <Typography variant='subtitle1' gutterBottom>
                     {entry.title}
                   </Typography>
-                  <Typography variant='body2' color='text.secondary' className='diary-date'>
+                  <Typography variant='caption' color='text.secondary' className='diary-date'>
                     {new Date(entry.date).toLocaleDateString()}
                   </Typography>
                   {entry.summary && (
-                    <Typography variant='body2' className='diary-summary'>
+                    <Typography variant='body2' className='diary-summary' sx={{ fontSize: '0.8rem', mt: 0.5 }}>
                       {entry.summary}
                     </Typography>
                   )}
-                  <Stack direction='row' spacing={1} sx={{ mt: 2 }}>
+                  <Stack direction='row' spacing={0.5} sx={{ mt: 1 }}>
                     <IconButton size='small' onClick={() => handleDelete(entry._id)}>
-                      <DeleteIcon />
+                      <DeleteIcon fontSize="small" />
                     </IconButton>
                     <IconButton size='small' onClick={() => handleExport(entry)}>
-                      <DownloadIcon />
+                      <DownloadIcon fontSize="small" />
                     </IconButton>
                     <IconButton
                       size='small'
                       onClick={() => handleEditClick(entry)}
                     >
-                      <EditIcon />
+                      <EditIcon fontSize="small" />
                     </IconButton>
                   </Stack>
                 </CardContent>
